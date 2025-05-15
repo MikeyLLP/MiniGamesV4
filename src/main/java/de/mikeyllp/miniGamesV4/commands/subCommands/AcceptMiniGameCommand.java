@@ -37,7 +37,7 @@ public class AcceptMiniGameCommand extends CommandAPICommand {
             }
 
             //Checks if the player can play
-            canGameStart(inviter, invited);
+            canGameStart(inviter, invited, "TicTacToe");
 
         });
     }

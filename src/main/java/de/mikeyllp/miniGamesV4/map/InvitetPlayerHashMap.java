@@ -98,7 +98,7 @@ public class InvitetPlayerHashMap {
 
 
     //This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
-    public static void canGameStart(Player inviter, Player invited) {
+    public static void canGameStart(Player inviter, Player invited, String game) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsKey(invited.getPlayer())) {
             invited.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
@@ -107,7 +107,13 @@ public class InvitetPlayerHashMap {
         //Create a player key
         PlayerKey key = new PlayerKey(String.valueOf(inviter.getPlayer()), String.valueOf(invited.getPlayer()));
         if (invitesManager.containsKey(key)) {
-            TicTacToeGame.openTicTacToe(inviter, invited);
+            //I use switch for up comming games
+            switch (game) {
+                case "TicTacToe":
+                    TicTacToeGame.openTicTacToe(inviter, invited);
+                    break;
+            }
+
             inviter.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>angenommen.</color:#00E5E5>");
 
             Location inviterPos = inviter.getLocation();
