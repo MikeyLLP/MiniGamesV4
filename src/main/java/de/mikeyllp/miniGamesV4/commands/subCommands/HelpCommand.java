@@ -27,8 +27,9 @@ public class HelpCommand extends CommandAPICommand {
             sender.sendRichMessage("<color:#00FFD5>Spiele:");
             sender.sendMessage("");
             sender.sendRichMessage("TicTacToe");
-
+            sender.sendRichMessage("Schere, Stein, Papier");
             // Here are the Admin Commands
+            sender.sendMessage("");
             if (sender.isOp() || sender.hasPermission("MiniGamesV4.admin")) {
                 sender.sendRichMessage("<color:#00FFD5>Admin Befehle:");
                 sender.sendRichMessage("\u2728 Comming Soon \u2728");
