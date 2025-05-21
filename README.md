@@ -137,6 +137,7 @@ Thanks for testing the plugin and giving feedback! 🙌
 - [KamiIIe]()
 - [Laluck98]()
 - [PEKK29]()
+- [Pingius2031]()
 - [RicTheCraft]()
 - [TheBjoRedCraft](https://github.com/TheBjoRedCraft)
 - [Timonso](https://github.com/Timonso-1)
@@ -145,8 +146,7 @@ Thanks for testing the plugin and giving feedback! 🙌
 
 ## 📬 Feedback & Contributing
 
-Feature requests or bugs? Create an issue or open a pull request (if you have access).  
-Private repo – feel free to send feedback via message to the developer.
+Feature requests or bugs? Feel free to create an issue or open a pull request.
 
 ---
 
