@@ -196,7 +196,6 @@ public class RPSGame implements Listener {
     }
 
     private static void checkWin(Player inviter, Player invited, GameState state) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR><color:#00E5E5>";
         MiniMessage mm = MiniMessage.miniMessage();
 
         Component fight = mm.deserialize("<gold>" + state.fightItemInviter + " vs " + state.fightItemInvited + "</gold>");

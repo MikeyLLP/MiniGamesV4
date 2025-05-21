@@ -209,7 +209,6 @@ public class TicTacToeGame implements Listener {
                 public void run() {
                     player1.closeInventory();
                     player2.closeInventory();
-                    String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
                     //Sends a message to the players indicating if they have won, lost, or if it is a draw
                     switch (finalWinnerCase) {
                         case 1:
