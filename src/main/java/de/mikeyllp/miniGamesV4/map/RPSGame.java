@@ -28,9 +28,6 @@ public class RPSGame implements Listener {
         Player invited;
         //to check if both players made their move
         int waitingForPlayer = 0;
-        //Moves form the players
-        int inviterMove = 0;
-        int invitedMove = 0;
         //points for both players
         int pointsInviter = 0;
         int pointsInvited = 0;
@@ -58,7 +55,7 @@ public class RPSGame implements Listener {
 
         MiniMessage mm = MiniMessage.miniMessage();
 
-        Component rspGameComponent = mm.deserialize("<color:#00E5E5>Wähle im Chat aus!</color>");
+        Component rspGameComponent = mm.deserialize("<color:#00E5E5>Erhalte 3 Punkte. Wähle im Chat aus!</color>");
         Component choseMsg = mm.deserialize(prefix + "<bold><gray><insert:Schere><hover:show_text:'Shift + Klick zum Auswählen'>[Schere]</hover></insert>" +
                 " <dark_gray><insert:Stein><hover:show_text:'Shift + Klick zum Auswählen'>[Stein]</hover></insert>" +
                 " <white><insert:Papier><hover:show_text:'Shift + Klick zum Auswählen'>[Papier]</hover></insert></bold>" +
@@ -102,7 +99,7 @@ public class RPSGame implements Listener {
 
             //checks if the player made already his move
             if (!(msg.equals("cancel"))) {
-                if (!(state.inviterMove == 0)) {
+                if (!(state.fightItemInviter.isEmpty())) {
                     inviter.sendRichMessage(prefix + "<red>Du hast bereits deine Wahl getroffen!</red>");
                     return;
                 }
@@ -110,17 +107,14 @@ public class RPSGame implements Listener {
             //checks which message send the player
             switch (msg) {
                 case "schere":
-                    state.inviterMove = 1;
                     state.fightItemInviter = "Schere";
                     state.waitingForPlayer++;
                     break;
                 case "stein":
-                    state.inviterMove = 2;
                     state.fightItemInviter = "Stein";
                     state.waitingForPlayer++;
                     break;
                 case "papier":
-                    state.inviterMove = 3;
                     state.fightItemInviter = "Papier";
                     state.waitingForPlayer++;
                     break;
@@ -130,9 +124,10 @@ public class RPSGame implements Listener {
 
                     //removes the inviter and invited from the maps
                     removePlayersFromList(inviter, invited);
-                    break;
+                    return;
                 default:
                     inviter.sendMessage(failMsg);
+                    return;
             }
             //checks if both players have made their move
             if (state.waitingForPlayer == 2) {
@@ -146,14 +141,12 @@ public class RPSGame implements Listener {
 
             Player inviter = state.inviter;
             Player invited = state.invited;
-            /*Player invited = event.getPlayer();
-            Player inviter = inGameStatus.get(invited);*/
             event.setCancelled(true);
 
             //checks if the player made already his move
             if (!(msg.equals("cancel"))) {
-                if (!(state.invitedMove == 0)) {
-                    inviter.sendRichMessage(prefix + "<red>Du hast bereits deine Wahl getroffen!</red>");
+                if (!(state.fightItemInvited.isEmpty())) {
+                    invited.sendRichMessage(prefix + "<red>Du hast bereits deine Wahl getroffen!</red>");
                     return;
                 }
             }
@@ -161,17 +154,14 @@ public class RPSGame implements Listener {
             //checks which message send the player
             switch (msg) {
                 case "schere":
-                    state.invitedMove = 1;
                     state.fightItemInvited = "Schere";
                     state.waitingForPlayer++;
                     break;
                 case "stein":
-                    state.invitedMove = 2;
                     state.fightItemInvited = "Stein";
                     state.waitingForPlayer++;
                     break;
                 case "papier":
-                    state.invitedMove = 3;
                     state.fightItemInvited = "Papier";
                     state.waitingForPlayer++;
                     break;
@@ -181,9 +171,10 @@ public class RPSGame implements Listener {
 
                     //removes the inviter and invited from the maps
                     removePlayersFromList(inviter, invited);
-                    break;
+                    return;
                 default:
                     invited.sendMessage(failMsg);
+                    return;
             }
 
             //checks if both players have made their move
@@ -199,35 +190,66 @@ public class RPSGame implements Listener {
         MiniMessage mm = MiniMessage.miniMessage();
 
         Component fight = mm.deserialize("<gold>" + state.fightItemInviter + " vs " + state.fightItemInvited + "</gold>");
-        Component win = mm.deserialize("<color:#00E5E5> Du hast gewonnen!</color>");
-        Component lose = mm.deserialize("<color:#00E5E5> Du hast verloren!</color>");
         Component draw = mm.deserialize("<color:#00E5E5>Unentschieden!</color>");
 
 
         //case if it´s a draw
-        if (state.inviterMove == state.invitedMove) {
+        if (state.fightItemInviter.equals(state.fightItemInvited)) {
             inviter.showTitle(Title.title(fight, draw, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
             invited.showTitle(Title.title(fight, draw, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+
+            checkGameResultForPlayers(inviter, invited, 2, true, false);
+
+            //reset the states
+            state.fightItemInviter = "";
+            state.fightItemInvited = "";
+            state.waitingForPlayer = 0;
             return;
         }
 
         //checks if the inviter wins that player who wins get A point up
-        if (state.inviterMove == 1 && state.invitedMove == 3 || state.inviterMove == 2 && state.invitedMove == 1 || state.inviterMove == 3 && state.invitedMove == 2) {
+        if (state.fightItemInviter.equals("Stein") && state.fightItemInvited.equals("Schere") ||
+                state.fightItemInviter.equals("Schere") && state.fightItemInvited.equals("Papier") ||
+                state.fightItemInviter.equals("Papier") && state.fightItemInvited.equals("Stein")) {
+
             state.pointsInviter++;
+
+            String points = updatePoints(state.pointsInviter, state.pointsInvited);
+            String pointsB = updatePoints(state.pointsInvited, state.pointsInviter);
+
+            Component win = mm.deserialize("<color:#00E5E5> Du hast gewonnen! <gold>+1 Punkt</gold></color> " + points);
+            Component loseB = mm.deserialize("<color:#00E5E5> Du hast verloren!</color> " + pointsB);
+
+
             inviter.showTitle(Title.title(fight, win, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
-            invited.showTitle(Title.title(fight, lose, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            invited.showTitle(Title.title(fight, loseB, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+
+
+            checkGameResultForPlayers(inviter, invited, 1, true, false);
         } else {
             state.pointsInvited++;
-            invited.showTitle(Title.title(fight, win, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+
+            String points = updatePoints(state.pointsInviter, state.pointsInvited);
+            String pointsB = updatePoints(state.pointsInvited, state.pointsInviter);
+
+            Component winB = mm.deserialize("<color:#00E5E5> Du hast gewonnen! <gold>+1 Punkt</gold></color> " + pointsB);
+            Component lose = mm.deserialize("<color:#00E5E5> Du hast verloren!</color> " + points);
+
+            invited.showTitle(Title.title(fight, winB, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
             inviter.showTitle(Title.title(fight, lose, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            checkGameResultForPlayers(invited, inviter, 1, true, false);
         }
+        //reset the states
+        state.fightItemInviter = "";
+        state.fightItemInvited = "";
+        state.waitingForPlayer = 0;
 
         //checks if one of the players has 3 points
         if (state.pointsInviter == 3) {
-            checkGameResultForPlayers(inviter, invited, 1, true, true);
+            checkGameResultForPlayers(inviter, invited, 1, false, true);
             removePlayersFromList(inviter, invited);
         } else if (state.pointsInvited == 3) {
-            checkGameResultForPlayers(inviter, invited, 1, true, true);
+            checkGameResultForPlayers(invited, inviter, 1, false, true);
             removePlayersFromList(inviter, invited);
         }
     }
@@ -245,6 +267,10 @@ public class RPSGame implements Listener {
         removePlayersFromList(player, inGameStatus.get(player));
     }
 
+    //updates the points of the players
+    private static String updatePoints(int you, int opponent) {
+        return "<color:#00E5E5>Du: <gold>" + you + "</gold> | <gold>Gegner: " + opponent + "</color>";
+    }
 
     //removes the players form the list
     private static void removePlayersFromList(Player inviter, Player invited) {
