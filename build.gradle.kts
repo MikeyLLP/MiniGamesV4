@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "de.mikeyllp"
-version = "0.1.0-beta" // Hier wird der Versions Name eingestellt
+version = "0.2.0-beta" // Hier wird der Versions Name eingestellt
 
 repositories {
     mavenCentral()

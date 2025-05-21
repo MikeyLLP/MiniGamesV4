@@ -18,13 +18,13 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 ## 📜 Commands
 
-| Command                              | Description                       |
-|--------------------------------------|-----------------------------------|
-| `/minigames`                         | Opens the main menu.              |
-| `/minigames <game> <player>`         | Sends a game request to a player. |
-| `/minigames accept <player>`         | Accepts a game request.           |
-| `/minigames decline <player>`        | Declines a game request.          |
-| `/minigames help`                    | Shows all available commands.     |
+| Command                       | Description                       |
+|-------------------------------|-----------------------------------|
+| `/minigames`                  | Opens the main menu.              |
+| `/minigames <game> <player>`  | Sends a game request to a player. |
+| `/minigames accept <player>`  | Accepts a game request.           |
+| `/minigames decline <player>` | Declines a game request.          |
+| `/minigames help`             | Shows all available commands.     |
 
 ---
 
@@ -38,6 +38,13 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | `minigamesv4.*`          | Grants access to all commands.           |
 
 ---
+
+## 🕹️ MiniGames
+
+| Game                | Description                                                                        |
+|---------------------|------------------------------------------------------------------------------------|
+| TicTacToe           | Play in a clean, intuitive GUI with a built-in randomizer to decide who starts.    |
+| Rock Paper Scissors | Play against a friend – just type your move. The game listens. No commands needed. |
 
 ## 🧩 Dependencies
 
@@ -76,8 +83,8 @@ This method avoids YAML files in the repo and ensures type-safe, automatic gener
 
 ## ⚠️ Development Status Notes
 
-> This version (`v0.1.0-beta`) is an **Beta release**.  
-> Many features are experimental and may change in future versions.
+> This version (`v0.2.0-beta`) is an **Beta release**.  
+> Features are unstable and will likely change before the final release.
 
 ---
 
@@ -95,7 +102,7 @@ Build the plugin as a Shadow FatJar with:
 ./gradlew shadowJar
 ```
 
-The resulting file will be located at `build/libs/MiniGames-0.1.0-beta-all.jar`.
+The resulting file will be located at `build/libs/MiniGamesV4-0.2.0-beta-all.jar`.
 
 ---
 
@@ -119,7 +126,9 @@ This plugin uses third-party libraries:
   Quelle: https://github.com/stefvanschie/IF
 
 ---
+
 ## 🤝 Contributors
+
 Thanks for testing the plugin and giving feedback! 🙌
 
 - [Alex_mhr](https://github.com/Alex1010222)
