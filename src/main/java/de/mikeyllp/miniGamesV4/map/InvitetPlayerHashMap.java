@@ -59,15 +59,21 @@ public class InvitetPlayerHashMap {
     public static void canInvitePlayer(Player inviter, Player invited, String game) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
 
-        //Check if the Player wants to get Invited
-        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
-            invited.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
-            return;
-        }
-
         //Check if the Player wants to Invite himself
         if (inviter.getName().equals(invited.getName())) {
             inviter.sendRichMessage(prefix + "<red>Du kannst dich nicht selbst einladen!</red>");
+            return;
+        }
+
+        //Check if the Player wants to get Invited
+        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
+            inviter.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
+            return;
+        }
+
+        //Check if the inviter is arlready in a Game
+        if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
+            inviter.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
             return;
         }
 
@@ -100,6 +106,13 @@ public class InvitetPlayerHashMap {
     //This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
     public static void canGameStart(Player inviter, Player invited) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
+
+        if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
+            invited.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
+            return;
+        }
+
+        //Checks if the player who send the invite is already in a game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsKey(invited.getPlayer())) {
             invited.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
             return;
@@ -170,7 +183,6 @@ public class InvitetPlayerHashMap {
                 }
             }
         }
-
     }
 
 

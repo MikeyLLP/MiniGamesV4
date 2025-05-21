@@ -119,6 +119,20 @@ This plugin uses third-party libraries:
   Quelle: https://github.com/stefvanschie/IF
 
 ---
+## 🤝 Contributors
+Thanks for testing the plugin and giving feedback! 🙌
+
+- [Alex_mhr](https://github.com/Alex1010222)
+- [Danilo888TV](https://github.com/Danilo888TV)
+- [HiorCraft](https://github.com/HiorCraft)
+- [KamiIIe]()
+- [Laluck98]()
+- [PEKK29]()
+- [RicTheCraft]()
+- [TheBjoRedCraft](https://github.com/TheBjoRedCraft)
+- [Timonso](https://github.com/Timonso-1)
+
+---
 
 ## 📬 Feedback & Contributing
 

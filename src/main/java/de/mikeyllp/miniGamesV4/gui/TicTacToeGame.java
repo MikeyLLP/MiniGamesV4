@@ -4,9 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.DispenserGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.gameInfo;
+import static de.mikeyllp.miniGamesV4.methods.GameUtil.checkGameResultForPlayers;
 
 
 public class TicTacToeGame implements Listener {
@@ -143,9 +142,9 @@ public class TicTacToeGame implements Listener {
         if (reason == InventoryCloseEvent.Reason.PLAYER) {
             if (gameInfo.containsKey(event.getPlayer())) {
                 GameState state = playerGameState.get(event.getPlayer());
-                if (state.gameWon) {
-                    return;
-                }
+
+                if (state == null || state.gameWon) return;
+
                 //Note: maybe I play a sound if one gives up
                 Player player = gameInfo.get(event.getPlayer());
                 player.sendRichMessage(prefix + "<color:#00E5E5><gold>" + event.getPlayer().getName() + "</gold> hat aufgegeben.</color:#00E5E5>");
@@ -214,24 +213,17 @@ public class TicTacToeGame implements Listener {
                     //Sends a message to the players indicating if they have won, lost, or if it is a draw
                     switch (finalWinnerCase) {
                         case 1:
-                            player1.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Gewonnen!</COLOR>");
-                            player2.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Verloren ):</COLOR>");
+                            checkGameResultForPlayers(player1, player2, 1, false, true);
                             gameInfo.remove(player1);
                             gameInfo.remove(player2);
                             break;
                         case 2:
-                            player1.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Verloren ):</COLOR>");
-                            player2.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Gewonnen!</COLOR>");
+                            checkGameResultForPlayers(player2, player1, 1, false, true);
                             gameInfo.remove(player1);
                             gameInfo.remove(player2);
                             break;
                         case 3:
-                            Location player1Pos = player1.getLocation();
-                            Location player2Pos = player2.getLocation();
-                            player1.playSound(player1Pos, Sound.BLOCK_ANVIL_LAND, 0.3F, 1.2F);
-                            player2.playSound(player2Pos, Sound.BLOCK_ANVIL_LAND, 0.3F, 1.2F);
-                            player1.sendRichMessage(prefix + "<COLOR:#00E5E5>Unentschieden!</COLOR>");
-                            player2.sendRichMessage(prefix + "<COLOR:#00E5E5>Unentschieden!</COLOR>");
+                            checkGameResultForPlayers(player1, player2, 2, true, true);
                             gameInfo.remove(player1);
                             gameInfo.remove(player2);
                             break;
@@ -243,10 +235,7 @@ public class TicTacToeGame implements Listener {
 
     //Marks the winning line and plays a sound for the players
     private static void markWinningLine(OutlinePane contents, DispenserGui gui, int[] slots, Player winner, Player loser) {
-        Location winnerPos = winner.getLocation();
-        Location loserPos = loser.getLocation();
-        winner.playSound(winnerPos, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-        loser.playSound(loserPos, Sound.ENTITY_VILLAGER_DEATH, 1.0F, 1.0F);
+        checkGameResultForPlayers(winner, loser, 1, true, false);
         ItemStack purplePane = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
         GuiItem highlight = new GuiItem(purplePane);
         //Highlights the winning line with purple glass panes
