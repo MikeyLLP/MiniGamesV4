@@ -13,6 +13,7 @@ public class OpenMiniGamesMenueCommand extends CommandAPICommand {
 
         //Here we add the SubCommands
         withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe"));
+        withSubcommand(new InvitesRPSGameCommand("RPS"));
         withSubcommand(new AcceptMiniGameCommand("accept"));
         withSubcommand(new DeclinedMiniGamesCommand("declined"));
         withSubcommand(new ToggleInvitesCommand("toggle"));

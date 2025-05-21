@@ -59,15 +59,21 @@ public class InvitetPlayerHashMap {
     public static void canInvitePlayer(Player inviter, Player invited, String game) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
 
-        //Check if the Player wants to get Invited
-        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
-            invited.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
-            return;
-        }
-
         //Check if the Player wants to Invite himself
         if (inviter.getName().equals(invited.getName())) {
             inviter.sendRichMessage(prefix + "<red>Du kannst dich nicht selbst einladen!</red>");
+            return;
+        }
+
+        //Check if the Player wants to get Invited
+        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
+            inviter.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
+            return;
+        }
+
+        //Check if the inviter is arlready in a Game
+        if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
+            inviter.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
             return;
         }
 
@@ -82,7 +88,7 @@ public class InvitetPlayerHashMap {
         //This is a message with a Command implemented it need to be made in this way beause RichMasse does not support click events
         MiniMessage mm = MiniMessage.miniMessage();
         Component askToPlayMessage = mm.deserialize(prefix +
-                "<color:#00E5E5>Möchtest du mit <gold>" + inviter.getName() + "</gold>" + game + " spielen?</color:#00E5E5> " +
+                "<color:#00E5E5>Möchtest du mit <gold>" + inviter.getName() + " </gold>" + game + " spielen?</color:#00E5E5> " +
                 "<green><bold><click:run_command:'/minigames accept " + inviter.getName() + "'>[Ja]</click></bold></green> " +
                 "<red><bold><click:run_command:'/minigames declined " + inviter.getName() + "'>[Nein]</click></bold></red>"
         );
@@ -98,8 +104,15 @@ public class InvitetPlayerHashMap {
 
 
     //This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
-    public static void canGameStart(Player inviter, Player invited, String game) {
+    public static void canGameStart(Player inviter, Player invited) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
+
+        if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
+            invited.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
+            return;
+        }
+
+        //Checks if the player who send the invite is already in a game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsKey(invited.getPlayer())) {
             invited.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
             return;
@@ -108,10 +121,12 @@ public class InvitetPlayerHashMap {
         PlayerKey key = new PlayerKey(String.valueOf(inviter.getPlayer()), String.valueOf(invited.getPlayer()));
         if (invitesManager.containsKey(key)) {
             //I use switch for up comming games
-            switch (game) {
+            switch (invitesManager.get(key)) {
                 case "TicTacToe":
                     TicTacToeGame.openTicTacToe(inviter, invited);
                     break;
+                case "RPS":
+                    RPSGame.startRPSGame(inviter, invited);
             }
 
             inviter.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>angenommen.</color:#00E5E5>");
@@ -168,7 +183,6 @@ public class InvitetPlayerHashMap {
                 }
             }
         }
-
     }
 
 

@@ -3,6 +3,7 @@ package de.mikeyllp.miniGamesV4;
 import de.mikeyllp.miniGamesV4.commands.OpenMiniGamesMenueCommand;
 import de.mikeyllp.miniGamesV4.gui.TicTacToeGame;
 import de.mikeyllp.miniGamesV4.map.ClickInviteHashMap;
+import de.mikeyllp.miniGamesV4.map.RPSGame;
 import de.mikeyllp.miniGamesV4.map.ToggleInvitesHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -45,6 +46,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new TicTacToeGame(), this);
         manager.registerEvents(new ClickInviteHashMap(), this);
         manager.registerEvents(new ToggleInvitesHashMap(), this);
+        manager.registerEvents(new RPSGame(), this);
 
         new OpenMiniGamesMenueCommand("minigames").register();
 
