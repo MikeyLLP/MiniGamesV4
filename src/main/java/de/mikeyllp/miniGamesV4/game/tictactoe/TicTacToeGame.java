@@ -140,25 +140,26 @@ public class TicTacToeGame implements Listener {
 
         //This check is very important it Checks if the player closes the GUI by himself or the plugin reloaded it
         if (reason == InventoryCloseEvent.Reason.PLAYER) {
-            if (gameInfo.containsKey(event.getPlayer())) {
-                GameState state = playerGameState.get(event.getPlayer());
+            Player eventPlayer = (Player) event.getPlayer();
+            if (gameInfo.containsKey(eventPlayer)) {
+                GameState state = playerGameState.get(eventPlayer);
 
                 if (state == null || state.gameWon) return;
 
                 //Note: maybe I play a sound if one gives up
-                Player player = gameInfo.get(event.getPlayer());
-                player.sendRichMessage(prefix + "<color:#00E5E5><gold>" + event.getPlayer().getName() + "</gold> hat aufgegeben.</color:#00E5E5>");
-                event.getPlayer().sendRichMessage(prefix + "<color:#00E5E5>Du hast aufgegeben.</color:#00E5E5>");
+                Player player = gameInfo.get(eventPlayer);
+                player.sendRichMessage(prefix + "<color:#00E5E5><gold>" + eventPlayer.getName() + "</gold> hat aufgegeben.</color:#00E5E5>");
+                eventPlayer.sendRichMessage(prefix + "<color:#00E5E5>Du hast aufgegeben.</color:#00E5E5>");
 
                 //deletes all the players from the game
-                gameInfo.remove(event.getPlayer());
+                gameInfo.remove(eventPlayer);
                 gameInfo.remove(player);
 
-                playerGameState.remove(event.getPlayer());
+                playerGameState.remove(eventPlayer);
                 playerGameState.remove(player);
                 //Closes the inventory of the both player
                 player.closeInventory();
-                event.getPlayer().closeInventory();
+                eventPlayer.closeInventory();
 
             }
         }
