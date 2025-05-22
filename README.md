@@ -18,13 +18,14 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 ## 📜 Commands
 
-| Command                       | Description                       |
-|-------------------------------|-----------------------------------|
-| `/minigames`                  | Opens the main menu.              |
-| `/minigames <game> <player>`  | Sends a game request to a player. |
-| `/minigames accept <player>`  | Accepts a game request.           |
-| `/minigames decline <player>` | Declines a game request.          |
-| `/minigames help`             | Shows all available commands.     |
+| Command                           | Description                          |
+|-----------------------------------|--------------------------------------|
+| `/minigames`                      | Opens the main menu.                 |
+| `/minigames <game> <player>`      | Sends a game request to a player.    |
+| `/minigames <ClickInvite> <game>` | Enable the invites via player click. |
+| `/minigames accept <player>`      | Accepts a game request.              |
+| `/minigames decline <player>`     | Declines a game request.             |
+| `/minigames help`                 | Shows all available commands.        |
 
 ---
 
@@ -44,15 +45,15 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | Game                | Description                                                                        |
 |---------------------|------------------------------------------------------------------------------------|
 | TicTacToe           | Play in a clean, intuitive GUI with a built-in randomizer to decide who starts.    |
-| Rock Paper Scissors | Play against a friend – just type your move. The game listens. No commands needed. |
+| Rock Paper Scissors | Play against a friend - just type your move. The game listens. No commands needed. |
 
 ## 🧩 Dependencies
 
 This plugin uses the following APIs:
 
-- [Inventory Framework](https://github.com/stefvanschie/IF) – tested with **v0.10.19**
-- [CommandAPI](https://github.com/CommandAPI/CommandAPI) – tested with **v10.0.0**
-- [PaperMC](https://papermc.io/) – tested with **Paper 1.21.4**
+- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.10.19**
+- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.0**
+- [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
 - Java **21+** required.
 
 ---
@@ -83,7 +84,7 @@ This method avoids YAML files in the repo and ensures type-safe, automatic gener
 
 ## ⚠️ Development Status Notes
 
-> This version (`v0.2.0-beta`) is an **Beta release**.  
+> This version (`v0.2.1-beta`) is an **Beta release**.  
 > Features are unstable and will likely change before the final release.
 
 ---
@@ -102,7 +103,7 @@ Build the plugin as a Shadow FatJar with:
 ./gradlew shadowJar
 ```
 
-The resulting file will be located at `build/libs/MiniGamesV4-0.2.0-beta-all.jar`.
+The resulting file will be located at `build/libs/MiniGamesV4-0.2.1-beta-all.jar`.
 
 ---
 
@@ -150,7 +151,7 @@ Feature requests or bugs? Feel free to create an issue or open a pull request.
 
 ---
 
-© 2025 MikeyLLP – All rights reserved.
+© 2025 MikeyLLP - All rights reserved.
 
 ---
 

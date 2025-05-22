@@ -1,20 +1,21 @@
-package de.mikeyllp.miniGamesV4.methods;
+package de.mikeyllp.miniGamesV4.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
-public class GameUtil {
+
+public class GameUtils {
     public static void checkGameResultForPlayers(Player winner, Player loser, int winnerCase, boolean playSound, boolean sendMessage) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         //Sends a message to the players indicating if they have won, lost, or if it is a draw
         switch (winnerCase) {
             case 1:
                 //send a message to the players when it's enabled
                 if (sendMessage) {
-                    winner.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Gewonnen!</COLOR>");
-                    loser.sendRichMessage(prefix + "<COLOR:#00E5E5>Du hast Verloren :(</COLOR>");
+                    sendCustomMessage(winner, "<COLOR:#00E5E5>Du hast Gewonnen!</COLOR>");
+                    sendCustomMessage(loser, "<COLOR:#00E5E5>Du hast Verloren :(</COLOR>");
                 }
                 //Play a sound only if it's enabled.
                 if (playSound) {
@@ -27,8 +28,8 @@ public class GameUtil {
             case 2:
                 //send a message to the players when it's enabled
                 if (sendMessage) {
-                    winner.sendRichMessage(prefix + "<COLOR:#00E5E5>Unentschieden!</COLOR>");
-                    loser.sendRichMessage(prefix + "<COLOR:#00E5E5>Unentschieden!</COLOR>");
+                    sendCustomMessage(winner, "<COLOR:#00E5E5>Unentschieden!</COLOR>");
+                    sendCustomMessage(loser, "<COLOR:#00E5E5>Unentschieden!</COLOR>");
                 }
                 //Play a sound only if it's enabled.
                 if (playSound) {

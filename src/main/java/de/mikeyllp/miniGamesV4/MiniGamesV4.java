@@ -1,15 +1,14 @@
 package de.mikeyllp.miniGamesV4;
 
-import de.mikeyllp.miniGamesV4.commands.OpenMiniGamesMenueCommand;
-import de.mikeyllp.miniGamesV4.gui.TicTacToeGame;
-import de.mikeyllp.miniGamesV4.map.ClickInviteHashMap;
-import de.mikeyllp.miniGamesV4.map.RPSGame;
-import de.mikeyllp.miniGamesV4.map.ToggleInvitesHashMap;
+import de.mikeyllp.miniGamesV4.commands.MainCommand;
+import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
+import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 
 public final class MiniGamesV4 extends JavaPlugin {
@@ -42,13 +41,13 @@ public final class MiniGamesV4 extends JavaPlugin {
         PluginManager manager = getServer().getPluginManager();
 
         //Register the Listener
-        manager.registerEvents(new ClickInviteHashMap(), this);
+        manager.registerEvents(new ClickInviteStorage(), this);
         manager.registerEvents(new TicTacToeGame(), this);
-        manager.registerEvents(new ClickInviteHashMap(), this);
-        manager.registerEvents(new ToggleInvitesHashMap(), this);
+        manager.registerEvents(new ClickInviteStorage(), this);
+        manager.registerEvents(new ToggleInvitesStorage(), this);
         manager.registerEvents(new RPSGame(), this);
 
-        new OpenMiniGamesMenueCommand("minigames").register();
+        new MainCommand("minigames").register();
 
     }
 

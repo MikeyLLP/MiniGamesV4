@@ -1,7 +1,8 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import de.mikeyllp.miniGamesV4.gui.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -11,12 +12,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-public class InvitetPlayerHashMap {
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+
+public class InvitePlayerStorage {
 
 
     //Handelt all Invites
@@ -47,8 +50,8 @@ public class InvitetPlayerHashMap {
             @Override
             public void run() {
                 removeInvite(inviter, invited);
-                inviter.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung von dir an<gold> " + invited.getName() + " </gold>ist abgelaufen.</color:#00E5E5>");
-                invited.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung von<gold> " + inviter.getName() + " </gold>an dich ist abgelaufen.</color:#00E5E5>");
+                sendCustomMessage(inviter, "<color:#00E5E5>Die Einladung von dir an<gold> " + invited.getName() + " </gold>ist abgelaufen.</color:#00E5E5>");
+                sendCustomMessage(invited, "<color:#00E5E5>Die Einladung von<gold> " + inviter.getName() + " </gold>an dich ist abgelaufen.</color:#00E5E5>");
                 invitesTasks.remove(key);
             }
         }.runTaskLater(MiniGamesV4.getInstance(), 1200L));
@@ -57,37 +60,36 @@ public class InvitetPlayerHashMap {
 
     //A method witch checks if the inviter can invite the invited player to play a game
     public static void canInvitePlayer(Player inviter, Player invited, String game) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
 
         //Check if the Player wants to Invite himself
         if (inviter.getName().equals(invited.getName())) {
-            inviter.sendRichMessage(prefix + "<red>Du kannst dich nicht selbst einladen!</red>");
+            sendCustomMessage(inviter, "<red>Du kannst dich nicht selbst einladen!</red>");
             return;
         }
 
         //Check if the Player wants to get Invited
-        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
-            inviter.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
+        if (ToggleInvitesStorage.isToggle.containsKey(invited)) {
+            sendCustomMessage(inviter, "<red>Der Spieler hat Einladungen deaktiviert.</red>");
             return;
         }
 
         //Check if the inviter is arlready in a Game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
-            inviter.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
+            sendCustomMessage(inviter, "<red>Du bist bereits in einem Spiel.</red>");
             return;
         }
 
         //Check if the Player is already in a Game
         if (gameInfo.containsKey(invited.getPlayer()) || gameInfo.containsValue(invited.getPlayer())) {
-            inviter.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
+            sendCustomMessage(inviter, "<red>Der Spieler befindet sich gerade in einem Spiel.</red>");
             return;
         }
 
-        inviter.sendRichMessage(prefix + "<color:#00E5E5>Du hast<gold> " + invited.getName() + "</gold> eingeladen.</color:#00E5E5>");
+        sendCustomMessage(inviter, "<color:#00E5E5>Du hast<gold> " + invited.getName() + "</gold> eingeladen.</color:#00E5E5>");
 
         //This is a message with a Command implemented it need to be made in this way beause RichMasse does not support click events
         MiniMessage mm = MiniMessage.miniMessage();
-        Component askToPlayMessage = mm.deserialize(prefix +
+        Component askToPlayMessage = mm.deserialize(prefix() +
                 "<color:#00E5E5>Möchtest du mit <gold>" + inviter.getName() + " </gold>" + game + " spielen?</color:#00E5E5> " +
                 "<green><bold><click:run_command:'/minigames accept " + inviter.getName() + "'>[Ja]</click></bold></green> " +
                 "<red><bold><click:run_command:'/minigames declined " + inviter.getName() + "'>[Nein]</click></bold></red>"
@@ -105,16 +107,15 @@ public class InvitetPlayerHashMap {
 
     //This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
     public static void canGameStart(Player inviter, Player invited) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
 
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
-            invited.sendRichMessage(prefix + "<RED>Du bist bereits in einem Spiel.</RED>");
+            sendCustomMessage(invited, "<red>Du bist bereits in einem Spiel.</red>");
             return;
         }
 
         //Checks if the player who send the invite is already in a game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsKey(invited.getPlayer())) {
-            invited.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
+            sendCustomMessage(invited, "<red>Der Spieler befindet sich gerade in einem Spiel.</red>");
             return;
         }
         //Create a player key
@@ -129,7 +130,7 @@ public class InvitetPlayerHashMap {
                     RPSGame.startRPSGame(inviter, invited);
             }
 
-            inviter.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>angenommen.</color:#00E5E5>");
+            sendCustomMessage(inviter, "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>angenommen!</color:#00E5E5>");
 
             Location inviterPos = inviter.getLocation();
             Location invitedPos = invited.getLocation();
@@ -140,14 +141,13 @@ public class InvitetPlayerHashMap {
             removeAllInvites(inviter.getPlayer(), invited.getPlayer());
             return;
         }
-        invited.sendRichMessage(prefix + "<RED>Du hast keine Einladung mehr.</RED>");
+        sendCustomMessage(invited, "<red>Du hast keine Einladung mehr.</red>");
     }
 
 
     //This method removes the invite from the HashMap and cancels the task
     public static void removeInvite(Player inviter, Player invited) {
         PlayerKey key = new PlayerKey(String.valueOf(inviter.getPlayer()), String.valueOf(invited.getPlayer()));
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         if (invitesManager.containsKey(key)) {
             invitesManager.remove(key);
             BukkitTask task = invitesTasks.get(key);
@@ -156,10 +156,10 @@ public class InvitetPlayerHashMap {
                 task.cancel();
                 invitesTasks.remove(key);
             }
-            inviter.sendRichMessage(prefix + "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>abgelehnt.</color:#00E5E5>");
-        } else {
-            invited.sendRichMessage(prefix + "<RED>Du hast keine Einladung mehr.</RED>");
+            sendCustomMessage(inviter, "<color:#00E5E5>Die Einladung wurde von<gold> " + invited.getName() + " </gold>abgelehnt.</color:#00E5E5>");
+            return;
         }
+        sendCustomMessage(invited, "<red>Du hast keine Einladung mehr.</red>");
     }
 
 

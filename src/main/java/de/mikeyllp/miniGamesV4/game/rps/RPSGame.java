@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.game.rps;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -14,8 +14,10 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.gameInfo;
-import static de.mikeyllp.miniGamesV4.methods.GameUtil.checkGameResultForPlayers;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
+import static de.mikeyllp.miniGamesV4.utils.GameUtils.checkGameResultForPlayers;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class RPSGame implements Listener {
     //This map is used to check if a player is playing this game, in order to activate the ChatListener.
@@ -79,14 +81,12 @@ public class RPSGame implements Listener {
 
         if (state == null) return;
 
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR><color:#00E5E5>";
-
         //get the message from the event and convert it to lower case so that the player can write it in any case
         String msg = PlainTextComponentSerializer.plainText().serialize(event.message()).trim().toLowerCase();
 
 
         MiniMessage mm = MiniMessage.miniMessage();
-        Component failMsg = mm.deserialize(prefix + "<red>Bitte wähle <bold><gray><insert:Schere><hover:show_text:'Shift + Klick zum Auswählen'>[Schere]</hover></insert></gray></bold>," +
+        Component failMsg = mm.deserialize(prefix() + "<red>Bitte wähle <bold><gray><insert:Schere><hover:show_text:'Shift + Klick zum Auswählen'>[Schere]</hover></insert></gray></bold>," +
                 " <bold><dark_gray><insert:Stein><hover:show_text:'Shift + Klick zum Auswählen'>[Stein]</hover></insert></dark_gray></bold>," +
                 " <white><bold><insert:Papier><hover:show_text:'Shift + Klick zum Auswählen'>[Papier]</hover></insert></bold></white>" +
                 " oder <bold><insert:cancel><hover:show_text:'Shift + Klick zum Auswählen'>gib auf</hover></insert></bold>.</red>");
@@ -100,7 +100,7 @@ public class RPSGame implements Listener {
             //checks if the player made already his move
             if (!(msg.equals("cancel"))) {
                 if (!(state.fightItemInviter.isEmpty())) {
-                    inviter.sendRichMessage(prefix + "<red>Du hast bereits deine Wahl getroffen!</red>");
+                    sendCustomMessage(inviter, "<red>Du hast bereits deine Wahl getroffen!</red>");
                     return;
                 }
             }
@@ -119,9 +119,8 @@ public class RPSGame implements Listener {
                     state.waitingForPlayer++;
                     break;
                 case "cancel":
-                    inviter.sendRichMessage(prefix + "<red>Du hast das Spiel abgebrochen!</red>");
-                    invited.sendRichMessage(prefix + "<gold>" + inviter.getName() + "</gold><red> hat das Spiel aufgegeben!</red>");
-
+                    sendCustomMessage(inviter, "<red>Du hast das Spiel abgebrochen!</red>");
+                    sendCustomMessage(invited, "<gold>" + inviter.getName() + "</gold><red> hat das Spiel aufgegeben!</red>");
                     //removes the inviter and invited from the maps
                     removePlayersFromList(inviter, invited);
                     return;
@@ -134,7 +133,7 @@ public class RPSGame implements Listener {
                 checkWin(inviter, invited, state);
                 return;
             }
-            inviter.sendRichMessage(prefix + "Warten auf anderen Spieler...</color>");
+            sendCustomMessage(inviter, "Warten auf anderen Spieler...</color>");
         }
 
         if (inGameStatus.containsValue(event.getPlayer())) {
@@ -146,7 +145,7 @@ public class RPSGame implements Listener {
             //checks if the player made already his move
             if (!(msg.equals("cancel"))) {
                 if (!(state.fightItemInvited.isEmpty())) {
-                    invited.sendRichMessage(prefix + "<red>Du hast bereits deine Wahl getroffen!</red>");
+                    sendCustomMessage(invited, "<red>Du hast bereits deine Wahl getroffen!</red>");
                     return;
                 }
             }
@@ -166,8 +165,8 @@ public class RPSGame implements Listener {
                     state.waitingForPlayer++;
                     break;
                 case "cancel":
-                    invited.sendRichMessage(prefix + "<red>Du hast das Spiel abgebrochen!</red>");
-                    inviter.sendRichMessage(prefix + "<gold>" + invited.getName() + " </gold><red>hat das Spiel aufgegeben!</red>");
+                    sendCustomMessage(invited, "<red>Du hast das Spiel abgebrochen!</red>");
+                    sendCustomMessage(inviter, "<gold>" + invited.getName() + "</gold><red> hat das Spiel aufgegeben!</red>");
 
                     //removes the inviter and invited from the maps
                     removePlayersFromList(inviter, invited);
@@ -182,7 +181,7 @@ public class RPSGame implements Listener {
                 checkWin(inviter, invited, state);
                 return;
             }
-            invited.sendRichMessage(prefix + "Warten auf anderen Spieler...</color>");
+            sendCustomMessage(invited, "Warten auf anderen Spieler...</color>");
         }
     }
 
@@ -261,9 +260,7 @@ public class RPSGame implements Listener {
 
 
         Player player = event.getPlayer();
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-        inGameStatus.get(player).sendRichMessage(prefix + "<red>" + player.getName() + " hat das Spiel verlassen!</red>");
-
+        sendCustomMessage(inGameStatus.get(player), "<red>" + player.getName() + " hat das Spiel verlassen!</red>");
         removePlayersFromList(player, inGameStatus.get(player));
     }
 
