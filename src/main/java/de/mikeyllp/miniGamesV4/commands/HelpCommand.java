@@ -1,16 +1,18 @@
 package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
+import org.bukkit.entity.Player;
+
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class HelpCommand extends CommandAPICommand {
     public HelpCommand(String commandName) {
         super(commandName);
-        // Only a executor for the console
+        // Only an executor for the console
         executes(((sender, args) -> {
             //Checks if the player has permission to use this command
             if (!sender.hasPermission("minigamesv4.minigames")) {
-                String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-                sender.sendRichMessage(prefix + "<red>Du hast keine Berechtigung, um diesen Command zu nutzen.</red>");
+                sendNoPermissionMessage((Player) sender);
                 return;
             }
             //default commands
@@ -28,11 +30,12 @@ public class HelpCommand extends CommandAPICommand {
             sender.sendMessage("");
             sender.sendRichMessage("TicTacToe");
             sender.sendRichMessage("Schere, Stein, Papier");
+
             // Here are the Admin Commands
             sender.sendMessage("");
             if (sender.isOp() || sender.hasPermission("MiniGamesV4.admin")) {
                 sender.sendRichMessage("<color:#00FFD5>Admin Befehle:");
-                sender.sendRichMessage("\u2728 Comming Soon \u2728");
+                sender.sendRichMessage("\u2728 Coming Soon \u2728");
             }
             sender.sendRichMessage("<gold>====================================</gold>");
 

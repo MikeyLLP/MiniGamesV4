@@ -9,20 +9,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+
 public class ToggleInvitesStorage implements Listener {
 
     public static final Map<Player, String> isToggle = new HashMap<>();
 
     //Adds or removes the player from the toggle list
     public static void addToggle(Player player) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         if (isToggle.containsKey(player)) {
-            player.sendRichMessage(prefix + "<color:#00E5E5>Du kannst jetzt wieder eingeladen werden!</color:#00E5E5>");
+            sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt wieder eingeladen werden!</color:#00E5E5>");
             isToggle.remove(player);
-        } else {
-            player.sendRichMessage(prefix + "<color:#00E5E5>Du kannst jetzt nicht mehr eingeladen werden!</color:#00E5E5>");
-            isToggle.put(player, "placeHolder");
+            return;
         }
+        sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt nicht mehr eingeladen werden!</color:#00E5E5>");
+        isToggle.put(player, "placeHolder");
+
     }
 
     //Checks if the player is in the toggle list and removes the Player if he Quits

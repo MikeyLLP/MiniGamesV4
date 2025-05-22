@@ -5,17 +5,14 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.time.Duration;
-
-import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.addEnableListener;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
+import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 
 public class MenuMain {
@@ -50,37 +47,28 @@ public class MenuMain {
 
         //Adds the items to the GUI
         navigatorPane.addItem(new GuiItem(tttItem, event -> {
-            String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-            if (enableListener.containsKey(player)) {
-                player.sendRichMessage(prefix + "<red>Du musst erst ein Spieler aussuchen!</red>");
-                return;
-            }
-            MiniMessage mm = MiniMessage.miniMessage();
-            Component miniGameComponent = mm.deserialize("<gradient:#00FF00:#007F00>MiniGames</gradient>");
-            player.closeInventory();
-            player.showTitle(Title.title(miniGameComponent,
-                    Component.text("§6Klicke einen Spieler an, um mit ihm zu spielen"), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
-            addEnableListener(player, "TicTacToe");
+            if (!checkPlayer(player)) return;
+            enableClickInvite(player, "TicTacToe");
 
         }));
 
         navigatorPane.addItem(new GuiItem(rpsItem, event -> {
-            String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-            if (enableListener.containsKey(player)) {
-                player.sendRichMessage(prefix + "<red>Du musst erst ein Spieler aussuchen!</red>");
-                return;
-            }
-            MiniMessage mm = MiniMessage.miniMessage();
-            Component miniGameComponent = mm.deserialize("<gradient:#00FF00:#007F00>MiniGames</gradient>");
-            player.closeInventory();
-            player.showTitle(Title.title(miniGameComponent,
-                    Component.text("§6Klicke einen Spieler an, um mit ihm zu spielen"), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
-            addEnableListener(player, "RPS");
+            if (!checkPlayer(player)) return;
+            enableClickInvite(player, "RPS");
         }));
 
         gui.addPane(navigatorPane);
 
-        //Shows the GUI to the player
+        // Shows the GUI to the player
         gui.show(player);
+    }
+
+    // This method checks if the player is in the enableListener map and sends a message if he is
+    private static boolean checkPlayer(Player player) {
+        if (enableListener.containsKey(player)) {
+            sendCustomMessage(player, "<red>Du musst erst ein Spieler aussuchen!</red>");
+            return false;
+        }
+        return true;
     }
 }

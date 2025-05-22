@@ -1,15 +1,14 @@
 package de.mikeyllp.miniGamesV4;
 
-import de.mikeyllp.miniGamesV4.commands.OpenMenuCommand;
+import de.mikeyllp.miniGamesV4.commands.MainCommand;
+import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
-import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 
 public final class MiniGamesV4 extends JavaPlugin {
@@ -48,7 +47,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new ToggleInvitesStorage(), this);
         manager.registerEvents(new RPSGame(), this);
 
-        new OpenMenuCommand("minigames").register();
+        new MainCommand("minigames").register();
 
     }
 

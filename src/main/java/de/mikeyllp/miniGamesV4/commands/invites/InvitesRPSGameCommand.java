@@ -9,12 +9,15 @@ import org.bukkit.entity.Player;
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoOnlinePlayerMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
+
 
 public class InvitesRPSGameCommand extends CommandAPICommand {
     public InvitesRPSGameCommand(String commandName) {
         super(commandName);
 
-        //This is a list that adds online players to the TabCompleter and you can´t use @
+        // This creates a list of online players for tab completion. The "@" symbol is not allowed.
         withArguments(
                 new StringArgument("player")
                         .replaceSuggestions(ArgumentSuggestions.stringCollection(info ->
@@ -23,17 +26,19 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
                                         .collect(Collectors.toList())
                         ))
         );
-        //Send the Player a invite to play Rock Paper Scissors
+        // Sends an invite to the player to play Rock Paper Scissors.
         executesPlayer((sender, args) -> {
             Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
-            String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-            if (targetPlayer == null) {
-                sender.sendRichMessage(prefix + "<red>Der Spieler ist nicht online.</red>");
+
+            // Checks if the player has permission to use this command.
+            if (!sender.hasPermission("minigamesv4.minigames")) {
+                sendNoPermissionMessage(sender);
                 return;
             }
-            //Checks if the player has permission to use this command
-            if (!sender.hasPermission("minigamesv4.minigames")) {
-                sender.sendRichMessage(prefix + "<red>Du hast keine Berechtigung, um diesen Command zu nutzen.</red>");
+
+            // Checks if the target player is online.
+            if (targetPlayer == null) {
+                sendNoOnlinePlayerMessage(sender);
                 return;
             }
 
