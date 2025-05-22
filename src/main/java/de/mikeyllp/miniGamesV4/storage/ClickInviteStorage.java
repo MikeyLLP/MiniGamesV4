@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClickInviteHashMap implements Listener {
+public class ClickInviteStorage implements Listener {
 
     public static final Map<Player, BukkitTask> enableListener = new HashMap<>();
     private static final Map<Player, String> whatGame = new HashMap<>();

@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.commands.subCommands;
+package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 

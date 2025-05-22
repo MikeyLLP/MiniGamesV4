@@ -1,8 +1,8 @@
-package de.mikeyllp.miniGamesV4.commands.subCommands;
+package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 
-import static de.mikeyllp.miniGamesV4.map.ToggleInvitesHashMap.addToggle;
+import static de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage.addToggle;
 
 public class ToggleInvitesCommand extends CommandAPICommand {
     public ToggleInvitesCommand(String commandName) {

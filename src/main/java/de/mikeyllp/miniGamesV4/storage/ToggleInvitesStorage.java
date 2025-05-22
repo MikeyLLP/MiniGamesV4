@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.storage;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ToggleInvitesHashMap implements Listener {
+public class ToggleInvitesStorage implements Listener {
 
     public static final Map<Player, String> isToggle = new HashMap<>();
 

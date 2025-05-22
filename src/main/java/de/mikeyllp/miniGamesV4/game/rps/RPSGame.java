@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.game.rps;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -14,8 +14,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.gameInfo;
-import static de.mikeyllp.miniGamesV4.methods.GameUtil.checkGameResultForPlayers;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
+import static de.mikeyllp.miniGamesV4.utils.GameUtils.checkGameResultForPlayers;
 
 public class RPSGame implements Listener {
     //This map is used to check if a player is playing this game, in order to activate the ChatListener.

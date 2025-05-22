@@ -1,11 +1,11 @@
-package de.mikeyllp.miniGamesV4.methods;
+package de.mikeyllp.miniGamesV4.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 
-public class GameUtil {
+public class GameUtils {
     public static void checkGameResultForPlayers(Player winner, Player loser, int winnerCase, boolean playSound, boolean sendMessage) {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         //Sends a message to the players indicating if they have won, lost, or if it is a draw

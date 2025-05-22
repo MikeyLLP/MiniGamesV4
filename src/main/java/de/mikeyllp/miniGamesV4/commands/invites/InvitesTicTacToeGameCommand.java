@@ -1,19 +1,18 @@
-package de.mikeyllp.miniGamesV4.commands.subCommands;
+package de.mikeyllp.miniGamesV4.commands.invites;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.StringArgument;
+import dev.jorel.commandapi.arguments.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
 
-import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.*;
 
-public class InvitesRPSGameCommand extends CommandAPICommand {
-    public InvitesRPSGameCommand(String commandName) {
+
+public class InvitesTicTacToeGameCommand extends CommandAPICommand {
+    public InvitesTicTacToeGameCommand(String commandName) {
         super(commandName);
-
         //This is a list that adds online players to the TabCompleter and you can´t use @
         withArguments(
                 new StringArgument("player")
@@ -23,7 +22,7 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
                                         .collect(Collectors.toList())
                         ))
         );
-        //Send the Player a invite to play Rock Paper Scissors
+        //Send the Player a invite to play TicTacToe
         executesPlayer((sender, args) -> {
             Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
             String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
@@ -38,8 +37,9 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
             }
 
 
-            canInvitePlayer(sender, targetPlayer, "RPS");
+            canInvitePlayer(sender, targetPlayer, "TicTacToe");
 
         });
+
     }
 }

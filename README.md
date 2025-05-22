@@ -83,7 +83,7 @@ This method avoids YAML files in the repo and ensures type-safe, automatic gener
 
 ## ⚠️ Development Status Notes
 
-> This version (`v0.2.0-beta`) is an **Beta release**.  
+> This version (`v0.2.1-beta`) is an **Beta release**.  
 > Features are unstable and will likely change before the final release.
 
 ---
@@ -102,7 +102,7 @@ Build the plugin as a Shadow FatJar with:
 ./gradlew shadowJar
 ```
 
-The resulting file will be located at `build/libs/MiniGamesV4-0.2.0-beta-all.jar`.
+The resulting file will be located at `build/libs/MiniGamesV4-0.2.1-beta-all.jar`.
 
 ---
 

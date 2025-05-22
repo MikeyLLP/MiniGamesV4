@@ -1,19 +1,19 @@
-package de.mikeyllp.miniGamesV4.commands.subCommands;
+package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.*;
+
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
 
-import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.canGameStart;
-
-
-public class AcceptMiniGameCommand extends CommandAPICommand {
-    public AcceptMiniGameCommand(String commandName) {
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.removeInvite;
+//adds all online players to the tab completer
+public class DeclinedCommand extends CommandAPICommand {
+    public DeclinedCommand(String commandName) {
         super(commandName);
-
         //This is a list that adds online players to the TabCompleter and you can´t use @
         withArguments(
                 new StringArgument("player")
@@ -36,9 +36,8 @@ public class AcceptMiniGameCommand extends CommandAPICommand {
                 return;
             }
 
-            //Checks if the player can play
-            canGameStart(inviter, invited);
-
+            //Remove this player from the invite list
+            removeInvite(inviter, invited);
         });
     }
 }

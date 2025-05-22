@@ -1,7 +1,8 @@
-package de.mikeyllp.miniGamesV4.map;
+package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import de.mikeyllp.miniGamesV4.gui.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -16,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-public class InvitetPlayerHashMap {
+public class InvitePlayerStorage {
 
 
     //Handelt all Invites
@@ -66,7 +67,7 @@ public class InvitetPlayerHashMap {
         }
 
         //Check if the Player wants to get Invited
-        if (ToggleInvitesHashMap.isToggle.containsKey(invited)) {
+        if (ToggleInvitesStorage.isToggle.containsKey(invited)) {
             inviter.sendRichMessage(prefix + "<red>Der Spieler hat Einladungen deaktiviert.</red>");
             return;
         }

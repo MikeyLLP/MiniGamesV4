@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.commands.subCommands;
+package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.*;
@@ -7,12 +7,13 @@ import org.bukkit.entity.Player;
 
 import java.util.stream.Collectors;
 
-import static de.mikeyllp.miniGamesV4.map.InvitetPlayerHashMap.*;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canGameStart;
 
 
-public class InvitesTicTacToeGameCommand extends CommandAPICommand {
-    public InvitesTicTacToeGameCommand(String commandName) {
+public class AcceptCommand extends CommandAPICommand {
+    public AcceptCommand(String commandName) {
         super(commandName);
+
         //This is a list that adds online players to the TabCompleter and you can´t use @
         withArguments(
                 new StringArgument("player")
@@ -22,24 +23,22 @@ public class InvitesTicTacToeGameCommand extends CommandAPICommand {
                                         .collect(Collectors.toList())
                         ))
         );
-        //Send the Player a invite to play TicTacToe
-        executesPlayer((sender, args) -> {
-            Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
+        executesPlayer((invited, args) -> {
+            Player inviter = Bukkit.getPlayerExact(args.get(0).toString());
             String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
-            if (targetPlayer == null) {
-                sender.sendRichMessage(prefix + "<red>Der Spieler ist nicht online.</red>");
+            if (inviter == null) {
+                invited.sendRichMessage(prefix + "<red>Der Spieler ist nicht online.</red>");
                 return;
             }
             //Checks if the player has permission to use this command
-            if (!sender.hasPermission("minigamesv4.minigames")) {
-                sender.sendRichMessage(prefix + "<red>Du hast keine Berechtigung, um diesen Command zu nutzen.</red>");
+            if (!invited.hasPermission("minigamesv4.minigames")) {
+                invited.sendRichMessage(prefix + "<red>Du hast keine Berechtigung, um diesen Command zu nutzen.</red>");
                 return;
             }
 
-
-            canInvitePlayer(sender, targetPlayer, "TicTacToe");
+            //Checks if the player can play
+            canGameStart(inviter, invited);
 
         });
-
     }
 }
