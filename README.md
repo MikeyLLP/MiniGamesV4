@@ -44,15 +44,15 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | Game                | Description                                                                        |
 |---------------------|------------------------------------------------------------------------------------|
 | TicTacToe           | Play in a clean, intuitive GUI with a built-in randomizer to decide who starts.    |
-| Rock Paper Scissors | Play against a friend – just type your move. The game listens. No commands needed. |
+| Rock Paper Scissors | Play against a friend - just type your move. The game listens. No commands needed. |
 
 ## 🧩 Dependencies
 
 This plugin uses the following APIs:
 
-- [Inventory Framework](https://github.com/stefvanschie/IF) – tested with **v0.10.19**
-- [CommandAPI](https://github.com/CommandAPI/CommandAPI) – tested with **v10.0.0**
-- [PaperMC](https://papermc.io/) – tested with **Paper 1.21.4**
+- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.10.19**
+- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.0**
+- [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
 - Java **21+** required.
 
 ---
@@ -150,7 +150,7 @@ Feature requests or bugs? Feel free to create an issue or open a pull request.
 
 ---
 
-© 2025 MikeyLLP – All rights reserved.
+© 2025 MikeyLLP - All rights reserved.
 
 ---
 
