@@ -74,11 +74,10 @@ public class ClickInviteStorage implements Listener {
             Player inviter = event.getPlayer();
             String msg = PlainTextComponentSerializer.plainText().serialize(event.message()).trim().toLowerCase();
             if (msg.equals("cancel")) {
-                event.setCancelled(true);
                 MiniMessage mm = MiniMessage.miniMessage();
                 Component miniGameComponent = mm.deserialize("<gold>Click Invite<gold> <red>Disabled</red>");
                 Component message = mm.deserialize("");
-                inviter.closeInventory();
+                event.setCancelled(true);
                 inviter.showTitle(Title.title(miniGameComponent,
                         message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
                 removePlayer(inviter);

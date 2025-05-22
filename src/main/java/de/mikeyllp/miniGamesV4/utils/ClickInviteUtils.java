@@ -4,10 +4,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
 
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.*;
+
 
 public class ClickInviteUtils {
 
@@ -30,7 +32,11 @@ public class ClickInviteUtils {
 
     // Removes the Player from the enable Listener Map
     public static void removePlayer(Player inviter) {
-        enableListener.remove(inviter);
+        BukkitTask task = enableListener.get(inviter);
+        if (task != null) {
+            task.cancel();
+            enableListener.remove(inviter);
+        }
         whatGame.remove(inviter);
     }
 }

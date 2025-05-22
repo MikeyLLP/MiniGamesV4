@@ -18,7 +18,7 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
         super(commandName);
 
         // This creates a list of online players for tab completion. The "@" symbol is not allowed.
-        withArguments(
+        withOptionalArguments(
                 new StringArgument("player")
                         .replaceSuggestions(ArgumentSuggestions.stringCollection(info ->
                                 Bukkit.getOnlinePlayers().stream()
