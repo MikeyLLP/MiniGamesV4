@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoOnlinePlayerMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
@@ -28,13 +29,20 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
         );
         // Sends an invite to the player to play Rock Paper Scissors.
         executesPlayer((sender, args) -> {
-            Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
+
 
             // Checks if the player has permission to use this command.
             if (!sender.hasPermission("minigamesv4.minigames")) {
                 sendNoPermissionMessage(sender);
                 return;
             }
+            
+            if (args.count() == 0) {
+                enableClickInvite(sender, "RPS");
+                return;
+            }
+
+            Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
 
             // Checks if the target player is online.
             if (targetPlayer == null) {
