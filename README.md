@@ -18,14 +18,13 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 ## 📜 Commands
 
-| Command                           | Description                          |
-|-----------------------------------|--------------------------------------|
-| `/minigames`                      | Opens the main menu.                 |
-| `/minigames <game> <player>`      | Sends a game request to a player.    |
-| `/minigames <ClickInvite> <game>` | Enable the invites via player click. |
-| `/minigames accept <player>`      | Accepts a game request.              |
-| `/minigames decline <player>`     | Declines a game request.             |
-| `/minigames help`                 | Shows all available commands.        |
+| Command                       | Description                       |
+|-------------------------------|-----------------------------------|
+| `/minigames`                  | Opens the main menu.              |
+| `/minigames <game> [player]`  | Sends a game request to a player. |
+| `/minigames accept <player>`  | Accepts a game request.           |
+| `/minigames decline <player>` | Declines a game request.          |
+| `/minigames help`             | Shows all available commands.     |
 
 ---
 
