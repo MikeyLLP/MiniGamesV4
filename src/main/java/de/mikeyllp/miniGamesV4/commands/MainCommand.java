@@ -1,6 +1,5 @@
 package de.mikeyllp.miniGamesV4.commands;
 
-import de.mikeyllp.miniGamesV4.commands.invites.EnableClickInviteCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesHideAndSeekGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesRPSGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesTicTacToeGameCommand;
@@ -16,7 +15,7 @@ public class MainCommand extends CommandAPICommand {
         super(commandName);
 
         // Here we add the SubCommands
-        withSubcommand(new EnableClickInviteCommand("ClickInvite"));
+
         withSubcommand(new InvitesHideAndSeekGameCommand("HideAndSeek"));
         withSubcommand(new InvitesRPSGameCommand("RPS"));
         withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe"));

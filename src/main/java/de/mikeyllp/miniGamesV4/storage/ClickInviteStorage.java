@@ -30,6 +30,19 @@ public class ClickInviteStorage implements Listener {
 
     // Adds the Player to the enable Listener Map and starts a 60 second timer after the timer ends the Player will be removed from the Map
     public static void addEnableListener(Player player, String miniGame) {
+        // removes the Old listener if the player is already in the Map
+        if (enableListener.containsKey(player)) {
+            removePlayer(player);
+            enableListener.put(player, new BukkitRunnable() {
+                @Override
+                public void run() {
+                    removePlayer(player);
+                    sendCustomMessage(player, "<red>Du kannst keine Spieler mehr einladen.</red>");
+                }
+            }.runTaskLater(MiniGamesV4.getInstance(), 1200L));
+            whatGame.put(player, miniGame);
+            return;
+        }
         enableListener.put(player, new BukkitRunnable() {
             @Override
             public void run() {
