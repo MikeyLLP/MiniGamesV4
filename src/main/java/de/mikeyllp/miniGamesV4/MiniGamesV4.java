@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
+import de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
@@ -46,8 +47,13 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new ClickInviteStorage(), this);
         manager.registerEvents(new ToggleInvitesStorage(), this);
         manager.registerEvents(new RPSGame(), this);
+        manager.registerEvents(new HideAndSeekListeners(), this);
 
-        new MainCommand("minigames").register();
+        new MainCommand("minigames", this).register();
+
+        // Generate the config.yml if it does not exist
+        saveDefaultConfig();
+
 
     }
 

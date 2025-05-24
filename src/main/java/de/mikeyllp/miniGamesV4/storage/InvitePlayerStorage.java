@@ -16,8 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 public class InvitePlayerStorage {
 
@@ -35,7 +34,7 @@ public class InvitePlayerStorage {
         String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         //Check if the Player can be invited
         if (gameInfo.containsKey(invited.getPlayer())) {
-            inviter.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
+            sendCustomMessage(inviter, "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
             return;
         }
 
@@ -63,7 +62,7 @@ public class InvitePlayerStorage {
 
         //Check if the Player wants to Invite himself
         if (inviter.getName().equals(invited.getName())) {
-            sendCustomMessage(inviter, "<red>Du kannst dich nicht selbst einladen!</red>");
+            sendNoInviteYourselfMessage(inviter);
             return;
         }
 

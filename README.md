@@ -21,9 +21,11 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | Command                       | Description                       |
 |-------------------------------|-----------------------------------|
 | `/minigames`                  | Opens the main menu.              |
+| `/minigames reload`           | Reload the config.                |
 | `/minigames <game> [player]`  | Sends a game request to a player. |
 | `/minigames accept <player>`  | Accepts a game request.           |
 | `/minigames decline <player>` | Declines a game request.          |
+| `/minigames toggle`           | Toggles invites.                  |
 | `/minigames help`             | Shows all available commands.     |
 
 ---

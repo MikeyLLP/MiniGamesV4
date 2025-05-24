@@ -1,0 +1,15 @@
+## Min players per Hide and Seek group
+minPlayersPerHASGroup: 2
+## Max players per Hide and Seek group
+maxPlayersPerHASGroup: 10
+## Place where all Hide and Seek players get teleported to have the same chance.
+cordsHASStart: 0 100 0
+## Time until the game starts automatically when the minimum players for the Hide and Seek group are reached.
+timeAutoStartHASGroup: 60 # Seconds
+## Play time for the Hide and Seek game
+playTimeHAS: 300 # Seconds
+## The time for the player to hide; during this time, the seeker cannot move.
+hideTimeHAS: 30 #Seconds
+## How many times the seekers get hints - that will be calculated mathematically when this happens.
+HASHints: 2
+

@@ -1,22 +1,24 @@
 package de.mikeyllp.miniGamesV4.commands;
 
-import de.mikeyllp.miniGamesV4.commands.invites.InvitesHideAndSeekGameCommand;
+import de.mikeyllp.miniGamesV4.commands.admincommands.ReloadConfigCommand;
+import de.mikeyllp.miniGamesV4.commands.invites.AddHideAndSeekGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesRPSGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesTicTacToeGameCommand;
 import de.mikeyllp.miniGamesV4.gui.MenuMain;
 import dev.jorel.commandapi.CommandAPICommand;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 
 public class MainCommand extends CommandAPICommand {
 
-    public MainCommand(String commandName) {
+    public MainCommand(String commandName, JavaPlugin plugin) {
         super(commandName);
 
         // Here we add the SubCommands
-
-        withSubcommand(new InvitesHideAndSeekGameCommand("HideAndSeek"));
+        withSubcommand(new ReloadConfigCommand("reload", plugin));
+        withSubcommand(new AddHideAndSeekGameCommand("HideAndSeek", plugin));
         withSubcommand(new InvitesRPSGameCommand("RPS"));
         withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe"));
         withSubcommand(new AcceptCommand("accept"));
