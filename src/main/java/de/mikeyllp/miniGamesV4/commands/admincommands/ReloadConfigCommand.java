@@ -1,7 +1,6 @@
 package de.mikeyllp.miniGamesV4.commands.admincommands;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
@@ -15,7 +14,7 @@ public class ReloadConfigCommand extends CommandAPICommand {
         executes((sender, args) -> {
             // Checks if the player has permission to use this command
             if (!sender.hasPermission("minigamesv4.admin")) {
-                sendNoPermissionMessage((Player) sender);
+                sendNoPermissionMessage(sender);
                 return;
             }
             // Check to Reload the config

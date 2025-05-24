@@ -31,7 +31,6 @@ public class InvitePlayerStorage {
 
     //This method adds Checks if the invited player is already in a game or not an adds the invite to the HashMap for 60 seconds
     public static void addInvite(Player inviter, Player invited, String game) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         //Check if the Player can be invited
         if (gameInfo.containsKey(invited.getPlayer())) {
             sendCustomMessage(inviter, "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");

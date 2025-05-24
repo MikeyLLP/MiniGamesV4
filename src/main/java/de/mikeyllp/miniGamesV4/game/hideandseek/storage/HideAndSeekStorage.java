@@ -22,9 +22,4 @@ public class HideAndSeekStorage {
         int count = counter.getAndIncrement();
         return "Group - " + count + " - " + startTime;
     }
-
-    // Reset the counter
-    public void reset() {
-        counter.set(0);
-    }
 }

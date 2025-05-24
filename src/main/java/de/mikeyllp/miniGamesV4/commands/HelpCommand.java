@@ -1,7 +1,6 @@
 package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import org.bukkit.entity.Player;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendHelpMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
@@ -13,7 +12,7 @@ public class HelpCommand extends CommandAPICommand {
         executes(((sender, args) -> {
             //Checks if the player has permission to use this command
             if (!sender.hasPermission("minigamesv4.minigames")) {
-                sendNoPermissionMessage((Player) sender);
+                sendNoPermissionMessage(sender);
                 return;
             }
             //default commands
