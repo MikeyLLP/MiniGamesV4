@@ -11,6 +11,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static de.mikeyllp.miniGamesV4.utils.CheckConfig.checkAndFixingConfig;
+
 
 public final class MiniGamesV4 extends JavaPlugin {
 
@@ -53,7 +55,8 @@ public final class MiniGamesV4 extends JavaPlugin {
 
         // Generate the config.yml if it does not exist
         saveDefaultConfig();
-
+        // Check if the config is current
+        checkAndFixingConfig(this);
 
     }
 
