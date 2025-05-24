@@ -19,8 +19,8 @@ public class MainCommand extends CommandAPICommand {
         // Here we add the SubCommands
         withSubcommand(new ReloadConfigCommand("reload", plugin));
         withSubcommand(new AddHideAndSeekGameCommand("HideAndSeek", plugin));
-        withSubcommand(new InvitesRPSGameCommand("RPS"));
-        withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe"));
+        withSubcommand(new InvitesRPSGameCommand("RPS", plugin));
+        withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe", plugin));
         withSubcommand(new AcceptCommand("accept"));
         withSubcommand(new DeclinedCommand("declined"));
         withSubcommand(new ToggleInvitesCommand("toggle"));
