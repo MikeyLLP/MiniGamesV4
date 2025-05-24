@@ -3,6 +3,8 @@
 A lightweight minigames plugin.  
 This plugin is designed for lobbies, allowing players to play with others when they're bored.
 
+![GitHub License](https://img.shields.io/github/license/mikeyllp/MiniGamesV4?logo=github&color=%23008000)
+
 ---
 
 ## 🚀 Features
