@@ -57,6 +57,7 @@ This plugin uses the following APIs:
 
 - [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.10.19**
 - [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.0**
+- [PacketEvents](https://github.com/retrooper/packetevents) - tested with **v2.8.0**
 - [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
 - Java **21+** required.
 
@@ -123,12 +124,16 @@ See the [`LICENSE`](LICENSE) file for full license details.
 This plugin uses third-party libraries:
 
 - **CommandAPI** © JorelAli – MIT License  
-  Lizenz: [`THIRD_PARTY_LICENSES/commandapi.txt`](./THIRD_PARTY_LICENSES/commandapi.txt)  
-  Quelle: https://github.com/CommandAPI/CommandAPI
+  License: [`THIRD_PARTY_LICENSES/commandapi.txt`](./THIRD_PARTY_LICENSES/commandapi.txt)  
+  Source: https://github.com/CommandAPI/CommandAPI
 
 - **Inventory Framework** © stefvanschie – The Unlicense  
-  Lizenz: [`THIRD_PARTY_LICENSES/inventoryframework.txt`](./THIRD_PARTY_LICENSES/inventoryframework.txt)  
-  Quelle: https://github.com/stefvanschie/IF
+  License: [`THIRD_PARTY_LICENSES/inventoryframework.txt`](./THIRD_PARTY_LICENSES/inventoryframework.txt)  
+  Source: https://github.com/stefvanschie/IF
+
+- **PacketEvents**
+  License: [`THIRD_PARTY_LICENSES/packetevents.txt`](./THIRD_PARTY_LICENSES/packetevents.txt)  
+  Source: https://github.com/retrooper/packetevents
 
 ---
 
@@ -143,6 +148,7 @@ Thanks for testing the plugin and giving feedback! 🙌
 - [Laluck98]()
 - [PEKK29]()
 - [Pingius2031]()
+- [Qwoxelias]()
 - [RicTheCraft]()
 - [TheBjoRedCraft](https://github.com/TheBjoRedCraft)
 - [Timonso](https://github.com/Timonso-1)

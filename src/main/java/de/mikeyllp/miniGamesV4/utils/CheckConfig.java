@@ -21,6 +21,7 @@ public class CheckConfig {
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
         ConfigurationSection loc = config.getConfigurationSection("spawn-location");
+        ConfigurationSection sek = config.getConfigurationSection("maxSeekersPerHASGroup");
 
         boolean valid = true;
 
@@ -33,7 +34,9 @@ public class CheckConfig {
         // HAS
         if (!config.isInt("minPlayersPerHASGroup")) valid = false;
         if (!config.isInt("maxPlayersPerHASGroup")) valid = false;
-        if (loc == null || !loc.isInt("x") || !loc.isInt("y") || !loc.isInt("z")) valid = false;
+        if (sek == null || !sek.isInt("value")) valid = false;
+        if (loc == null || !loc.isString("world") || !loc.isDouble("x") || !loc.isDouble("y") || !loc.isDouble("z"))
+            valid = false;
 
         // Checks if something is wrong with the config.
         if (!valid) {
@@ -44,7 +47,7 @@ public class CheckConfig {
                 if (!backupDir.exists()) backupDir.mkdirs();
 
                 String timestamp = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
-                File zipFile = new File(backupDir, "corrupted-config" + timestamp + ".zip");
+                File zipFile = new File(backupDir, "corrupted-config_" + timestamp + ".zip");
 
                 try (ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile))) {
                     zipOut.putNextEntry(new ZipEntry("config.yml"));

@@ -19,6 +19,7 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     private static MiniGamesV4 instance;
 
+
     @Override
     public void onEnable() {
 
@@ -44,7 +45,6 @@ public final class MiniGamesV4 extends JavaPlugin {
         PluginManager manager = getServer().getPluginManager();
 
         //Register the Listener
-        manager.registerEvents(new ClickInviteStorage(), this);
         manager.registerEvents(new TicTacToeGame(), this);
         manager.registerEvents(new ClickInviteStorage(), this);
         manager.registerEvents(new ToggleInvitesStorage(), this);
@@ -57,13 +57,11 @@ public final class MiniGamesV4 extends JavaPlugin {
         saveDefaultConfig();
         // Check if the config is current
         checkAndFixingConfig(this);
-
     }
 
     @Override
     public void onDisable() {
         getLogger().info("Bye <3");
-
     }
 
     //This is for the Runnable

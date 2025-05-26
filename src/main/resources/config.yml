@@ -8,8 +8,12 @@ TicTacToe: true
 minPlayersPerHASGroup: 2
 # Max players per Hide and Seek group
 maxPlayersPerHASGroup: 10
+# Max seekers per Hide and Seek group (normally, this will be calculated mathematically, but when you turn it on, there will be a cap)
+maxSeekersPerHASGroup:
+  value: 0
 # Place where all Hide and Seek players get teleported to have the same chance.
 spawn-location:
+  world: overworld
   x: 0
   y: 100
   z: 0

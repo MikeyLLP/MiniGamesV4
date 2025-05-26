@@ -23,17 +23,25 @@ repositories {
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
     }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-releases/")
+    }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-snapshots/")
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("dev.jorel:commandapi-bukkit-core:10.0.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.8.0")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.19")
 }
 
 paper {
     main = "de.mikeyllp.miniGamesV4.MiniGamesV4"
     apiVersion = "1.21"
+
     serverDependencies {
         register("CommandAPI") {
             required = true

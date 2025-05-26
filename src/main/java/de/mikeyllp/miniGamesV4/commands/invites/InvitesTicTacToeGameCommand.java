@@ -5,16 +5,18 @@ import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
 import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.miniGamesDisabledMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 
 public class InvitesTicTacToeGameCommand extends CommandAPICommand {
-    public InvitesTicTacToeGameCommand(String commandName) {
+    public InvitesTicTacToeGameCommand(String commandName, JavaPlugin plugin) {
         super(commandName);
         // This creates a list of online players for tab completion. The "@" symbol is not allowed.
         withOptionalArguments(
@@ -31,6 +33,13 @@ public class InvitesTicTacToeGameCommand extends CommandAPICommand {
             // Checks if the player has permission to use this command.
             if (!sender.hasPermission("minigamesv4.minigames")) {
                 sendNoPermissionMessage(sender);
+                return;
+            }
+
+            // Checks if the TicTacToe is enabled in the config.
+            boolean isEnabled = plugin.getConfig().getBoolean("TicTacToe");
+            if (!isEnabled) {
+                miniGamesDisabledMessage(sender);
                 return;
             }
 

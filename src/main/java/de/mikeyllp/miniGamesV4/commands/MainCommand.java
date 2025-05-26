@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4.commands;
 
 import de.mikeyllp.miniGamesV4.commands.admincommands.ReloadConfigCommand;
+import de.mikeyllp.miniGamesV4.commands.admincommands.SetCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.AddHideAndSeekGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesRPSGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesTicTacToeGameCommand;
@@ -17,7 +18,11 @@ public class MainCommand extends CommandAPICommand {
         super(commandName);
 
         // Here we add the SubCommands
+        // Admin Commands
         withSubcommand(new ReloadConfigCommand("reload", plugin));
+        withSubcommand(new SetCommand("set", plugin));
+
+        // Normal Commands
         withSubcommand(new AddHideAndSeekGameCommand("HideAndSeek", plugin));
         withSubcommand(new InvitesRPSGameCommand("RPS", plugin));
         withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe", plugin));

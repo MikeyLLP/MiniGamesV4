@@ -25,6 +25,10 @@ public class MessageUtils {
         sender.sendRichMessage(prefix() + "<red>Du kannst dich nicht selbst einladen.</red>");
     }
 
+    public static void miniGamesDisabledMessage(CommandSender sender) {
+        sender.sendRichMessage(prefix() + "<red>Die MiniGame sind derzeit deaktiviert.</red>");
+    }
+
     // You can use this very easily because you only set the message and the prefix are automatically added.
     public static void sendCustomMessage(CommandSender sender, String message) {
         sender.sendRichMessage(prefix() + message);

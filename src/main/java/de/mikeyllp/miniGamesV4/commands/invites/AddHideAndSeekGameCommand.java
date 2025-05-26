@@ -4,6 +4,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.addPlayerToHAS;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.miniGamesDisabledMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class AddHideAndSeekGameCommand extends CommandAPICommand {
@@ -16,6 +17,14 @@ public class AddHideAndSeekGameCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
+
+            // Checks if the Hide And Seek is enabled in the config.
+            boolean isEnabled = plugin.getConfig().getBoolean("HideAndSeek");
+            if (!isEnabled) {
+                miniGamesDisabledMessage(sender);
+                return;
+            }
+
             addPlayerToHAS(sender, plugin);
         });
     }
