@@ -8,7 +8,6 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -21,8 +20,8 @@ import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class RPSGame implements Listener {
     //This map is used to check if a player is playing this game, in order to activate the ChatListener.
-    private static final Map<Player, Player> inGameStatus = new HashMap<>();
-    private static final Map<Player, GameState> playerGameState = new HashMap<>();
+    public static final Map<Player, Player> inGameStatus = new HashMap<>();
+    public static final Map<Player, GameState> playerGameState = new HashMap<>();
 
 
     public static class GameState {
@@ -61,7 +60,7 @@ public class RPSGame implements Listener {
         Component choseMsg = mm.deserialize(prefix + "<bold><gray><insert:Schere><hover:show_text:'Shift + Klick zum Auswählen'>[Schere]</hover></insert>" +
                 " <dark_gray><insert:Stein><hover:show_text:'Shift + Klick zum Auswählen'>[Stein]</hover></insert>" +
                 " <white><insert:Papier><hover:show_text:'Shift + Klick zum Auswählen'>[Papier]</hover></insert></bold>" +
-                " <red><bold><insert:cancel><hover:show_text:'Shift + Klick zum Auswählen'>gib auf</hover></insert></bold></red>");
+                " <red><bold><click:run_command:'/minigames quit'><hover:show_text:'Klicken zum Auswählen'>gib auf</hover></click></bold></red>");
 
         inviter.showTitle(Title.title(Component.text("§6Spiel Startet!"), rspGameComponent, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1))));
         invited.showTitle(Title.title(Component.text("§6Spiel Startet!"), rspGameComponent, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1))));
@@ -89,7 +88,7 @@ public class RPSGame implements Listener {
         Component failMsg = mm.deserialize(prefix() + "<red>Bitte wähle <bold><gray><insert:Schere><hover:show_text:'Shift + Klick zum Auswählen'>[Schere]</hover></insert></gray></bold>," +
                 " <bold><dark_gray><insert:Stein><hover:show_text:'Shift + Klick zum Auswählen'>[Stein]</hover></insert></dark_gray></bold>," +
                 " <white><bold><insert:Papier><hover:show_text:'Shift + Klick zum Auswählen'>[Papier]</hover></insert></bold></white>" +
-                " oder <bold><insert:cancel><hover:show_text:'Shift + Klick zum Auswählen'>gib auf</hover></insert></bold>.</red>");
+                " oder <bold><click:run_command:'/minigames quit'><hover:show_text:'Klicken zum Auswählen'>gib auf</hover></click></bold>.</red>");
 
 
         if (inGameStatus.containsKey(event.getPlayer())) {
@@ -118,12 +117,6 @@ public class RPSGame implements Listener {
                     state.fightItemInviter = "Papier";
                     state.waitingForPlayer++;
                     break;
-                case "cancel":
-                    sendCustomMessage(inviter, "<red>Du hast das Spiel abgebrochen!</red>");
-                    sendCustomMessage(invited, "<gold>" + inviter.getName() + "</gold><red> hat das Spiel aufgegeben!</red>");
-                    //removes the inviter and invited from the maps
-                    removePlayersFromList(inviter, invited);
-                    return;
                 default:
                     inviter.sendMessage(failMsg);
                     return;
@@ -164,13 +157,6 @@ public class RPSGame implements Listener {
                     state.fightItemInvited = "Papier";
                     state.waitingForPlayer++;
                     break;
-                case "cancel":
-                    sendCustomMessage(invited, "<red>Du hast das Spiel abgebrochen!</red>");
-                    sendCustomMessage(inviter, "<gold>" + invited.getName() + "</gold><red> hat das Spiel aufgegeben!</red>");
-
-                    //removes the inviter and invited from the maps
-                    removePlayersFromList(inviter, invited);
-                    return;
                 default:
                     invited.sendMessage(failMsg);
                     return;
@@ -253,24 +239,13 @@ public class RPSGame implements Listener {
         }
     }
 
-    //removes the player from the game when he leaves the server
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        if (!inGameStatus.containsKey(event.getPlayer())) return;
-
-
-        Player player = event.getPlayer();
-        sendCustomMessage(inGameStatus.get(player), "<red>" + player.getName() + " hat das Spiel verlassen!</red>");
-        removePlayersFromList(player, inGameStatus.get(player));
-    }
-
     //updates the points of the players
     private static String updatePoints(int you, int opponent) {
         return "<color:#00E5E5>Du: <gold>" + you + "</gold> | <gold>Gegner: " + opponent + "</color>";
     }
 
     //removes the players form the list
-    private static void removePlayersFromList(Player inviter, Player invited) {
+    public static void removePlayersFromList(Player inviter, Player invited) {
 
         gameInfo.remove(inviter);
         gameInfo.remove(invited);

@@ -18,7 +18,7 @@ public class ClickInviteUtils {
         addEnableListener(player, miniGame);
         MiniMessage mm = MiniMessage.miniMessage();
         Component miniGameComponent = mm.deserialize("<gold>Click Invite<gold> <green>Enabled</green>");
-        Component message = mm.deserialize("<color:#00E5E5>Spieler anklicken.</color:#00E5E5> <red>'cancel' zum Abbrechen.</red>");
+        Component message = mm.deserialize("<color:#00E5E5>Spieler anklicken.</color:#00E5E5> <red>'/minigames quit' zum Abbrechen.</red>");
         player.closeInventory();
         player.showTitle(Title.title(miniGameComponent,
                 message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));

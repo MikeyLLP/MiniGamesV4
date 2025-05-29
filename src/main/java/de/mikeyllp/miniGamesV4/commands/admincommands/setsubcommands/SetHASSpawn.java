@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.commands.admincommands.ReloadConfigCommand.reloadConfig;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class SetHASSpawn extends CommandAPICommand {
@@ -43,8 +43,7 @@ public class SetHASSpawn extends CommandAPICommand {
             // Save the config
             plugin.saveConfig();
 
-            // Reload the config to apply changes
-            reloadConfig(sender, plugin);
+            sendCustomMessage(sender, "Pleas reload the config to apply changes.");
         });
     }
 }

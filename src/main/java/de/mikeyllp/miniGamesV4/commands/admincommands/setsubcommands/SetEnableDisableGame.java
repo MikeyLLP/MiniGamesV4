@@ -6,7 +6,6 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.commands.admincommands.ReloadConfigCommand.reloadConfig;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class SetEnableDisableGame extends CommandAPICommand {
@@ -33,16 +32,16 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "HideAndSeek has been disabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     } else {
                         config.set("HideAndSeek", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "HideAndSeek has been enabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     }
                     break;
                 case "rps":
@@ -52,16 +51,16 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "RPS has been disabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     } else {
                         config.set("RockPaperScissors", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "RPS has been enabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     }
                     break;
                 case "tictactoe":
@@ -71,16 +70,16 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "TicTacToe has been disabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     } else {
                         config.set("TicTacToe", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        // Reload the config to apply changes
-                        reloadConfig(sender, plugin);
+                        sendCustomMessage(sender, "TicTacToe has been enabled.");
+                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
                     }
                     break;
                 default:

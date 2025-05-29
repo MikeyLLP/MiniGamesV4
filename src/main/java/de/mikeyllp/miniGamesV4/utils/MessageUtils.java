@@ -12,21 +12,26 @@ public class MessageUtils {
 
     // Send the player a No Permission Message
     public static void sendNoPermissionMessage(CommandSender sender) {
-        sender.sendRichMessage(prefix() + "<red>Du hast keine Berechtigung, um diesen Befehl zu verwenden.</red>");
+        sendCustomMessage(sender, "<red>Du hast keine Berechtigung, um diesen Befehl zu verwenden.</red>");
+    }
+
+    // Send the player a Arleady in Game Message
+    public static void sendAlreadyInGameMessage(CommandSender sender) {
+        sendCustomMessage(sender, "<red>Du bist bereits in einem Spiel.</red>");
     }
 
     // Send the player a No Online Message
     public static void sendNoOnlinePlayerMessage(CommandSender sender) {
-        sender.sendRichMessage(prefix() + "<red>Der Spieler ist nicht online.</red>");
+        sendCustomMessage(sender, "<red>Der Spieler ist nicht online.</red>");
     }
 
     //Send the player a No Invite yourself Message
     public static void sendNoInviteYourselfMessage(CommandSender sender) {
-        sender.sendRichMessage(prefix() + "<red>Du kannst dich nicht selbst einladen.</red>");
+        sendCustomMessage(sender, "<red>Du kannst dich nicht selbst einladen.</red>");
     }
 
     public static void miniGamesDisabledMessage(CommandSender sender) {
-        sender.sendRichMessage(prefix() + "<red>Die MiniGame sind derzeit deaktiviert.</red>");
+        sendCustomMessage(sender, "<red>Dieses MiniGame ist derzeit deaktiviert.</red>");
     }
 
     // You can use this very easily because you only set the message and the prefix are automatically added.

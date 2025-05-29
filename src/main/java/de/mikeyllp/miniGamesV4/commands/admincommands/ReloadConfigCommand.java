@@ -4,9 +4,8 @@ import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.timerList;
-import static de.mikeyllp.miniGamesV4.utils.CheckConfig.checkAndFixingConfig;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
+import static de.mikeyllp.miniGamesV4.utils.clearUtils.clearAllLists;
 
 public class ReloadConfigCommand extends CommandAPICommand {
 
@@ -24,21 +23,6 @@ public class ReloadConfigCommand extends CommandAPICommand {
     }
 
     public static void reloadConfig(CommandSender sender, JavaPlugin plugin) {
-        // Check to Reload the config
-        try {
-            plugin.reloadConfig();
-            timerList.clear();
-
-            // Check if the config is current cerated
-            if (checkAndFixingConfig(plugin)) {
-                sendCustomMessage(sender, "Config reloaded successfully!");
-                checkAndFixingConfig(plugin);
-                return;
-            }
-            sendCustomMessage(sender, "<red> \u26A0 Invalid config.yml detected! The config will be reset to default values and backed up. \u26A0</red>");
-
-        } catch (Exception e) {
-            sender.sendRichMessage(prefix() + "<red> An error occurred while reloading the config: " + e.getMessage());
-        }
+        clearAllLists(sender, plugin);
     }
 }

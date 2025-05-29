@@ -22,9 +22,9 @@ public class InvitePlayerStorage {
 
 
     //Handelt all Invites
-    private static final Map<PlayerKey, String> invitesManager = new HashMap<>();
+    public static final Map<PlayerKey, String> invitesManager = new HashMap<>();
     //Deletes all invites after X seconds
-    private static final Map<PlayerKey, BukkitTask> invitesTasks = new HashMap<>();
+    public static final Map<PlayerKey, BukkitTask> invitesTasks = new HashMap<>();
     //To check if the player is already in a game
     public static final Map<Player, Player> gameInfo = new HashMap<>();
 
@@ -73,7 +73,7 @@ public class InvitePlayerStorage {
 
         //Check if the inviter is arlready in a Game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
-            sendCustomMessage(inviter, "<red>Du bist bereits in einem Spiel.</red>");
+            sendAlreadyInGameMessage(inviter);
             return;
         }
 

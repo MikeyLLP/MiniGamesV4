@@ -10,9 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.miniGamesDisabledMessage;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 
 public class InvitesTicTacToeGameCommand extends CommandAPICommand {
@@ -50,6 +50,11 @@ public class InvitesTicTacToeGameCommand extends CommandAPICommand {
             }
 
             Player targetPlayer = Bukkit.getPlayerExact(args.get(0).toString());
+
+            if (gameInfo.containsKey(sender)) {
+                sendAlreadyInGameMessage(sender);
+                return;
+            }
 
             // Checks if the target player is online
             if (targetPlayer == null) {

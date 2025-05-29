@@ -10,7 +10,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.*;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.createGroupFromHAS;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.listUntilX;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendAlreadyInGameMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class HideAndSeekGame {
@@ -22,87 +25,98 @@ public class HideAndSeekGame {
             sendCustomMessage(player, "<red>Du bist bereits in der Warteschlange!");
             return;
         }
-        for (String s : gameGroup.keySet()) {
-            if (gameGroup.get(s).contains(player)) {
-                sendCustomMessage(player, "<red>Du bist bereits in einem Spiel!");
-                return;
-            }
+
+        if (gameInfo.containsKey(player)) {
+            sendAlreadyInGameMessage(player);
+            return;
         }
 
         listUntilX.add(player);
+        gameInfo.put(player, player);
         if (waitingTask == null) {
             startWaitingTask(plugin);
         }
     }
 
     public static final List<String> timerList = new ArrayList<>();
-
+    private static boolean timerRunning = false;
 
     public static void startWaitingTask(JavaPlugin plugin) {
         FileConfiguration config = plugin.getConfig();
         int timer = config.getInt("timeAutoStartHASGroup");
+        int maxPlayers = config.getInt("maxPlayersPerHASGroup");
+        int minPlayers = config.getInt("minPlayersPerHASGroup");
+        MiniMessage mm = MiniMessage.miniMessage();
 
-
-        timerList.clear();
-        for (int i = timer; i > 0; i--) {
-            timerList.add(String.valueOf(i));
-        }
-        index = 0;
 
         waitingTask = new BukkitRunnable() {
+            int index = 0;
+            boolean countdownStarted = false;
+
             @Override
             public void run() {
-
-                int maxPlayers = config.getInt("maxPlayersPerHASGroup");
-                int minPlayers = config.getInt("minPlayersPerHASGroup");
-
-                MiniMessage mm = MiniMessage.miniMessage();
-
-                // The Actionbar for the players in the waiting list
-                for (Player p : listUntilX) {
-                    p.sendActionBar(mm.deserialize("<gold>Warten auf weitere Spieler... (<color:#00E5E5>" + listUntilX.size() + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
-                }
-
-                // When the min players is reached, the timer starts
-                if (listUntilX.size() >= minPlayers) {
-                    for (Player p : listUntilX) {
-                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + timerList.get(index) + "</color> (<color:#00E5E5>" + listUntilX.size() + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
-                    }
-                    index++;
-                    if (index >= timerList.size()) {
-                        // If the timer reaches 0, the game starts
-                        Location loc = new Location(
-                                plugin.getServer().getWorld(config.getString("spawn-location.world")),
-                                config.getDouble("spawn-location.x"),
-                                config.getDouble("spawn-location.y"),
-                                config.getDouble("spawn-location.z")
-                        );
-                        for (Player p : listUntilX) {
-                            p.teleportAsync(loc);
-                        }
-                        createGroupFromHAS(listUntilX.size(), plugin);
-                        cancel();
-                        waitingTask = null;
-                    }
-                }
-
-                // Starts the timer directly if the max players is reached
-                if (listUntilX.size() >= maxPlayers) {
-                    Location loc = new Location(
-                            plugin.getServer().getWorld(config.getString("spawn-location.world")),
-                            config.getDouble("spawn-location.x"),
-                            config.getDouble("spawn-location.y"),
-                            config.getDouble("spawn-location.z")
-                    );
-                    for (Player p : listUntilX) {
-                        p.teleportAsync(loc);
-                    }
-                    createGroupFromHAS(listUntilX.size(), plugin);
+                int currentSize = listUntilX.size();
+                if (currentSize == 0) {
                     cancel();
                     waitingTask = null;
+                    timerRunning = false;
+                    countdownStarted = false;
+                    return;
+                }
+
+                if (listUntilX.size() < minPlayers && timerRunning) {
+                    timerRunning = false;
+                    countdownStarted = false;
+                    index = 0;
+                    timerList.clear();
+                    return;
+                }
+
+                if (!countdownStarted && currentSize >= minPlayers) {
+                    countdownStarted = true;
+                    timerRunning = true;
+                    timerList.clear();
+                    for (int i = timer; i > 0; i--) {
+                        timerList.add(String.valueOf(i));
+                    }
+                    index = 0;
+                }
+
+                if (countdownStarted) {
+                    for (Player p : listUntilX) {
+                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + timerList.get(index) + "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                    }
+                    index++;
+                    if (index >= timerList.size() || currentSize >= maxPlayers) {
+                        startGame(plugin, config);
+                        cancel();
+                        waitingTask = null;
+                        timerRunning = false;
+                    }
+                } else {
+                    for (Player p : listUntilX) {
+                        p.sendActionBar(mm.deserialize("<gold>Warten auf weitere Spieler... (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                    }
                 }
             }
         };
         waitingTask.runTaskTimer(plugin, 0L, 20L);
     }
+
+    public static void startGame(JavaPlugin plugin, FileConfiguration config) {
+        Location loc = new Location(
+                plugin.getServer().getWorld(config.getString("spawn-location.world")),
+                config.getDouble("spawn-location.x"),
+                config.getDouble("spawn-location.y"),
+                config.getDouble("spawn-location.z")
+        );
+
+        for (Player p : listUntilX) {
+            p.teleportAsync(loc);
+        }
+
+        createGroupFromHAS(listUntilX.size(), plugin);
+    }
+
+
 }

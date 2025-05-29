@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
@@ -41,6 +42,11 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
             boolean isEnabled = plugin.getConfig().getBoolean("RockPaperScissors");
             if (!isEnabled) {
                 miniGamesDisabledMessage(sender);
+                return;
+            }
+
+            if (gameInfo.containsKey(sender)) {
+                sendAlreadyInGameMessage(sender);
                 return;
             }
 

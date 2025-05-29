@@ -9,29 +9,25 @@ import java.util.List;
 
 import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.gameGroup;
 import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.seekerGroup;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
 
 public class HideAndSeekListeners implements Listener {
 
+
+    // For the Hide and Seek game to
     @EventHandler
     public void onClickEvent(PrePlayerAttackEntityEvent event) {
 
         if (event.getAttacked() instanceof Player) {
             Player player = event.getPlayer();
-
             // Check if the player is a seeker
             if (seekerGroup.containsKey(player)) {
                 List<Player> playerList = gameGroup.get(seekerGroup.get(player));
                 // Get the player who was clicked
+                Player clickedPlayer = (Player) event.getAttacked();
                 for (Player p : playerList) {
-                    Player clickedPlayer = (Player) event.getAttacked();
                     if (clickedPlayer.equals(p)) {
-                        playerList.remove(clickedPlayer);
-                        sendCustomMessage(clickedPlayer, "<red>Du wurdest gefunden!</red>");
-                        for (Player gamePlayers : playerList) {
-                            sendCustomMessage(gamePlayers, "<gold>" + clickedPlayer.getName() + "</gold> wurde gefunden!");
-                        }
-                        return;
+                        playerRemove(clickedPlayer, "gotFound");
                     }
                 }
             }

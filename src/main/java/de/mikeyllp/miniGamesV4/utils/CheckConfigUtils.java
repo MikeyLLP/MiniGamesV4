@@ -14,29 +14,65 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class CheckConfig {
+public class CheckConfigUtils {
     public static boolean checkAndFixingConfig(JavaPlugin plugin) {
         // Get the Config
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
         ConfigurationSection loc = config.getConfigurationSection("spawn-location");
-        ConfigurationSection sek = config.getConfigurationSection("maxSeekersPerHASGroup");
 
         boolean valid = true;
 
         // Check if the right validation is set
         // Games
-        if (!config.isBoolean("HideAndSeek")) valid = false;
-        if (!config.isBoolean("TicTacToe")) valid = false;
-        if (!config.isBoolean("RockPaperScissors")) valid = false;
+        if (!config.isBoolean("HideAndSeek")) {
+            plugin.getLogger().warning("Config key 'HideAndSeek' is missing or not a boolean.");
+            valid = false;
+        }
+        if (!config.isBoolean("RockPaperScissors")) {
+            plugin.getLogger().warning("Config key 'RockPaperScissors' is missing or not a boolean.");
+            valid = false;
+        }
+        if (!config.isBoolean("TicTacToe")) {
+            plugin.getLogger().warning("Config key 'TicTacToe' is missing or not a boolean.");
+            valid = false;
+        }
+
 
         // HAS
-        if (!config.isInt("minPlayersPerHASGroup")) valid = false;
-        if (!config.isInt("maxPlayersPerHASGroup")) valid = false;
-        if (sek == null || !sek.isInt("value")) valid = false;
-        if (loc == null || !loc.isString("world") || !loc.isDouble("x") || !loc.isDouble("y") || !loc.isDouble("z"))
+        if (!config.isInt("minPlayersPerHASGroup")) {
+            plugin.getLogger().warning("Config key 'HideAndSeek' is missing or not a boolean.");
             valid = false;
+        }
+        if (!config.isInt("maxPlayersPerHASGroup")) {
+            plugin.getLogger().warning("Config key 'maxPlayersPerHASGroup' is missing or not an integer.");
+            valid = false;
+        }
+        if (!config.isInt("maxSeekersPerHASGroup")) {
+            plugin.getLogger().warning("Config key 'maxSeekersPerHASGroup' is missing or not an integer.");
+            valid = false;
+        }
+        if (loc == null || !loc.isString("world") || !loc.isDouble("x") || !loc.isDouble("y") || !loc.isDouble("z")) {
+            plugin.getLogger().warning("Config key 'spawn-location' is missing or not properly set.");
+            valid = false;
+        }
+        if (!config.isInt("timeAutoStartHASGroup")) {
+            plugin.getLogger().warning("Config key 'timeAutoStartHASGroup' is missing or not an integer.");
+            valid = false;
+        }
+        if (!config.isInt("playTimeHAS")) {
+            plugin.getLogger().warning("Config key 'playTimeHAS' is missing or not an integer.");
+            valid = false;
+        }
+        if (!config.isInt("hideTimeHAS")) {
+            plugin.getLogger().warning("Config key 'hideTimeHAS' is missing or not an integer.");
+            valid = false;
+        }
+        if (!config.isInt("HASHints")) {
+            plugin.getLogger().warning("Config key 'HASHints' is missing or not an integer.");
+            valid = false;
+        }
 
         // Checks if something is wrong with the config.
         if (!valid) {

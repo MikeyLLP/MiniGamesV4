@@ -40,7 +40,7 @@ public class HideAndSeekStorage {
         int i = 0;
         // When there are more players as wish, set the max seekers
         int targetSeekers = calculateSeekers(playerCount);
-        if ((config.getInt("maxSeekersPerHASGroup.value")) != 0 && targetSeekers < config.getInt("maxSeekersPerHASGroup.value")) {
+        if ((config.getInt("maxSeekersPerHASGroup")) != 0 && targetSeekers < config.getInt("maxSeekersPerHASGroup.value")) {
             targetSeekers = config.getInt("maxSeekersPerHASGroup.value");
         }
         // Randomly select a seeker from the group
