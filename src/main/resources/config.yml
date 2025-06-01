@@ -1,3 +1,14 @@
+###################################################### Generally #######################################################
+# Native Language
+# Existing: "en_us" or "de_de"
+language: en_us
+
+# The prefix works with MiniMessage, so you can use colors and formatting.
+prefix: <color:dark_gray>>> </color><gradient:#00FF00:#007F00>MiniGames </gradient><color:dark_gray>| </color><color:#00E5E5>{message}
+
+# here you can set the Command.
+# WARNING: If you change the command, you need to restart the server.
+command: minigames
 ######################################################## Games #########################################################
 # Disable or Enable the Game
 HideAndSeek: true
@@ -12,7 +23,8 @@ maxPlayersPerHASGroup: 10
 maxSeekersPerHASGroup: 0
 # Place where all Hide and Seek players get teleported to have the same chance.
 spawn-location:
-  world: overworld
+  # overworld = world | nether = world_nether | end = world_the_end
+  world: world
   x: 0.0
   y: 100.0
   z: 0.0

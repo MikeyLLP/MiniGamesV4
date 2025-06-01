@@ -5,10 +5,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.listUntilX;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
 import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.playerGameState;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.removePlayersFromList;
@@ -21,7 +22,7 @@ import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage
 public class QuitCommand extends CommandAPICommand {
 
 
-    public QuitCommand(String commandName) {
+    public QuitCommand(String commandName, JavaPlugin plugin) {
         super(commandName);
         executesPlayer(((sender, args) -> {
             // Checks if the player has permission to use this command
@@ -58,7 +59,7 @@ public class QuitCommand extends CommandAPICommand {
             }
 
 
-            if (playerRemove(sender, "quit")) {
+            if (playerRemove(sender, "quit", plugin)) {
                 gameInfo.remove(sender);
                 // Remove the player from the queue
             } else {

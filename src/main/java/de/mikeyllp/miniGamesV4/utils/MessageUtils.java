@@ -1,11 +1,25 @@
 package de.mikeyllp.miniGamesV4.utils;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
+
 
 public class MessageUtils {
-    private static final String PREFIX = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR><color:#00E5E5>";
 
-    // Give the prefix Message when you call it.
+    // To get the Config
+    private static JavaPlugin plugin;
+    private static String PREFIX;
+
+    public static void init(JavaPlugin pl) {
+        plugin = pl;
+        reloadConfig();
+    }
+
+    public static void reloadConfig() {
+        plugin.reloadConfig();
+        PREFIX = plugin.getConfig().getString("prefix", "").replace("{message}", "");
+    }
+
     public static String prefix() {
         return PREFIX;
     }

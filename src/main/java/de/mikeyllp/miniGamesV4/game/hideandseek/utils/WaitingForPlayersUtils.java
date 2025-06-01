@@ -1,0 +1,87 @@
+package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
+
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.startGame;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.formatTimeUtils.formatTimer;
+
+public class WaitingForPlayersUtils {
+    public static BukkitRunnable waitingTask;
+
+    public static final List<Integer> timerList = new ArrayList<>();
+    private static boolean timerRunning = false;
+
+    public static void startWaitingTask(JavaPlugin plugin) {
+        FileConfiguration config = plugin.getConfig();
+        int timer = config.getInt("timeAutoStartHASGroup");
+        int maxPlayers = config.getInt("maxPlayersPerHASGroup");
+        int minPlayers = config.getInt("minPlayersPerHASGroup");
+        MiniMessage mm = MiniMessage.miniMessage();
+
+        // Create a new task
+        waitingTask = new BukkitRunnable() {
+            // This is for the timer countdown
+            int index = 0;
+            boolean countdownStarted = false;
+
+            @Override
+            public void run() {
+                int currentSize = listUntilX.size();
+                // Check if the there are no players in the list if so cancel the task
+                if (currentSize == 0) {
+                    cancel();
+                    waitingTask = null;
+                    timerRunning = false;
+                    countdownStarted = false;
+                    return;
+                }
+                // Checks if enough players are in the list, if not cancel the timer
+                if (listUntilX.size() < minPlayers && timerRunning) {
+                    timerRunning = false;
+                    countdownStarted = false;
+                    index = 0;
+                    timerList.clear();
+                    return;
+                }
+                // If the countdown has not started and enough players are in the list, start the countdown
+                if (!countdownStarted && currentSize >= minPlayers) {
+                    countdownStarted = true;
+                    timerRunning = true;
+                    timerList.clear();
+                    // Generate the countdown list
+                    for (int i = timer; i > 0; i--) {
+                        timerList.add(i);
+                    }
+                    index = 0;
+                }
+                // This is the countdown logic, if the countdown has started, send the action bar message
+                if (countdownStarted) {
+                    String timer = formatTimer(timerList.get(index));
+                    for (Player p : listUntilX) {
+                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + timer + "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                    }
+                    index++;
+                    if (index >= timerList.size() || currentSize >= maxPlayers) {
+                        startGame(plugin, config);
+                        cancel();
+                        waitingTask = null;
+                        timerRunning = false;
+                    }
+                } else {
+                    for (Player p : listUntilX) {
+                        p.sendActionBar(mm.deserialize("<gold>Warten auf weitere Spieler... (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                    }
+                }
+            }
+        };
+        waitingTask.runTaskTimer(plugin, 0L, 20L);
+    }
+}

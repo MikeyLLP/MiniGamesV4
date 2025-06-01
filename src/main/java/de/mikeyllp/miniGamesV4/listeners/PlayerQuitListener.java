@@ -4,14 +4,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.listUntilX;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
 import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.inGameStatus;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.removePlayersFromList;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class PlayerQuitListener implements Listener {
+
+    private final JavaPlugin plugin;
+
+    public PlayerQuitListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     //removes the player from the game when he leaves the server
     @EventHandler
@@ -26,7 +33,7 @@ public class PlayerQuitListener implements Listener {
 
         // Removes The Player from the listUntilX
         listUntilX.removeIf(value -> value.equals(player));
-        playerRemove(player, "disconnected");
+        playerRemove(player, "disconnected", plugin);
 
     }
 }

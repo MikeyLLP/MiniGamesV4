@@ -21,24 +21,26 @@ public class HelpCommand extends CommandAPICommand {
             sender.sendMessage("");
             sender.sendRichMessage("<color:#00FFD5>Allgemeine Befehle:");
             sendHelpMessage(sender, "/minigames help", "- Zeigt diese Hilfe");
-            sendHelpMessage(sender, "/minigames <game> [<player>]", "- Spiele, die du spielen kannst");
+            sendHelpMessage(sender, "/minigames <game> [player]", "- Spiele, die du spielen kannst");
             sendHelpMessage(sender, "/minigames accept <player>", "- Nimmt die Anfrage von dem Spieler an, den man angibt");
             sendHelpMessage(sender, "/minigames declined <player>", "- Lehnt die Anfrage von dem Spieler ab, den man angibt");
-            sendHelpMessage(sender, "/minigames toggle <player>", "- Aktiviert/Deaktiviert, dass man Anfragen bekommt");
+            sendHelpMessage(sender, "/minigames toggle", "- Aktiviert/Deaktiviert, dass man Anfragen bekommt");
             sender.sendMessage("");
             sender.sendRichMessage("<color:#00FFD5>Spiele:");
             sender.sendMessage("");
             sender.sendRichMessage("TicTacToe");
             sender.sendRichMessage("Schere, Stein, Papier");
+            sender.sendRichMessage("Hide and Seek");
 
             // Here are the Admin Commands
             if (sender.isOp() || sender.hasPermission("MiniGamesV4.admin")) {
                 sender.sendMessage("");
                 sender.sendRichMessage("<color:#00FFD5>Admin Befehle:");
                 sendHelpMessage(sender, "/minigames reload", "- Läd die Config neu");
+                sendHelpMessage(sender, "/minigames clear", "- Bannt alle Spieler und lädt die Config neu.");
+                sendHelpMessage(sender, "/minigames set ", "- Damit kannst du die Config bearbeiten.");
             }
             sender.sendRichMessage("<gold>====================================</gold>");
-
         }));
     }
 }

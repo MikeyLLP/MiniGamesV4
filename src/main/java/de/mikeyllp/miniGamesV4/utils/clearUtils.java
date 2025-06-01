@@ -6,8 +6,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.timerList;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekStorage.*;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.WaitingForPlayersUtils.timerList;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.inGameStatus;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.playerGameState;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
@@ -15,8 +15,7 @@ import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.whatGame;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.*;
 import static de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage.isToggle;
 import static de.mikeyllp.miniGamesV4.utils.CheckConfigUtils.checkAndFixingConfig;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 public class clearUtils {
 
@@ -26,7 +25,7 @@ public class clearUtils {
     public static void clearAllLists(CommandSender sender, JavaPlugin plugin) {
         if (!confirmClear.containsKey(sender)) {
             // 10 seconds to confirm the clear command
-            confirmClear.put(sender, System.currentTimeMillis() + 10000);
+            confirmClear.put(sender, null);
             sendCustomMessage(sender, "<red>Are you sure you want to clear all game lists? Type <gold>/minigames clear</gold> again to confirm.</red>");
             return;
         }
@@ -46,10 +45,14 @@ public class clearUtils {
         gameInfo.clear();
         isToggle.clear();
         confirmClear.clear();
+        seekerList.clear();
+        gameState.clear();
+        noMoveGroup.clear();
 
 
         // Check to Reload the config
         try {
+            reloadConfig();
             plugin.reloadConfig();
             timerList.clear();
 

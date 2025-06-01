@@ -25,6 +25,20 @@ public class CheckConfigUtils {
         boolean valid = true;
 
         // Check if the right validation is set
+        // General
+        if (!config.isString("prefix")) {
+            plugin.getLogger().warning("Config key 'prefix' is missing or not a string.");
+            valid = false;
+        }
+        if (!config.isString("language")) {
+            plugin.getLogger().warning("Config key 'language' is missing or not a string.");
+            valid = false;
+        }
+        if (!config.isString("command")) {
+            plugin.getLogger().warning("Config key 'command' is missing or not a string.");
+            valid = false;
+        }
+
         // Games
         if (!config.isBoolean("HideAndSeek")) {
             plugin.getLogger().warning("Config key 'HideAndSeek' is missing or not a boolean.");
