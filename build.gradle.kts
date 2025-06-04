@@ -47,12 +47,16 @@ paper {
             required = true
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
+        register("packetevents") {
+            required = true
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
     }
 }
 
 tasks {
     runServer {
-        minecraftVersion("1.21")
+        minecraftVersion("1.21.4")
 
         downloadPlugins {
             hangar("commandapi", "10.0.0")

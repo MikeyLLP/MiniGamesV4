@@ -1,8 +1,11 @@
 package de.mikeyllp.miniGamesV4;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
 import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.NoSeekerMove;
+import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.PacketEventGlowListener;
 import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
 import de.mikeyllp.miniGamesV4.listeners.PlayerQuitListener;
@@ -10,6 +13,7 @@ import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import de.mikeyllp.miniGamesV4.utils.CreateAndCheckLanguages;
 import de.mikeyllp.miniGamesV4.utils.MessageUtils;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -24,11 +28,19 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     private static MiniGamesV4 instance;
 
+    @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
 
     @Override
     public void onEnable() {
 
         instance = this;
+
+
+        PacketEvents.getAPI().init();
 
 
         //Thanks to ChatGPT for the Logo XD
@@ -49,6 +61,7 @@ public final class MiniGamesV4 extends JavaPlugin {
 
 
         PluginManager manager = getServer().getPluginManager();
+        var packetsManager = PacketEvents.getAPI().getEventManager();
 
 
         // Register the Listener
@@ -59,6 +72,10 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new TicTacToeGame(), this);
         manager.registerEvents(new ToggleInvitesStorage(), this);
         manager.registerEvents(new NoSeekerMove(), this);
+
+        packetsManager.registerListener(
+                new PacketEventGlowListener(), PacketListenerPriority.NORMAL);
+
 
         new MainCommand(this.getConfig().getString("command"), this).register();
         // This need to be first so that everything else can use the config
@@ -76,6 +93,7 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PacketEvents.getAPI().terminate();
         getLogger().info("Bye <3");
     }
 

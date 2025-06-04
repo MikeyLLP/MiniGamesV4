@@ -88,10 +88,25 @@ public class HideAndSeekState {
     public void startGameTask() {
         FileConfiguration config = plugin.getConfig();
 
+        // hints
         int timerFirst = config.getInt("playTimeHAS");
+        int hints = config.getInt("HASHints");
+        int hintsTime = config.getInt("HintTimeHAS");
+
+        final List<Integer> hintTimes = new ArrayList<>();
 
         MiniMessage mm = MiniMessage.miniMessage();
 
+        // To know how long the interval is between the hints
+        long intervallSek = timerFirst / hints;
+        int hintTime = Math.round(intervallSek);
+
+        for (int i = 0; i <= hints; i++) {
+            int someHint = hintTime * i;
+            hintTimes.add(someHint);
+        }
+        System.out.println(hintsTime * 20);
+        PotionEffect glowing = new PotionEffect(PotionEffectType.GLOWING, hintsTime * 20, 1, false, false);
 
         inGameTask = new BukkitRunnable() {
             int timeLeft = timerFirst;
@@ -105,6 +120,20 @@ public class HideAndSeekState {
                 // Show the action bar message to all players in the group
                 for (Player p : groupList) {
                     p.sendActionBar(mm.deserialize("<gold>Das Spiel endet in: <color:#00E5E5>" + timer + "</color> Übrige Verstecker <color:#00E5E5>" + hidersSize + "</color></gold>"));
+                }
+
+                if (hintTimes.contains(timeLeft)) {
+                    System.out.println("1");
+                    for (Player seeker : seekerList) {
+                        System.out.println(seeker);
+                        for (Player hider : groupList) {
+                            System.out.println(hider);
+
+                            // Give the seeker hints to see the hiders
+                            seeker.sendPotionEffectChange(hider, glowing);
+
+                        }
+                    }
                 }
 
 

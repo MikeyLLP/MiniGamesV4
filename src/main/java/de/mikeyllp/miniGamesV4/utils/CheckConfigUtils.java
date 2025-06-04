@@ -26,12 +26,12 @@ public class CheckConfigUtils {
 
         // Check if the right validation is set
         // General
-        if (!config.isString("prefix")) {
-            plugin.getLogger().warning("Config key 'prefix' is missing or not a string.");
-            valid = false;
-        }
         if (!config.isString("language")) {
             plugin.getLogger().warning("Config key 'language' is missing or not a string.");
+            valid = false;
+        }
+        if (!config.isString("prefix")) {
+            plugin.getLogger().warning("Config key 'prefix' is missing or not a string.");
             valid = false;
         }
         if (!config.isString("command")) {
@@ -85,6 +85,10 @@ public class CheckConfigUtils {
         }
         if (!config.isInt("HASHints")) {
             plugin.getLogger().warning("Config key 'HASHints' is missing or not an integer.");
+            valid = false;
+        }
+        if (!config.isInt("HintTimeHAS")) {
+            plugin.getLogger().warning("Config key 'HintTimeHAS' is missing or not an integer.");
             valid = false;
         }
 

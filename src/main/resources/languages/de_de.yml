@@ -1,0 +1,9 @@
+# Just the normal messages
+normal-message:
+
+# Warning messages
+warning-message:
+
+# Special messages here are like timers etc
+special-message:
+  timer:
