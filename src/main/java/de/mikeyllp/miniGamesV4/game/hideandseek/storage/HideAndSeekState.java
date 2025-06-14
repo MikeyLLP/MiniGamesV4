@@ -94,6 +94,7 @@ public class HideAndSeekState {
         int hintsTime = config.getInt("HintTimeHAS");
 
         final List<Integer> hintTimes = new ArrayList<>();
+        final List<Integer> hintRemove = new ArrayList<>();
 
         MiniMessage mm = MiniMessage.miniMessage();
 
@@ -104,9 +105,10 @@ public class HideAndSeekState {
         for (int i = 0; i <= hints; i++) {
             int someHint = hintTime * i;
             hintTimes.add(someHint);
+            hintRemove.add(someHint + hintsTime);
+            System.out.println(hintsTime);
+            System.out.println(hintRemove);
         }
-        System.out.println(hintsTime * 20);
-        PotionEffect glowing = new PotionEffect(PotionEffectType.GLOWING, hintsTime * 20, 1, false, false);
 
         inGameTask = new BukkitRunnable() {
             int timeLeft = timerFirst;
@@ -122,18 +124,14 @@ public class HideAndSeekState {
                     p.sendActionBar(mm.deserialize("<gold>Das Spiel endet in: <color:#00E5E5>" + timer + "</color> Übrige Verstecker <color:#00E5E5>" + hidersSize + "</color></gold>"));
                 }
 
+                // Checks if the time is on the hint list and adds the glow effect to the hiders
                 if (hintTimes.contains(timeLeft)) {
-                    System.out.println("1");
-                    for (Player seeker : seekerList) {
-                        System.out.println(seeker);
-                        for (Player hider : groupList) {
-                            System.out.println(hider);
+                    glowGroup.put(groupName, groupList);
+                }
 
-                            // Give the seeker hints to see the hiders
-                            seeker.sendPotionEffectChange(hider, glowing);
-
-                        }
-                    }
+                // Removes the glow effect from the hiders if the time is on the remove list
+                if (hintRemove.contains(timeLeft)) {
+                    glowGroup.remove(groupName);
                 }
 
 

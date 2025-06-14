@@ -4,9 +4,12 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import java.io.File;
+
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 public class SetEnableDisableGame extends CommandAPICommand {
     public SetEnableDisableGame(String commandName, JavaPlugin plugin) {
@@ -14,7 +17,7 @@ public class SetEnableDisableGame extends CommandAPICommand {
         super(commandName);
 
 
-        withArguments(new StringArgument("miniGames").replaceSuggestions(ArgumentSuggestions.strings("HideAndSeek", "TicTacToe", "RPS")));
+        withArguments(new StringArgument("miniGames").replaceSuggestions(ArgumentSuggestions.strings("HideAndSeek", "TicTacToe", "RockPaperScissors")));
 
 
         executes(((sender, arg) -> {
@@ -32,35 +35,35 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "HideAndSeek has been disabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "HideAndSeek", false);
+                        sendNeedReloadMessage(sender);
                     } else {
                         config.set("HideAndSeek", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "HideAndSeek has been enabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "HideAndSeek", true);
+                        sendNeedReloadMessage(sender);
                     }
                     break;
-                case "rps":
+                case "rockpaperscissors":
                     if (config.getBoolean("RockPaperScissors")) {
                         config.set("RockPaperScissors", false);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "RPS has been disabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "RockPaperScissors", false);
+                        sendNeedReloadMessage(sender);
                     } else {
                         config.set("RockPaperScissors", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "RPS has been enabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "RockPaperScissors", true);
+                        sendNeedReloadMessage(sender);
                     }
                     break;
                 case "tictactoe":
@@ -70,20 +73,22 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "TicTacToe has been disabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "TicTacToe", false);
+                        sendNeedReloadMessage(sender);
                     } else {
                         config.set("TicTacToe", true);
 
                         // Save the config
                         plugin.saveConfig();
 
-                        sendCustomMessage(sender, "TicTacToe has been enabled.");
-                        sendCustomMessage(sender, "Pleas reload the config to apply changes.");
+                        sendGameSwitch(sender, "TicTacToe", true);
+                        sendNeedReloadMessage(sender);
                     }
                     break;
                 default:
-                    sendCustomMessage(sender, "<red>Invalid miniGame name:" + " <gold>HideAndSeek" + " TicTacToe" + " RPS");
+                    String lang = plugin.getConfig().getString("lang");
+                    File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
+                    sendCustomMessage(sender, YamlConfiguration.loadConfiguration(file).getString("warning-message.false-game"));
             }
         }));
     }

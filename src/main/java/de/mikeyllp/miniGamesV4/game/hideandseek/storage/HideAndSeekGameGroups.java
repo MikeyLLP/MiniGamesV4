@@ -19,6 +19,7 @@ public class HideAndSeekGameGroups {
     public static final Map<String, List<Player>> noMoveGroup = new HashMap<>();
     public static final Map<String, List<Player>> gameGroup = new HashMap<>();
     public static final Map<String, List<Player>> seekerGroup = new HashMap<>();
+    public static final Map<String, List<Player>> glowGroup = new HashMap<>();
 
     public static final Map<String, HideAndSeekState> gameState = new HashMap<>();
 

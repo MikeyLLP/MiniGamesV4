@@ -1,9 +1,32 @@
-# Just the normal messages
+# Wie nutzt du das für dich selbst?
+example-message:
+  # Normalerweise nimmt er sich die Farbe aus dem Prefix in der Config.
+  # Wenn du nicht möchtest, dass er sich das aus der Config nimmt, gib einfach die Farbe wie im Beispiel an.
+  # Das sind MiniMessages, die kannst du beliebig bearbeiten - dick, kursiv, unterstrichen, durchgestrichen etc.
+  example: "<IrgendEineFarbe>Dies ist eine Beispielnachricht.</IrgendEineFarbe>"
+
+
+
+# Hier sind die Standardnachrichten.
 normal-message:
+  info:
+    disabled-game: "<gold>%game%</gold> wurde deaktiviert."
+    enabled-game: "<gold>%game%</gold> wurde aktiviert."
+    reload: "Bitte lade die Config neu, um die Änderungen zu übernehmen."
+    min-players-HAS: "Das Minimum für Spieler, damit Hide And Seek nach einer Zeit startet, wurde auf <gold>%number%</gold> gesetzt."
+    max-players-HAS: "Das Maximum für Spieler, damit Hide And Seek direkt Startet, wurde auf <gold>%number%</gold> gesetzt."
+    max-seekers: "Das Maximum an Suchern wurde auf <gold>%number%</gold> gesetzt."
+    time-autostart-HAS: "Die Zeit für den Autostart von Hide and Seek wurde auf <gold>%number%</gold> gesetzt."
+    play-time-HAS: "Die Spielzeit für Hide and Seek wurde auf %number% gesetzt."
+    hide-time-HAS: "Die Versteckzeit für Hide and Seek wurde auf <gold>%number%</gold> gesetzt."
+    hints-HAS: "Die Anzahl an Hinweisen für die Sucher wurde auf <gold>%number%</gold> gesetzt."
 
-# Warning messages
+
+# Hier sind die Fehlernachrichten
 warning-message:
+  false-game: "<red>Ungültiges MiniGame: <gold>HideAndSeek, TicTacToe, RockPaperScissors.</red>"
+  invalid-config-use: "<red>Unzulässige Namen, bitte nutze folgende Argumente:</red> <gold>minHASPlayers, maxHASPlayers, maxHASSeekers, timeHASAutoStart, HASPlayTime, HASHideTime, HASHints</gold>"
 
-# Special messages here are like timers etc
+# Hier sind spezielle Sachen wie z.B. Timer etc.
 special-message:
   timer:
