@@ -106,8 +106,6 @@ public class HideAndSeekState {
             int someHint = hintTime * i;
             hintTimes.add(someHint);
             hintRemove.add(someHint + hintsTime);
-            System.out.println(hintsTime);
-            System.out.println(hintRemove);
         }
 
         inGameTask = new BukkitRunnable() {
@@ -119,21 +117,24 @@ public class HideAndSeekState {
                 int hidersSize = groupList.size() - seekerList.size();
                 String timer = formatTimer(timeLeft);
 
+                // Here we check if the timeLeft is in the hintTimes list to set the glowing effect
+                if (hintTimes.contains(timeLeft)) {
+                    for (Player p : groupList) {
+                        p.setGlowing(true);
+                    }
+                }
+
+                // Here we check if the timeLeft is in the hintRemove list to remove the glowing effect
+                if (hintRemove.contains(timeLeft)) {
+                    for (Player p : groupList) {
+                        p.setGlowing(false);
+                    }
+                }
+
                 // Show the action bar message to all players in the group
                 for (Player p : groupList) {
                     p.sendActionBar(mm.deserialize("<gold>Das Spiel endet in: <color:#00E5E5>" + timer + "</color> Übrige Verstecker <color:#00E5E5>" + hidersSize + "</color></gold>"));
                 }
-
-                // Checks if the time is on the hint list and adds the glow effect to the hiders
-                if (hintTimes.contains(timeLeft)) {
-                    glowGroup.put(groupName, groupList);
-                }
-
-                // Removes the glow effect from the hiders if the time is on the remove list
-                if (hintRemove.contains(timeLeft)) {
-                    glowGroup.remove(groupName);
-                }
-
 
                 // Checks if the timer has reached 0
                 if (timeLeft <= 0) {

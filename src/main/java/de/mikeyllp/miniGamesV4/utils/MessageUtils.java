@@ -38,33 +38,15 @@ public class MessageUtils {
         return PREFIX;
     }
 
-    // Send the player a No Permission Message
-    public static void sendNoPermissionMessage(CommandSender sender) {
-        sendCustomMessage(sender, "<red>Du hast keine Berechtigung, um diesen Befehl zu verwenden.</red>");
-    }
-
-    // Send the player a Arleady in Game Message
-    public static void sendAlreadyInGameMessage(CommandSender sender) {
-        sendCustomMessage(sender, "<red>Du bist bereits in einem Spiel.</red>");
-    }
-
-    // Send the player a No Online Message
-    public static void sendNoOnlinePlayerMessage(CommandSender sender) {
-        sendCustomMessage(sender, "<red>Der Spieler ist nicht online.</red>");
-    }
-
-    //Send the player a No Invite yourself Message
-    public static void sendNoInviteYourselfMessage(CommandSender sender) {
-        sendCustomMessage(sender, "<red>Du kannst dich nicht selbst einladen.</red>");
-    }
-
-    public static void miniGamesDisabledMessage(CommandSender sender) {
-        sendCustomMessage(sender, "<red>Dieses MiniGame ist derzeit deaktiviert.</red>");
-    }
 
     // You can use this very easily because you only set the message and the prefix are automatically added.
     public static void sendCustomMessage(CommandSender sender, String message) {
         sender.sendRichMessage(prefix() + message);
+    }
+
+    // The method for the standard warning messages.
+    public static void sendCustomWarnMessage(CommandSender sender, String message) {
+        sender.sendRichMessage(prefix() + "<red>" + message + "</red>");
     }
 
     // You can use this to send a help message with the command and description.
@@ -77,17 +59,39 @@ public class MessageUtils {
 
     // Info
     public static void sendNeedReloadMessage(CommandSender sender) {
-        //getLangConfig(config().getString("language")).getString("normal-message.info.reload");
         sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.reload"));
     }
 
     public static void sendGameSwitch(CommandSender sender, String game, boolean state) {
         if (state) {
-            //getLangConfig(config().getString("language")).getString("normal-message.info.enabled-game");
             sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.enabled-game").replace("%game%", game));
             return;
         }
-        //getLangConfig(config().getString("language")).getString("normal-message.info.disabled-game");
         sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.disabled-game").replace("%game%", game));
+    }
+
+    public static void needHelpMessage(CommandSender sender) {
+        sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.need-help").replace("%command%", config().getString("command")));
+    }
+
+    // Error Messages
+    public static void sendNoPermissionMessage(CommandSender sender) {
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.no-permission"));
+    }
+
+    public static void miniGamesDisabledMessage(CommandSender sender) {
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("disabled-game"));
+    }
+
+    public static void sendAlreadyInGameMessage(CommandSender sender) {
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("already-in-game"));
+    }
+
+    public static void sendNoOnlinePlayerMessage(CommandSender sender) {
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("player-not-found"));
+    }
+
+    public static void sendNoInviteYourselfMessage(CommandSender sender) {
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("no-invite-yourself"));
     }
 }

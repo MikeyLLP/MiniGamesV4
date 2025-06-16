@@ -1,12 +1,18 @@
 package de.mikeyllp.miniGamesV4.commands;
 
 import dev.jorel.commandapi.CommandAPICommand;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.List;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendHelpMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class HelpCommand extends CommandAPICommand {
-    public HelpCommand(String commandName) {
+    public HelpCommand(String commandName, JavaPlugin plugin) {
         super(commandName);
         // Only an executor for the console
         executes(((sender, args) -> {
@@ -15,30 +21,44 @@ public class HelpCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
+            String lang = plugin.getConfig().getString("language");
+            File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
+            YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(file);
+
+            String cmdReplace = plugin.getConfig().getString("command");
+
             //default commands
             sender.sendRichMessage("<gold>========== [<gradient:#00FF00:#007F00>MiniGames Help</gradient>] ==========</gold>");
             sender.sendRichMessage("<color:#00E5E5><> = Pflicht | [] = Optional</color>");
             sender.sendMessage("");
             sender.sendRichMessage("<color:#00FFD5>Allgemeine Befehle:");
-            sendHelpMessage(sender, "/minigames help", "- Zeigt diese Hilfe");
-            sendHelpMessage(sender, "/minigames <game> [player]", "- Spiele, die du spielen kannst");
-            sendHelpMessage(sender, "/minigames accept <player>", "- Nimmt die Anfrage von dem Spieler an, den man angibt");
-            sendHelpMessage(sender, "/minigames declined <player>", "- Lehnt die Anfrage von dem Spieler ab, den man angibt");
-            sendHelpMessage(sender, "/minigames toggle", "- Aktiviert/Deaktiviert, dass man Anfragen bekommt");
+            // General Commands
+            ConfigurationSection generalCmds = langConfig.getConfigurationSection("special-message.help.sections.general.commands");
+            for (String key : generalCmds.getKeys(false)) {
+                List<String> cmd = generalCmds.getStringList(key);
+                String command = cmd.get(0).replace("%command%", cmdReplace);
+                sendHelpMessage(sender, command, cmd.get(1));
+            }
             sender.sendMessage("");
             sender.sendRichMessage("<color:#00FFD5>Spiele:");
             sender.sendMessage("");
-            sender.sendRichMessage("TicTacToe");
-            sender.sendRichMessage("Schere, Stein, Papier");
-            sender.sendRichMessage("Hide and Seek");
+            List<String> games = langConfig.getStringList("special-message.help.sections.games.list");
+            for (String rawGame : games) {
+                String game = rawGame.replace("%command%", cmdReplace);
+                sender.sendRichMessage(game);
+            }
 
             // Here are the Admin Commands
             if (sender.isOp() || sender.hasPermission("MiniGamesV4.admin")) {
                 sender.sendMessage("");
                 sender.sendRichMessage("<color:#00FFD5>Admin Befehle:");
-                sendHelpMessage(sender, "/minigames reload", "- Läd die Config neu");
-                sendHelpMessage(sender, "/minigames clear", "- Bannt alle Spieler und lädt die Config neu.");
-                sendHelpMessage(sender, "/minigames set ", "- Damit kannst du die Config bearbeiten.");
+
+                ConfigurationSection adminCmds = langConfig.getConfigurationSection("special-message.help.sections.admin.commands");
+                for (String key : adminCmds.getKeys(false)) {
+                    List<String> cmd = adminCmds.getStringList(key);
+                    String command = cmd.get(0).replace("%command%", cmdReplace);
+                    sendHelpMessage(sender, command, cmd.get(1));
+                }
             }
             sender.sendRichMessage("<gold>====================================</gold>");
         }));

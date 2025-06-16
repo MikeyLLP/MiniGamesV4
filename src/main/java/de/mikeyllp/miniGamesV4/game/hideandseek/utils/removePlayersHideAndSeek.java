@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,12 +31,25 @@ public class removePlayersHideAndSeek {
                             config.getDouble("spawn-location.y"),
                             config.getDouble("spawn-location.z")
                     );
+                    player.setGlowing(false);
+                    hiddenNameTag.removePlayer(player);
+
                     switch (reason) {
                         case "gotFound":
                             sendCustomMessage(player, "<red>Du wurdest gefunden!</red>");
                             player.teleportAsync(loc);
-                            gameInfo.remove(player);
                             player.setAllowFlight(true);
+                            gameInfo.remove(player);
+
+                            // in whatever case the players who are not in the game will see the player again but the player who quit will see the gamers not anymore
+                            for (Player outsider : Bukkit.getOnlinePlayers()) {
+                                outsider.showPlayer(plugin, player);
+                                player.showPlayer(plugin, outsider);
+                            }
+                            for (Player groupPlayer : groupPlayers) {
+                                groupPlayer.hidePlayer(plugin, player);
+                                player.hidePlayer(plugin, groupPlayer);
+                            }
 
 
                             //removes the player from the gameGroup if he is a seeker
@@ -48,38 +62,56 @@ public class removePlayersHideAndSeek {
                                 sendCustomMessage(p, "<gold>" + player.getName() + "</gold> wurde gefunden!");
                             }
                             break;
-
                         case "quit":
                             sendCustomMessage(player, "<red>Du hast das Spiel verlassen.</red>");
                             player.teleportAsync(loc);
-                            gameInfo.remove(player);
                             player.setAllowFlight(true);
+                            gameInfo.remove(player);
+
+                            // in whatever case the players who are not in the game will see the player again but the player who quit will see the gamers not anymore
+                            for (Player outsider : Bukkit.getOnlinePlayers()) {
+                                outsider.showPlayer(plugin, player);
+                                player.showPlayer(plugin, outsider);
+                            }
+                            for (Player groupPlayer : groupPlayers) {
+                                groupPlayer.hidePlayer(plugin, player);
+                                player.hidePlayer(plugin, groupPlayer);
+                            }
+
 
                             // removes the player from the seekerGroup if he is a seeker
                             if (seekerGroup.containsKey(groupName) && !seekerGroup.get(groupName).isEmpty()) {
                                 seekerGroup.get(groupName).remove(player);
                                 noMoveGroup.get(groupName).remove(player);
-                                glowGroup.get(groupName).remove(player);
                             }
-
                             //removes the player from the gameGroup if he is a seeker
                             if (!groupPlayers.isEmpty()) {
                                 // Removes the player safe from the List
                                 groupPlayers.removeIf(value -> value.equals(player));
                             }
 
+
                             break;
 
                         case "disconnected":
                             player.teleportAsync(loc);
-                            gameInfo.remove(player);
                             player.setAllowFlight(true);
+                            gameInfo.remove(player);
+
+                            // in whatever case the players who are not in the game will see the player again but the player who quit will see the gamers not anymore
+                            for (Player outsider : Bukkit.getOnlinePlayers()) {
+                                outsider.showPlayer(plugin, player);
+                                player.showPlayer(plugin, outsider);
+                            }
+                            for (Player groupPlayer : groupPlayers) {
+                                groupPlayer.hidePlayer(plugin, player);
+                                player.hidePlayer(plugin, groupPlayer);
+                            }
 
                             // removes the player from the seekerGroup if he is a seeker
                             if (seekerGroup.containsKey(groupName)) {
                                 seekerGroup.get(groupName).remove(player);
                                 noMoveGroup.get(groupName).remove(player);
-                                glowGroup.get(groupName).remove(player);
                             }
 
                             //removes the player from the gameGroup if he is a seeker
@@ -96,14 +128,23 @@ public class removePlayersHideAndSeek {
                         case "gameEnd":
                             // Teleport all players back to the spawn location
                             if (groupPlayers != null) {
+
+                                for (Player p1 : Bukkit.getOnlinePlayers()) {
+                                    for (Player p2 : Bukkit.getOnlinePlayers()) {
+                                        if (!p1.equals(p2)) p1.showPlayer(plugin, p2);
+                                    }
+                                }
+
                                 for (Player p : groupPlayers) {
                                     p.teleportAsync(loc);
-                                    gameInfo.remove(p);
                                     p.setAllowFlight(true);
+                                    p.setGlowing(false);
+                                    gameInfo.remove(p);
+                                    hiddenNameTag.removePlayer(p);
                                 }
                                 gameGroup.remove(groupName);
                                 seekerGroup.remove(groupName);
-                                glowGroup.remove(groupName);
+                                gameState.remove(groupName);
                             }
                             break;
                     }

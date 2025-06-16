@@ -21,7 +21,7 @@ public class WaitingForPlayersUtils {
 
     public static void startWaitingTask(JavaPlugin plugin) {
         FileConfiguration config = plugin.getConfig();
-        int timer = config.getInt("timeAutoStartHASGroup");
+        int rawTimer = config.getInt("timeAutoStartHASGroup");
         int maxPlayers = config.getInt("maxPlayersPerHASGroup");
         int minPlayers = config.getInt("minPlayersPerHASGroup");
         MiniMessage mm = MiniMessage.miniMessage();
@@ -29,8 +29,8 @@ public class WaitingForPlayersUtils {
         // Create a new task
         waitingTask = new BukkitRunnable() {
             // This is for the timer countdown
-            int index = 0;
             boolean countdownStarted = false;
+            int timer = rawTimer;
 
             @Override
             public void run() {
@@ -47,29 +47,24 @@ public class WaitingForPlayersUtils {
                 if (listUntilX.size() < minPlayers && timerRunning) {
                     timerRunning = false;
                     countdownStarted = false;
-                    index = 0;
-                    timerList.clear();
+                    int timer = rawTimer;
                     return;
                 }
                 // If the countdown has not started and enough players are in the list, start the countdown
                 if (!countdownStarted && currentSize >= minPlayers) {
                     countdownStarted = true;
                     timerRunning = true;
-                    timerList.clear();
-                    // Generate the countdown list
-                    for (int i = timer; i > 0; i--) {
-                        timerList.add(i);
-                    }
-                    index = 0;
+                    int timer = rawTimer;
                 }
+
                 // This is the countdown logic, if the countdown has started, send the action bar message
                 if (countdownStarted) {
-                    String timer = formatTimer(timerList.get(index));
+                    String showTimer = formatTimer(timer);
+                    timer--;
                     for (Player p : listUntilX) {
-                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + timer + "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + showTimer + "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
                     }
-                    index++;
-                    if (index >= timerList.size() || currentSize >= maxPlayers) {
+                    if (timer <= 0 || currentSize >= maxPlayers) {
                         startGame(plugin, config);
                         cancel();
                         waitingTask = null;

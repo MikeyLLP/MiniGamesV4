@@ -1,8 +1,11 @@
 package de.mikeyllp.miniGamesV4.game.hideandseek.storage;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +22,12 @@ public class HideAndSeekGameGroups {
     public static final Map<String, List<Player>> noMoveGroup = new HashMap<>();
     public static final Map<String, List<Player>> gameGroup = new HashMap<>();
     public static final Map<String, List<Player>> seekerGroup = new HashMap<>();
-    public static final Map<String, List<Player>> glowGroup = new HashMap<>();
 
     public static final Map<String, HideAndSeekState> gameState = new HashMap<>();
+
+    // To remove the Nametag
+    public static final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    public static Team hiddenNameTag = scoreboard.getTeam("hideNameTags");
 
     // Tread-safe counter
     private final AtomicInteger counter = new AtomicInteger(0);
@@ -41,7 +47,36 @@ public class HideAndSeekGameGroups {
         FileConfiguration config = plugin.getConfig();
 
         gameGroup.put(groupName, playerCopy);
-        listUntilX.clear();
+
+        // Checks if a group is already existing
+        if (hiddenNameTag == null) {
+            hiddenNameTag = scoreboard.registerNewTeam("hideNameTags");
+            hiddenNameTag.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+        }
+
+
+        // This Loop hides all players who are not in the group
+        for (Player outsider : Bukkit.getOnlinePlayers()) {
+            if (listUntilX.contains(outsider)) continue;
+            for (Player hidden : listUntilX) {
+                outsider.hidePlayer(plugin, hidden);
+            }
+        }
+
+        for (Player viewer : listUntilX) {
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                if (target.equals(viewer)) continue;
+                viewer.hidePlayer(plugin, target);
+            }
+
+            for (Player gameTarget : listUntilX) {
+                if (gameTarget.equals(viewer)) continue;
+                viewer.showPlayer(plugin, gameTarget);
+            }
+
+            hiddenNameTag.addEntry(viewer.getName());
+        }
+
 
         int i = 0;
         // When there are more players as wish, set the max seekers
@@ -68,11 +103,16 @@ public class HideAndSeekGameGroups {
         List<Player> noMoveCopy = new ArrayList<>(noMoveList);
         noMoveGroup.put(groupName, noMoveCopy);
 
+
         // Remove seekers from the player list
-        seekerList.clear();
         HideAndSeekState state = new HideAndSeekState(groupName, plugin, config.getInt("playTimeHAS"));
         state.hideTime();
         gameState.put(groupName, state);
+
+
+        listUntilX.clear();
+        noMoveList.clear();
+        seekerList.clear();
     }
 
     // calculate the number of seekers based on the number of players

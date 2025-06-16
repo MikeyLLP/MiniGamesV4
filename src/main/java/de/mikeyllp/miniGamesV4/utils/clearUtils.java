@@ -48,7 +48,6 @@ public class clearUtils {
         seekerList.clear();
         gameState.clear();
         noMoveGroup.clear();
-        glowGroup.clear();
 
 
         // Check to Reload the config

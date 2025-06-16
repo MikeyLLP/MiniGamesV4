@@ -32,7 +32,7 @@ public class MainCommand extends CommandAPICommand {
         withSubcommand(new DeclinedCommand("declined"));
         withSubcommand(new ToggleInvitesCommand("toggle"));
         withSubcommand(new QuitCommand("quit", plugin));
-        withSubcommand(new HelpCommand("help"));
+        withSubcommand(new HelpCommand("help", plugin));
         // If no subcommand is given, it opens the MiniGamesMenu
         executesPlayer((sender, args) -> {
             if (!sender.hasPermission("minigamesv4.minigames")) {

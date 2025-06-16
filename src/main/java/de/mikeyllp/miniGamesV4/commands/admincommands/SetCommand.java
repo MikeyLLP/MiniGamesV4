@@ -6,7 +6,7 @@ import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetNumber;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.needHelpMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class SetCommand extends CommandAPICommand {
@@ -21,7 +21,7 @@ public class SetCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
-            sendCustomMessage(sender, "Need Help? Use /minigames help");
+            needHelpMessage(sender);
         }));
     }
 }

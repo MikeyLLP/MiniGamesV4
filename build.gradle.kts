@@ -34,7 +34,6 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("dev.jorel:commandapi-bukkit-core:10.0.1")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.8.0")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.19")
 }
 
@@ -47,10 +46,6 @@ paper {
             required = true
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
         }
-        register("packetevents") {
-            required = true
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-        }
     }
 }
 
@@ -60,7 +55,6 @@ tasks {
 
         downloadPlugins {
             hangar("commandapi", "10.0.1")
-            modrinth("packetevents", "2.8.0")
         }
     }
 

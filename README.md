@@ -57,7 +57,6 @@ This plugin uses the following APIs:
 
 - [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.10.19**
 - [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.0**
-- [PacketEvents](https://github.com/retrooper/packetevents) - tested with **v2.8.0**
 - [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
 - Java **21+** required.
 
@@ -130,10 +129,6 @@ This plugin uses third-party libraries:
 - **Inventory Framework** © stefvanschie – The Unlicense  
   License: [`THIRD_PARTY_LICENSES/inventoryframework.txt`](./THIRD_PARTY_LICENSES/inventoryframework.txt)  
   Source: https://github.com/stefvanschie/IF
-
-- **PacketEvents**
-  License: [`THIRD_PARTY_LICENSES/packetevents.txt`](./THIRD_PARTY_LICENSES/packetevents.txt)  
-  Source: https://github.com/retrooper/packetevents
 
 ---
 
