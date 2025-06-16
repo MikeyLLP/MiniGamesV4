@@ -82,7 +82,9 @@ public class removePlayersHideAndSeek {
                             // removes the player from the seekerGroup if he is a seeker
                             if (seekerGroup.containsKey(groupName) && !seekerGroup.get(groupName).isEmpty()) {
                                 seekerGroup.get(groupName).remove(player);
-                                noMoveGroup.get(groupName).remove(player);
+                                if (!noMoveGroup.isEmpty()) {
+                                    noMoveGroup.get(groupName).remove(player);
+                                }
                             }
                             //removes the player from the gameGroup if he is a seeker
                             if (!groupPlayers.isEmpty()) {
@@ -111,7 +113,9 @@ public class removePlayersHideAndSeek {
                             // removes the player from the seekerGroup if he is a seeker
                             if (seekerGroup.containsKey(groupName)) {
                                 seekerGroup.get(groupName).remove(player);
-                                noMoveGroup.get(groupName).remove(player);
+                                if (!noMoveGroup.isEmpty()) {
+                                    noMoveGroup.get(groupName).remove(player);
+                                }
                             }
 
                             //removes the player from the gameGroup if he is a seeker

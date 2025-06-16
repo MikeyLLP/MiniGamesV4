@@ -1,19 +1,23 @@
 package de.mikeyllp.miniGamesV4.game.hideandseek.storage;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class HideAndSeekGameGroups {
     public static final List<Player> listUntilX = new ArrayList<>();
@@ -84,6 +88,9 @@ public class HideAndSeekGameGroups {
         if ((config.getInt("maxSeekersPerHASGroup")) != 0 && targetSeekers < config.getInt("maxSeekersPerHASGroup.value")) {
             targetSeekers = config.getInt("maxSeekersPerHASGroup.value");
         }
+
+        MiniMessage mm = MiniMessage.miniMessage();
+        Component seekerMessage = mm.deserialize("<color:#00E5E5>Du bist <dark_red>Sucher</dark_red></color:#00E5E5>");
         // Randomly select a seeker from the group
         while (i < targetSeekers) {
             int randomNumber = (int) (Math.random() * playerCopy.size());
@@ -91,8 +98,30 @@ public class HideAndSeekGameGroups {
             if (!seekerList.contains(seeker)) {
                 seekerList.add(seeker);
                 noMoveList.add(seeker);
-                sendCustomMessage(seeker, "Du bist der Sucher!");
+
+                Location posSeeker = seeker.getLocation();
+                seeker.playSound(posSeeker, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                seeker.showTitle(Title.title(seekerMessage, Component.text(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
                 i++;
+            }
+        }
+
+        // Send the hider a message that he is a Hider. And Sends all player the player list
+        Component hiderMessage = mm.deserialize("<color:#00E5E5>Du bist <gold>Verstecker</gold></color:#00E5E5>");
+        for (Player p : listUntilX) {
+            p.sendRichMessage("<dark_red>Sucher:");
+            for (Player p2 : seekerList) {
+                p.sendRichMessage("<gold>" + p2.getName());
+            }
+            p.sendRichMessage("");
+            p.sendRichMessage("<color:#00E5E5>Verstecker:");
+            for (Player p3 : listUntilX) {
+                if (!seekerList.contains(p3)) {
+                    Location posHider = p3.getLocation();
+                    p3.playSound(posHider, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                    p3.showTitle(Title.title(hiderMessage, Component.text(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+                    p.sendRichMessage("<gold>" + p3.getName());
+                }
             }
         }
         // Add the List of the Seekers to the seekerGroup
