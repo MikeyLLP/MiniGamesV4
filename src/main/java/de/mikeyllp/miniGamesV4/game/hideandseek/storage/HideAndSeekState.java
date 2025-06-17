@@ -61,7 +61,6 @@ public class HideAndSeekState {
 
             @Override
             public void run() {
-
                 String hideTimer = formatTimer(hideTimeLeft);
                 // Show the action bar message to all players in the group
                 for (Player p : groupList) {
@@ -178,5 +177,16 @@ public class HideAndSeekState {
             }
         };
         inGameTask.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    public void stopAllTasks() {
+        if (hideTask != null) {
+            hideTask.cancel();
+            hideTask = null;
+        }
+        if (inGameTask != null) {
+            inGameTask.cancel();
+            inGameTask = null;
+        }
     }
 }

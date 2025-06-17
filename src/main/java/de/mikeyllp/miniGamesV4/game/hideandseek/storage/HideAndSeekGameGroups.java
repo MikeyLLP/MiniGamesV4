@@ -5,9 +5,12 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -18,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class HideAndSeekGameGroups {
     public static final List<Player> listUntilX = new ArrayList<>();
@@ -108,10 +112,18 @@ public class HideAndSeekGameGroups {
 
         // Send the hider a message that he is a Hider. And Sends all player the player list
         Component hiderMessage = mm.deserialize("<color:#00E5E5>Du bist <gold>Verstecker</gold></color:#00E5E5>");
+
+        // To set a item if is enabled
+        ItemStack item = new ItemStack(Material.PUFFERFISH);
+        int slot = config.getInt("small-modus.slot") - 1;
+
         for (Player p : listUntilX) {
             p.sendRichMessage("<dark_red>Sucher:");
             for (Player p2 : seekerList) {
                 p.sendRichMessage("<gold>" + p2.getName());
+                if (config.getBoolean("small-modus.is-enabled")){
+                    p2.getInventory().setItem(slot, item);
+                }
             }
             p.sendRichMessage("");
             p.sendRichMessage("<color:#00E5E5>Verstecker:");
@@ -121,6 +133,10 @@ public class HideAndSeekGameGroups {
                     p3.playSound(posHider, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
                     p3.showTitle(Title.title(hiderMessage, Component.text(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
                     p.sendRichMessage("<gold>" + p3.getName());
+                    // Makes the hiders smaller
+                    if (config.getBoolean("small-modus.is-enabled")){
+                        p3.getAttribute(Attribute.SCALE).setBaseValue(0.5);
+                    }
                 }
             }
         }

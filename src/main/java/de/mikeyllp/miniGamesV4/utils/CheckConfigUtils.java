@@ -21,6 +21,7 @@ public class CheckConfigUtils {
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
         ConfigurationSection loc = config.getConfigurationSection("spawn-location");
+        ConfigurationSection small = config.getConfigurationSection("small-modus");
 
         boolean valid = true;
 
@@ -55,6 +56,10 @@ public class CheckConfigUtils {
 
 
         // HAS
+        if (small == null || !small.isBoolean("is-enabled") || !small.isInt("slot") || !(small.getInt("slot") >= 1 && small.getInt("slot") <= 9)) {
+            plugin.getLogger().warning("Config key 'small-modus' is missing or not properly set.");
+            valid = false;
+        }
         if (!config.isInt("minPlayersPerHASGroup")) {
             plugin.getLogger().warning("Config key 'HideAndSeek' is missing or not a boolean.");
             valid = false;

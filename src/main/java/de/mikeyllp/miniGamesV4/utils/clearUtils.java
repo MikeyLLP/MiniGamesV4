@@ -1,13 +1,18 @@
 package de.mikeyllp.miniGamesV4.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
 import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.WaitingForPlayersUtils.timerList;
+import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.seekerRemove;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.inGameStatus;
 import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.playerGameState;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
@@ -30,7 +35,31 @@ public class clearUtils {
             return;
         }
         plugin.getLogger().warning("Clearing all game lists as per request from " + sender.getName());
+
+        for (Map.Entry<String, List<Player>> entry : seekerGroup.entrySet()) {
+            List<Player> seekers = entry.getValue();
+            for (Player seeker :seekers) {
+                seeker.getAttribute(Attribute.SCALE).setBaseValue(1.0);
+                seeker.getInventory().setItem(plugin.getConfig().getInt("small-modus.slot") - 1, null);
+            }
+        }
+
         // All list that need to be cleared
+        for (Map.Entry<String, List<Player>> entry : gameGroup.entrySet()) {
+            List<Player> players = entry.getValue();
+            String groupName = entry.getKey();
+            gameState.get(groupName).stopAllTasks();
+            for (Player p : players) {
+                hiddenNameTag.removeEntry(p.getName());
+                p.setAllowFlight(true);
+                p.setGlowing(false);
+            }
+        }
+        for (Player p1 : Bukkit.getOnlinePlayers()) {
+            for (Player p2 : Bukkit.getOnlinePlayers()) {
+                if (!p1.equals(p2)) p1.showPlayer(plugin, p2);
+            }
+        }
         listUntilX.clear();
         gameGroup.clear();
         seekerGroup.clear();
@@ -48,6 +77,9 @@ public class clearUtils {
         seekerList.clear();
         gameState.clear();
         noMoveGroup.clear();
+
+
+
 
 
         // Check to Reload the config

@@ -3,6 +3,7 @@ package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -78,14 +79,8 @@ public class removePlayersHideAndSeek {
                                 player.hidePlayer(plugin, groupPlayer);
                             }
 
+                            seekerRemove(player, groupName, plugin);
 
-                            // removes the player from the seekerGroup if he is a seeker
-                            if (seekerGroup.containsKey(groupName) && !seekerGroup.get(groupName).isEmpty()) {
-                                seekerGroup.get(groupName).remove(player);
-                                if (!noMoveGroup.isEmpty()) {
-                                    noMoveGroup.get(groupName).remove(player);
-                                }
-                            }
                             //removes the player from the gameGroup if he is a seeker
                             if (!groupPlayers.isEmpty()) {
                                 // Removes the player safe from the List
@@ -110,13 +105,7 @@ public class removePlayersHideAndSeek {
                                 player.hidePlayer(plugin, groupPlayer);
                             }
 
-                            // removes the player from the seekerGroup if he is a seeker
-                            if (seekerGroup.containsKey(groupName)) {
-                                seekerGroup.get(groupName).remove(player);
-                                if (!noMoveGroup.isEmpty()) {
-                                    noMoveGroup.get(groupName).remove(player);
-                                }
-                            }
+                            seekerRemove(player, groupName, plugin);
 
                             //removes the player from the gameGroup if he is a seeker
                             if (!groupPlayers.isEmpty()) {
@@ -131,7 +120,7 @@ public class removePlayersHideAndSeek {
 
                         case "gameEnd":
                             // Teleport all players back to the spawn location
-                            if (groupPlayers != null) {
+                            if (!groupPlayers.isEmpty()) {
 
                                 for (Player p1 : Bukkit.getOnlinePlayers()) {
                                     for (Player p2 : Bukkit.getOnlinePlayers()) {
@@ -140,6 +129,7 @@ public class removePlayersHideAndSeek {
                                 }
 
                                 for (Player p : groupPlayers) {
+                                    seekerRemove(p, groupName, plugin);
                                     p.teleportAsync(loc);
                                     p.setAllowFlight(true);
                                     p.setGlowing(false);
@@ -157,5 +147,17 @@ public class removePlayersHideAndSeek {
             }
         }
         return false;
+    }
+
+    // removes the player from the seekerGroup if he is a seeker
+    public static void seekerRemove(Player player, String groupName, JavaPlugin plugin) {
+        if (seekerGroup.containsKey(groupName)) {
+            seekerGroup.get(groupName).remove(player);
+            player.getAttribute(Attribute.SCALE).setBaseValue(1.0);
+            player.getInventory().setItem(plugin.getConfig().getInt("small-modus.slot") - 1, null);
+            if (!noMoveGroup.isEmpty()) {
+                noMoveGroup.get(groupName).remove(player);
+            }
+        }
     }
 }

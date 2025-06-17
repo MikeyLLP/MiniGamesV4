@@ -5,6 +5,7 @@ import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.NoSeekerMove;
 import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.PlayerHoldItemListener;
 import de.mikeyllp.miniGamesV4.listeners.PlayerJoinQuitListener;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
@@ -59,6 +60,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new TicTacToeGame(), this);
         manager.registerEvents(new ToggleInvitesStorage(), this);
         manager.registerEvents(new NoSeekerMove(), this);
+        manager.registerEvents(new PlayerHoldItemListener(this), this);
 
 
         new MainCommand(this.getConfig().getString("command"), this).register();
