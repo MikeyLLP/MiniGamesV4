@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
+package de.mikeyllp.miniGamesV4.games.hideandseek.utils;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,9 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.startGame;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.formatTimeUtils.formatTimer;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.HideAndSeekGame.startGame;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils.formatTimer;
 
 public class WaitingForPlayersUtils {
     public static BukkitRunnable waitingTask;

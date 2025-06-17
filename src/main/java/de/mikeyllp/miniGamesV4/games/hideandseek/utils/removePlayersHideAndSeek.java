@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
+package de.mikeyllp.miniGamesV4.games.hideandseek.utils;
 
 
 import org.bukkit.Bukkit;
@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.*;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 

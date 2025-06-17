@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.storage;
+package de.mikeyllp.miniGamesV4.games.hideandseek.storage;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.listeners;
+package de.mikeyllp.miniGamesV4.games.hideandseek.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import java.util.List;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.noMoveGroup;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.noMoveGroup;
 
 public class NoSeekerMove implements Listener {
 

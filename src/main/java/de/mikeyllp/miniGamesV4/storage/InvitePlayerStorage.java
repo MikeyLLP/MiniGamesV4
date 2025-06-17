@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
-import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.games.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;

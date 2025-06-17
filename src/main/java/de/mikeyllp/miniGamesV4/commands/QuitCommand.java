@@ -9,10 +9,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.playerGameState;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.removePlayersFromList;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.playerGameState;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.removePlayersFromList;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.removePlayer;

@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.storage;
+package de.mikeyllp.miniGamesV4.games.hideandseek.storage;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,9 +11,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.formatTimeUtils.formatTimer;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.*;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils.formatTimer;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class HideAndSeekState {

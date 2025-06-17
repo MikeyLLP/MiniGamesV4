@@ -3,7 +3,7 @@ package de.mikeyllp.miniGamesV4.commands.invites;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.HideAndSeekGame.addPlayerToHAS;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.HideAndSeekGame.addPlayerToHAS;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 

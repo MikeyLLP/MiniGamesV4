@@ -1,14 +1,14 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek;
+package de.mikeyllp.miniGamesV4.games.hideandseek;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.createGroupFromHAS;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.WaitingForPlayersUtils.startWaitingTask;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.WaitingForPlayersUtils.waitingTask;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.createGroupFromHAS;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.WaitingForPlayersUtils.startWaitingTask;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.WaitingForPlayersUtils.waitingTask;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendAlreadyInGameMessage;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;

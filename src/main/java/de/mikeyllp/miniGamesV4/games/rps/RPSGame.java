@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.rps;
+package de.mikeyllp.miniGamesV4.games.rps;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;

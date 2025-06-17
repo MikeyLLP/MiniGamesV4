@@ -1,11 +1,11 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
-import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.HideAndSeekListeners;
-import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.NoSeekerMove;
-import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
-import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
-import de.mikeyllp.miniGamesV4.game.hideandseek.listeners.PlayerHoldItemListener;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.HideAndSeekListeners;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.NoSeekerMove;
+import de.mikeyllp.miniGamesV4.games.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.PlayerHoldItemListener;
 import de.mikeyllp.miniGamesV4.listeners.PlayerJoinQuitListener;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;

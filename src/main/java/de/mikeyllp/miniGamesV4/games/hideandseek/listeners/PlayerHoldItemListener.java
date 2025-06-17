@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.listeners;
+package de.mikeyllp.miniGamesV4.games.hideandseek.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.seekerGroup;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.seekerGroup;
 
 public class PlayerHoldItemListener implements Listener {
 

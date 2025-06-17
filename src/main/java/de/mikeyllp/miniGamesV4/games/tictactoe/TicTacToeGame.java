@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.tictactoe;
+package de.mikeyllp.miniGamesV4.games.tictactoe;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.DispenserGui;

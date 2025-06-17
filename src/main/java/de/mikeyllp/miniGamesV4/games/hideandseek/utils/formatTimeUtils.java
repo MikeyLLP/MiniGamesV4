@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.game.hideandseek.utils;
+package de.mikeyllp.miniGamesV4.games.hideandseek.utils;
 
 public class formatTimeUtils {
     // Just a simple method to format the timer in the format HH:MM:SS

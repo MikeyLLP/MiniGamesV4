@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.formatTimeUtils.formatTimerWithText;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils.formatTimerWithText;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 public class SetNumber extends CommandAPICommand {

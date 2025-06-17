@@ -11,10 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.inGameStatus;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.removePlayersFromList;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.*;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.inGameStatus;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.removePlayersFromList;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class PlayerJoinQuitListener implements Listener {

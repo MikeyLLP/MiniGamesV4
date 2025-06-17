@@ -10,11 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.mikeyllp.miniGamesV4.game.hideandseek.storage.HideAndSeekGameGroups.*;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.WaitingForPlayersUtils.timerList;
-import static de.mikeyllp.miniGamesV4.game.hideandseek.utils.removePlayersHideAndSeek.seekerRemove;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.inGameStatus;
-import static de.mikeyllp.miniGamesV4.game.rps.RPSGame.playerGameState;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.*;
+import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.WaitingForPlayersUtils.timerList;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.inGameStatus;
+import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.playerGameState;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.whatGame;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.*;
