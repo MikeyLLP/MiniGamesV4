@@ -1,6 +1,8 @@
 package de.mikeyllp.miniGamesV4.games.hideandseek.storage;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,8 +54,11 @@ public class HideAndSeekState {
         MiniMessage mm = MiniMessage.miniMessage();
 
         // disable flight for all players in the group
+        // Set the health max
         for (Player p : groupList) {
             p.setAllowFlight(false);
+            p.setFoodLevel(20);
+            p.setHealth(20);
         }
 
         hideTask = new BukkitRunnable() {
@@ -65,6 +70,22 @@ public class HideAndSeekState {
                 // Show the action bar message to all players in the group
                 for (Player p : groupList) {
                     p.sendActionBar(mm.deserialize("<gold>Die sucher können suchen in: <color:#00E5E5>" + hideTimer + "</color>"));
+                    if (hideTimeLeft <= 5) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "Noch <gold>" + hideTimeLeft + "</gold> Sekunden ");
+                    }
+                    if (hideTimeLeft == 60) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "Noch <gold>60</gold> Sekunden ");
+                    }
+                    if (hideTimeLeft == 30) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "<gold>30</gold> Sekunden");
+                    }
+                    if (hideTimeLeft == 15) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "<gold>15</gold> sek Übrig");
+                    }
                 }
 
                 // Give the seekers a blindness effect
@@ -74,6 +95,9 @@ public class HideAndSeekState {
 
                 // If the timer has reached 0, start the game
                 if (hideTimeLeft <= 0) {
+                    for (Player p : noMoveGroup.get(groupName)) {
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.5F);
+                    }
                     noMoveGroup.remove(groupName);
                     startGameTask();
                     cancel();
@@ -138,12 +162,20 @@ public class HideAndSeekState {
                 // Checks if the timer has reached 0
                 if (timeLeft <= 0) {
                     for (Player p : groupList) {
+                        if (seekerList.contains(p)) {
+                            Location seekerLoc = p.getLocation();
+                            p.playSound(seekerLoc, Sound.ENTITY_VILLAGER_DEATH, 1.0F, 1.0F);
+                            sendCustomMessage(p, "Die Verstecker haben gewonnen!");
+                            continue;
+                        }
+                        Location hiderLoc = p.getLocation();
+                        p.playSound(hiderLoc, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
                         sendCustomMessage(p, "Die Verstecker haben gewonnen!");
+
                     }
                     for (Player p : new ArrayList<>(groupList)) {
                         playerRemove(p, "gameEnd", plugin);
                     }
-                    gameState.remove(groupName);
                     cancel();
                     return;
                 }
@@ -152,7 +184,14 @@ public class HideAndSeekState {
                 // If there are no seekers left
                 if (seekerList.isEmpty()) {
                     for (Player p : groupList) {
+                        if (seekerList.contains(p)) {
+                            p.playSound( p.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 1.0F, 1.0F);
+                            sendCustomMessage(p, "Die Verstecker haben gewonnen!");
+                            continue;
+                        }
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
                         sendCustomMessage(p, "Die Verstecker haben gewonnen!");
+
                     }
                     for (Player p : new ArrayList<>(groupList)) {
                         playerRemove(p, "gameEnd", plugin);
@@ -165,6 +204,7 @@ public class HideAndSeekState {
                 if (seekerList.size() >= groupList.size()) {
                     for (Player p : seekerList) {
                         sendCustomMessage(p, "Die Sucher haben gewonnen!");
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
                     }
                     for (Player p : new ArrayList<>(groupList)) {
                         playerRemove(p, "gameEnd", plugin);

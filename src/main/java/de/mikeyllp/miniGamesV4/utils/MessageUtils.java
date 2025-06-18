@@ -80,18 +80,18 @@ public class MessageUtils {
     }
 
     public static void miniGamesDisabledMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("disabled-game"));
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.disabled-game"));
     }
 
     public static void sendAlreadyInGameMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("already-in-game"));
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.already-in-game"));
     }
 
     public static void sendNoOnlinePlayerMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("player-not-found"));
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.player-not-found"));
     }
 
     public static void sendNoInviteYourselfMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("no-invite-yourself"));
+        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.no-invite-yourself"));
     }
 }

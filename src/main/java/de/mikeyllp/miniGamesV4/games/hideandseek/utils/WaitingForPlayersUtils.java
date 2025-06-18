@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4.games.hideandseek.utils;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +46,9 @@ public class WaitingForPlayersUtils {
                 }
                 // Checks if enough players are in the list, if not cancel the timer
                 if (listUntilX.size() < minPlayers && timerRunning) {
+                    for(Player p : listUntilX) {
+                        p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                    }
                     timerRunning = false;
                     countdownStarted = false;
                     int timer = rawTimer;
@@ -60,16 +64,23 @@ public class WaitingForPlayersUtils {
                 // This is the countdown logic, if the countdown has started, send the action bar message
                 if (countdownStarted) {
                     String showTimer = formatTimer(timer);
-                    timer--;
                     for (Player p : listUntilX) {
-                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + showTimer + "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                        p.sendActionBar(mm.deserialize("<gold>Spiel startet in: <color:#00E5E5>" + showTimer +
+                                "</color> (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));
+                        if (timer <= 5) {
+                            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        }
                     }
                     if (timer <= 0 || currentSize >= maxPlayers) {
+                        for (Player p : listUntilX) {
+                            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.5F);
+                        }
                         startGame(plugin, config);
                         cancel();
                         waitingTask = null;
                         timerRunning = false;
                     }
+                    timer--;
                 } else {
                     for (Player p : listUntilX) {
                         p.sendActionBar(mm.deserialize("<gold>Warten auf weitere Spieler... (<color:#00E5E5>" + currentSize + "</color>/<color:#00E5E5>" + maxPlayers + "</color>)</gold>"));

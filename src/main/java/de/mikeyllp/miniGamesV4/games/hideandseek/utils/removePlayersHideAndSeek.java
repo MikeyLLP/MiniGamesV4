@@ -3,6 +3,7 @@ package de.mikeyllp.miniGamesV4.games.hideandseek.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -38,6 +39,7 @@ public class removePlayersHideAndSeek {
                     switch (reason) {
                         case "gotFound":
                             sendCustomMessage(player, "<red>Du wurdest gefunden!</red>");
+                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1f, 1.5f);
                             player.teleportAsync(loc);
                             player.setAllowFlight(true);
                             gameInfo.remove(player);
@@ -61,10 +63,12 @@ public class removePlayersHideAndSeek {
 
                             for (Player p : groupPlayers) {
                                 sendCustomMessage(p, "<gold>" + player.getName() + "</gold> wurde gefunden!");
+                                p.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1f, 1.5f);
                             }
                             break;
                         case "quit":
                             sendCustomMessage(player, "<red>Du hast das Spiel verlassen.</red>");
+                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1f, 1.5f);
                             player.teleportAsync(loc);
                             player.setAllowFlight(true);
                             gameInfo.remove(player);

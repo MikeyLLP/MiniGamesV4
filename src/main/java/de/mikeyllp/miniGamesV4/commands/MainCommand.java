@@ -39,7 +39,7 @@ public class MainCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
-            MenuMain.openGameMenue(sender);
+            MenuMain.openGameMenue(sender, plugin);
         });
     }
 }

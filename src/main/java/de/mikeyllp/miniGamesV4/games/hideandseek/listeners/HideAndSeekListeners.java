@@ -4,6 +4,8 @@ import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -49,6 +51,30 @@ public class HideAndSeekListeners implements Listener {
                         playerRemove(clickedPlayer, "gotFound", plugin);
                     }
                 }
+            }
+        }
+    }
+
+    // That the players cannot take damage
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        for (List<Player> group : gameGroup.values()) {
+            if (group.contains(player)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    // That the players cannot lose hunger
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        for (List<Player> group : gameGroup.values()) {
+            if (group.contains(player)) {
+                event.setCancelled(true);
+                return;
             }
         }
     }
