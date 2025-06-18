@@ -74,18 +74,6 @@ public class HideAndSeekState {
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
                         sendCustomMessage(p, "Noch <gold>" + hideTimeLeft + "</gold> Sekunden ");
                     }
-                    if (hideTimeLeft == 60) {
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
-                        sendCustomMessage(p, "Noch <gold>60</gold> Sekunden ");
-                    }
-                    if (hideTimeLeft == 30) {
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
-                        sendCustomMessage(p, "<gold>30</gold> Sekunden");
-                    }
-                    if (hideTimeLeft == 15) {
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
-                        sendCustomMessage(p, "<gold>15</gold> sek Übrig");
-                    }
                 }
 
                 // Give the seekers a blindness effect
@@ -157,7 +145,20 @@ public class HideAndSeekState {
                 // Show the action bar message to all players in the group
                 for (Player p : groupList) {
                     p.sendActionBar(mm.deserialize("<gold>Das Spiel endet in: <color:#00E5E5>" + timer + "</color> Übrige Verstecker <color:#00E5E5>" + hidersSize + "</color></gold>"));
+                    if (timeLeft == 60) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "Noch <gold>60</gold> Sekunden ");
+                    }
+                    if (timeLeft == 30) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "<gold>30</gold> Sekunden");
+                    }
+                    if (timeLeft== 15) {
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                        sendCustomMessage(p, "Noch <gold>15</gold> Sekunden");
+                    }
                 }
+
 
                 // Checks if the timer has reached 0
                 if (timeLeft <= 0) {

@@ -54,16 +54,16 @@ public class MenuMain {
         //Adds  if it enabled the items to the GUI
         if (config.getBoolean("TicTacToe")) {
             navigatorPane.addItem(new GuiItem(tttItem, event -> {
+                event.setCancelled(true);
                 if (canPlay(player)) return;
                 if (!checkPlayer(player)) return;
                 enableClickInvite(player, "TicTacToe");
-
             }));
         }
 
         if (config.getBoolean("RockPaperScissors")) {
             navigatorPane.addItem(new GuiItem(rpsItem, event -> {
-                if (canPlay(player)) return;
+                event.setCancelled(true);
                 if (canPlay(player)) return;
                 if (!checkPlayer(player)) return;
                 enableClickInvite(player, "RPS");
@@ -72,6 +72,7 @@ public class MenuMain {
 
         if (config.getBoolean("HideAndSeek")) {
             navigatorPane.addItem(new GuiItem(hasItem, event -> {
+                event.setCancelled(true);
                 if (!checkPlayer(player)) return;
                 Player sender = (Player) event.getWhoClicked();
 
@@ -83,6 +84,7 @@ public class MenuMain {
 
                 addPlayerToHAS(sender, plugin);
                 player.closeInventory();
+
             }));
         }
 
