@@ -1,5 +1,6 @@
 package de.mikeyllp.miniGamesV4.commands.invites;
 
+import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -58,7 +59,7 @@ public class InvitesTicTacToeGameCommand extends CommandAPICommand {
 
             // Checks if the target player is online
             if (targetPlayer == null) {
-                sendNoPermissionMessage(sender);
+                sendNoOnlinePlayerMessage(sender);
                 return;
             }
 
