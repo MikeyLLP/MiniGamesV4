@@ -60,8 +60,10 @@ public class TicTacToeGame implements Listener {
         // This is the GUI that shows to the Player
         DispenserGui guiA = new DispenserGui("Tic Tac Toe");
 
-        // This cancels the click event so that the player cannot edit the GUI
+        // This makes that the  Items in the GUI cant be moved
         guiA.setOnGlobalClick(event -> event.setCancelled(true));
+        guiA.setOnBottomClick(event -> event.setCancelled(true));
+        guiA.setOnGlobalDrag(event -> event.setCancelled(true));
 
         // This is for the randomizer that makes who starts first
         int randomNumber = (int) (Math.random() * 2);

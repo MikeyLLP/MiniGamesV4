@@ -34,7 +34,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("dev.jorel:commandapi-bukkit-core:10.0.1")
-    implementation("com.github.stefvanschie.inventoryframework:IF:0.10.19")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.11.0")
 }
 
 paper {

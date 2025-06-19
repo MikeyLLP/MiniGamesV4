@@ -5,6 +5,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -27,12 +28,18 @@ public class MenuMain {
     public static void openGameMenue(Player player, JavaPlugin plugin) {
         //Creates a new GUI with 3 rows and the title "Mini Games"
         ChestGui gui = new ChestGui(3, "MiniGames");
-        //This makes taht the  Items in the GUI cant be moved
+
+        //This makes that the  Items in the GUI cant be moved
         gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnBottomClick(event -> event.setCancelled(true));
+        gui.setOnGlobalDrag(event -> event.setCancelled(true));
+
         //Says that all background items can be replaced caus it has the Lowest Priority
         OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
+
         //this is the item that will be used as background
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
+
         //fills all the empty spaces with the background item
         background.setRepeat(true);
         gui.addPane(background);
@@ -55,8 +62,10 @@ public class MenuMain {
         if (config.getBoolean("TicTacToe")) {
             navigatorPane.addItem(new GuiItem(tttItem, event -> {
                 event.setCancelled(true);
-                if (canPlay(player)) return;
-                if (!checkPlayer(player)) return;
+                if (event.isShiftClick()) event.setCancelled(true);
+                if (event.getClick().isKeyboardClick()) event.setCancelled(true);
+                if (canPlay(player, plugin)) return;
+                if (!checkPlayer(player, plugin)) return;
                 enableClickInvite(player, "TicTacToe");
             }));
         }
@@ -64,8 +73,11 @@ public class MenuMain {
         if (config.getBoolean("RockPaperScissors")) {
             navigatorPane.addItem(new GuiItem(rpsItem, event -> {
                 event.setCancelled(true);
-                if (canPlay(player)) return;
-                if (!checkPlayer(player)) return;
+                if (event.isShiftClick()) event.setCancelled(true);
+                if (event.getClick().isKeyboardClick()) event.setCancelled(true);
+
+                if (canPlay(player, plugin)) return;
+                if (!checkPlayer(player, plugin)) return;
                 enableClickInvite(player, "RPS");
             }));
         }
@@ -73,7 +85,9 @@ public class MenuMain {
         if (config.getBoolean("HideAndSeek")) {
             navigatorPane.addItem(new GuiItem(hasItem, event -> {
                 event.setCancelled(true);
-                if (!checkPlayer(player)) return;
+                if (event.isShiftClick()) event.setCancelled(true);
+                if (event.getClick().isKeyboardClick()) event.setCancelled(true);
+                if (!checkPlayer(player, plugin)) return;
                 Player sender = (Player) event.getWhoClicked();
 
                 if (gameInfo.containsKey(sender)) {
@@ -83,8 +97,7 @@ public class MenuMain {
                 }
 
                 addPlayerToHAS(sender, plugin);
-                player.closeInventory();
-
+                Bukkit.getScheduler().runTaskLater(plugin, () -> player.closeInventory(), 2L);
             }));
         }
 
@@ -95,9 +108,10 @@ public class MenuMain {
     }
 
     // This method checks if the player is in the enableListener map and sends a message if he is
-    private static boolean checkPlayer(Player player) {
+    private static boolean checkPlayer(Player player, JavaPlugin plugin) {
         if (enableListener.containsKey(player)) {
             sendCustomMessage(player, "<red>Du musst erst ein Spieler aussuchen!</red>");
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.closeInventory(), 2L);
             return false;
         }
         return true;
@@ -115,10 +129,10 @@ public class MenuMain {
         return item;
     }
 
-    public static boolean canPlay(Player player) {
+    public static boolean canPlay(Player player, JavaPlugin plugin) {
         if (gameInfo.containsKey(player)) {
             sendAlreadyInGameMessage(player);
-            player.closeInventory();
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.closeInventory(), 2L);
             return true;
         }
         return false;

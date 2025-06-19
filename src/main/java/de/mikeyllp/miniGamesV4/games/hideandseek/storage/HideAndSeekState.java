@@ -72,7 +72,7 @@ public class HideAndSeekState {
                     p.sendActionBar(mm.deserialize("<gold>Die sucher können suchen in: <color:#00E5E5>" + hideTimer + "</color>"));
                     if (hideTimeLeft <= 5) {
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
-                        sendCustomMessage(p, "Noch <gold>" + hideTimeLeft + "</gold> Sekunden ");
+                        sendCustomMessage(p, "Spiel startet in: <gold>" + hideTimeLeft + "</gold>");
                     }
                 }
 
