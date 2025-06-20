@@ -1,14 +1,23 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
-import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
-import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.HideAndSeekListeners;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.NoSeekerMove;
+import de.mikeyllp.miniGamesV4.games.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.PlayerHoldItemListener;
+import de.mikeyllp.miniGamesV4.listeners.PlayerJoinQuitListener;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
+import de.mikeyllp.miniGamesV4.utils.CreateAndCheckLanguages;
+import de.mikeyllp.miniGamesV4.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import static de.mikeyllp.miniGamesV4.utils.CheckConfigUtils.checkAndFixingConfig;
+import static de.mikeyllp.miniGamesV4.utils.CreateAndCheckLanguages.saveDefaultLanguagesFiles;
 
 
 public final class MiniGamesV4 extends JavaPlugin {
@@ -16,10 +25,12 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     private static MiniGamesV4 instance;
 
+
     @Override
     public void onEnable() {
 
         instance = this;
+
 
         //Thanks to ChatGPT for the Logo XD
         String green = "§a";
@@ -40,21 +51,35 @@ public final class MiniGamesV4 extends JavaPlugin {
 
         PluginManager manager = getServer().getPluginManager();
 
-        //Register the Listener
+
+        // Register the Listener
         manager.registerEvents(new ClickInviteStorage(), this);
-        manager.registerEvents(new TicTacToeGame(), this);
-        manager.registerEvents(new ClickInviteStorage(), this);
-        manager.registerEvents(new ToggleInvitesStorage(), this);
+        manager.registerEvents(new HideAndSeekListeners(this), this);
+        manager.registerEvents(new PlayerJoinQuitListener(this), this);
         manager.registerEvents(new RPSGame(), this);
+        manager.registerEvents(new TicTacToeGame(), this);
+        manager.registerEvents(new ToggleInvitesStorage(), this);
+        manager.registerEvents(new NoSeekerMove(), this);
+        manager.registerEvents(new PlayerHoldItemListener(this), this);
 
-        new MainCommand("minigames").register();
 
+        new MainCommand(this.getConfig().getString("command"), this).register();
+        // This need to be first so that everything else can use the config
+        // Give access Config
+        MessageUtils.init(this);
+        CreateAndCheckLanguages.init(this);
+
+        // Generate the config.yml if it does not exist
+        saveDefaultConfig();
+        // Generate the languages Files if it does not exist
+        saveDefaultLanguagesFiles();
+        // Check if the config is current
+        checkAndFixingConfig(this);
     }
 
     @Override
     public void onDisable() {
         getLogger().info("Bye <3");
-
     }
 
     //This is for the Runnable

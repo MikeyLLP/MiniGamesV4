@@ -1,12 +1,7 @@
 package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import net.kyori.adventure.title.Title;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +10,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,23 +72,6 @@ public class ClickInviteStorage implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (enableListener.containsKey(event.getPlayer())) {
             removePlayer(event.getPlayer());
-        }
-    }
-
-    @EventHandler
-    public void onPlayerMessage(AsyncChatEvent event) {
-        if (enableListener.containsKey(event.getPlayer())) {
-            Player inviter = event.getPlayer();
-            String msg = PlainTextComponentSerializer.plainText().serialize(event.message()).trim().toLowerCase();
-            if (msg.equals("cancel")) {
-                MiniMessage mm = MiniMessage.miniMessage();
-                Component miniGameComponent = mm.deserialize("<gold>Click Invite<gold> <red>Disabled</red>");
-                Component message = mm.deserialize("");
-                event.setCancelled(true);
-                inviter.showTitle(Title.title(miniGameComponent,
-                        message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
-                removePlayer(inviter);
-            }
         }
     }
 }

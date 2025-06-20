@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.storage;
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import de.mikeyllp.miniGamesV4.game.rps.RPSGame;
-import de.mikeyllp.miniGamesV4.game.tictactoe.TicTacToeGame;
+import de.mikeyllp.miniGamesV4.games.rps.RPSGame;
+import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
@@ -16,26 +16,24 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.prefix;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 public class InvitePlayerStorage {
 
 
     //Handelt all Invites
-    private static final Map<PlayerKey, String> invitesManager = new HashMap<>();
+    public static final Map<PlayerKey, String> invitesManager = new HashMap<>();
     //Deletes all invites after X seconds
-    private static final Map<PlayerKey, BukkitTask> invitesTasks = new HashMap<>();
+    public static final Map<PlayerKey, BukkitTask> invitesTasks = new HashMap<>();
     //To check if the player is already in a game
     public static final Map<Player, Player> gameInfo = new HashMap<>();
 
 
     //This method adds Checks if the invited player is already in a game or not an adds the invite to the HashMap for 60 seconds
     public static void addInvite(Player inviter, Player invited, String game) {
-        String prefix = "<COLOR:DARK_GRAY>>> </COLOR><gradient:#00FF00:#007F00>MiniGames </gradient><COLOR:DARK_GRAY>| </COLOR>";
         //Check if the Player can be invited
         if (gameInfo.containsKey(invited.getPlayer())) {
-            inviter.sendRichMessage(prefix + "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
+            sendCustomMessage(inviter, "<RED>Der Spieler befindet sich gerade in einem Spiel.</RED>");
             return;
         }
 
@@ -63,7 +61,7 @@ public class InvitePlayerStorage {
 
         //Check if the Player wants to Invite himself
         if (inviter.getName().equals(invited.getName())) {
-            sendCustomMessage(inviter, "<red>Du kannst dich nicht selbst einladen!</red>");
+            sendNoInviteYourselfMessage(inviter);
             return;
         }
 
@@ -75,7 +73,7 @@ public class InvitePlayerStorage {
 
         //Check if the inviter is arlready in a Game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
-            sendCustomMessage(inviter, "<red>Du bist bereits in einem Spiel.</red>");
+            sendAlreadyInGameMessage(inviter);
             return;
         }
 

@@ -1,0 +1,57 @@
+###################################################### Generally #######################################################
+# Native Language
+# Existing: "en_us" or "de_de"
+language: en_us
+
+# The prefix works with MiniMessage, so you can use colors and formatting.
+prefix: <color:dark_gray>>> </color><gradient:#00FF00:#007F00>MiniGames </gradient><color:dark_gray>| </color><color:#00E5E5>%message%
+
+# here you can set the Command.
+# WARNING: If you change the command, you need to restart the server.
+command: minigames
+######################################################## Games #########################################################
+# Disable or Enable the Game
+HideAndSeek: true
+RockPaperScissors: true
+TicTacToe: true
+#################################################### Hide And Seek #####################################################
+# Can the hider and the seeker be small
+small-modus:
+  is-enabled: false
+
+  #The seeker will get a Item were he can get smaller and  bigger
+  slot: 1<<
+
+# Min players per Hide and Seek group
+minPlayersPerHASGroup: 2
+
+# Max players per Hide and Seek group
+maxPlayersPerHASGroup: 10
+
+# Max seekers per Hide and Seek group (normally, this will be calculated mathematically, but when you turn it on, there will be a cap)
+maxSeekersPerHASGroup: 0
+
+# Place where all Hide and Seek players get teleported to have the same chance.
+spawn-location:
+
+  # overworld = world | nether = world_nether | end = world_the_end
+  world: world
+  x: 0.0
+  y: 100.0
+  z: 0.0
+
+# Time until the game starts automatically when the minimum players for the Hide and Seek group are reached.
+timeAutoStartHASGroup: 60 # Seconds
+
+# Play time for the Hide and Seek game
+playTimeHAS: 300 # Seconds
+
+# The time for the player to hide; during this time, the seeker cannot move.
+hideTimeHAS: 30 #Seconds
+
+# How many times the seekers get hints - that will be calculated mathematically when this happens.
+HASHints: 2
+
+# How long the hint get
+HintTimeHAS: 10 # Seconds
+

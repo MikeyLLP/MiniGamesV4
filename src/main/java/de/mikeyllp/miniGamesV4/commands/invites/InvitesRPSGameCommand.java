@@ -5,17 +5,18 @@ import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Collectors;
 
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.canInvitePlayer;
+import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
 import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.enableClickInvite;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoOnlinePlayerMessage;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
+import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 
 public class InvitesRPSGameCommand extends CommandAPICommand {
-    public InvitesRPSGameCommand(String commandName) {
+    public InvitesRPSGameCommand(String commandName, JavaPlugin plugin) {
         super(commandName);
 
         // This creates a list of online players for tab completion. The "@" symbol is not allowed.
@@ -36,7 +37,19 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
-            
+
+            // Checks if the RPS is enabled in the config.
+            boolean isEnabled = plugin.getConfig().getBoolean("RockPaperScissors");
+            if (!isEnabled) {
+                miniGamesDisabledMessage(sender);
+                return;
+            }
+
+            if (gameInfo.containsKey(sender)) {
+                sendAlreadyInGameMessage(sender);
+                return;
+            }
+
             if (args.count() == 0) {
                 enableClickInvite(sender, "RPS");
                 return;

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "de.mikeyllp"
-version = "0.2.2-beta" // Version of the plugin
+version = "0.3.0-beta" // Version of the plugin
 
 repositories {
     mavenCentral()
@@ -23,17 +23,24 @@ repositories {
     maven {
         url = uri("https://repo.codemc.org/repository/maven-public/")
     }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-releases/")
+    }
+    maven {
+        url = uri("https://repo.codemc.io/repository/maven-snapshots/")
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("dev.jorel:commandapi-bukkit-core:10.0.0")
-    implementation("com.github.stefvanschie.inventoryframework:IF:0.10.19")
+    compileOnly("dev.jorel:commandapi-bukkit-core:10.0.1")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.11.0")
 }
 
 paper {
     main = "de.mikeyllp.miniGamesV4.MiniGamesV4"
     apiVersion = "1.21"
+
     serverDependencies {
         register("CommandAPI") {
             required = true
@@ -44,10 +51,10 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21")
+        minecraftVersion("1.21.4")
 
         downloadPlugins {
-            hangar("commandapi", "10.0.0")
+            hangar("commandapi", "10.0.1")
         }
     }
 

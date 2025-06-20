@@ -9,7 +9,7 @@ public class ToggleInvitesCommand extends CommandAPICommand {
     public ToggleInvitesCommand(String commandName) {
         super(commandName);
         //A Command witch toggle that he can get Invited
-        executesPlayer(((sender, commandArguments) -> {
+        executesPlayer(((sender, args) -> {
             //Checks if the player has permission to use this command
             if (!sender.hasPermission("minigamesv4.minigames")) {
                 sendNoPermissionMessage(sender);
