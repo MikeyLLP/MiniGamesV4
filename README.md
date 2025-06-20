@@ -20,15 +20,19 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 ## 📜 Commands
 
-| Command                       | Description                       |
-|-------------------------------|-----------------------------------|
-| `/minigames`                  | Opens the main menu.              |
-| `/minigames reload`           | Reload the config.                |
-| `/minigames <game> [player]`  | Sends a game request to a player. |
-| `/minigames accept <player>`  | Accepts a game request.           |
-| `/minigames decline <player>` | Declines a game request.          |
-| `/minigames toggle`           | Toggles invites.                  |
-| `/minigames help`             | Shows all available commands.     |
+| Command                       | Description                                            |
+|-------------------------------|--------------------------------------------------------|
+| `/minigames`                  | Opens the main menu.                                   |
+| `/minigames reload`           | Reload the config.                                     |
+| `/minigames <game> [player]`  | Sends a game request to a player.                      |
+| `/minigames accept <player>`  | Accepts a game request.                                |
+| `/minigames decline <player>` | Declines a game request.                               |
+| `/minigames toggle`           | Toggles invites.                                       |
+| `/minigames quit`             | Lets you leave a game or a queue                       |
+| `/minigames set <edit>`       | Allows you to edit the config                          |
+| `/minigames reload`           | Reloads the config                                     |
+| `/minigames clear`            | Clears all lists in case you want to reload the config |
+| `/minigames help`             | Shows all available commands.                          |
 
 ---
 
@@ -45,18 +49,18 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 ## 🕹️ MiniGames
 
-| Game                | Description                                                                        |
-|---------------------|------------------------------------------------------------------------------------|
-| Hide and Seek       | Hide from the seeker. The seeker can find you by clicking on you.                  |
-| Rock Paper Scissors | Play against a friend - just type your move. The game listens. No commands needed. |
-| TicTacToe           | Play in a clean, intuitive GUI with a built-in randomizer to decide who starts.    |
+| Game                | Description                                                                                                     |
+|---------------------|-----------------------------------------------------------------------------------------------------------------|
+| Hide and Seek       | Hide from the seeker. The seeker can find you by clicking on you. Includes a mode that lets you grow or shrink. |
+| Rock Paper Scissors | Play against a friend - just type your move. The game listens. No commands needed.                              |
+| TicTacToe           | Play in a clean, intuitive GUI with a built-in randomizer to decide who starts.                                 |
 
 ## 🧩 Dependencies
 
 This plugin uses the following APIs:
 
-- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.10.19**
-- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.0**
+- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.11.0**
+- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.1**
 - [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
 - Java **21+** required.
 

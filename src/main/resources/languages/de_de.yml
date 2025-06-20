@@ -34,6 +34,7 @@ warning-message:
   no-permission: "Du hast keine Berechtigung, diesen Befehl auszuführen!"
   false-game: "Ungültiges MiniGame: <gold>HideAndSeek, TicTacToe, RockPaperScissors."
   invalid-config-use: "Unzulässige Namen, bitte nutze folgende Argumente: <gold>minHASPlayers, maxHASPlayers, maxHASSeekers, timeHASAutoStart, HASPlayTime, HASHideTime, HASHints</gold>"
+  invalid-number: "Nutze eine Zahl zwischen 1 und 9."
 
 # Hier sind spezielle Sachen wie z.B. Timer etc.
 special-message:
@@ -45,11 +46,12 @@ special-message:
       general:
         title: "<color:#00FFD5>Allgemeine Befehle:"
         commands:
-          help: [ "/%command% help", "- Zeigt diese Hilfe" ]
-          play: [ "/%command% <game> [player]", "- Spiele, die du spielen kannst" ]
-          accept: [ "/%command% accept <player>", "- Nimmt die Anfrage an" ]
-          decline: [ "/%command% declined <player>", "- Lehnt die Anfrage ab" ]
-          toggle: [ "/%command% toggle", "- Aktiviert/Deaktiviert Anfragen" ]
+          help: [ "/%command% help", "- Zeigt diese Hilfe." ]
+          play: [ "/%command% <game> [player]", "- Spiele, die du spielen kannst." ]
+          accept: [ "/%command% accept <player>", "- Nimmt die Anfrage an." ]
+          decline: [ "/%command% declined <player>", "- Lehnt die Anfrage ab." ]
+          quit: [ "/%command% quit", "- Verlasse Spiele / Warteschlangen." ]
+          toggle: [ "/%command% toggle", "- Aktiviert/Deaktiviert Anfragen." ]
       games:
         title: "<color:#00FFD5>Spiele:"
         list:

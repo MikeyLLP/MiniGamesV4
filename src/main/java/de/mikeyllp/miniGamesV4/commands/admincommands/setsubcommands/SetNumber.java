@@ -93,13 +93,17 @@ public class SetNumber extends CommandAPICommand {
                     plugin.saveConfig();
                     break;
                 case "small-slot":
+                    if (!(someInt >= 1 && someInt <= 9)) {
+                        sendCustomWarnMessage(sender, langConfig.getString("warning-message.invalid-number"));
+                        return;
+                    }
                     sendCustomMessage(sender, langConfig.getString("normal-message.info.small-slot")
                             .replace("%number%", String.valueOf(someInt)));
                     config.set("small-modus.slot", someInt);
                     plugin.saveConfig();
                     break;
                 default:
-                    sendCustomMessage(sender, langConfig.getString("warning-message.invalid-config-use"));
+                    sendCustomWarnMessage(sender, langConfig.getString("warning-message.invalid-config-use"));
                     break;
             }
             sendNeedReloadMessage(sender);

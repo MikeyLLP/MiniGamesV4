@@ -71,8 +71,12 @@ public class HideAndSeekState {
                 for (Player p : groupList) {
                     p.sendActionBar(mm.deserialize("<gold>Die sucher können suchen in: <color:#00E5E5>" + hideTimer + "</color>"));
                     if (hideTimeLeft <= 5) {
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
-                        sendCustomMessage(p, "Spiel startet in: <gold>" + hideTimeLeft + "</gold>");
+                        if (hideTimeLeft == 0) {
+                            sendCustomMessage(p, "Spiel startet in: <gold>Jetzt!</gold>");
+                        } else {
+                            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                            sendCustomMessage(p, "Spiel startet in: <gold>" + hideTimeLeft + "</gold>");
+                        }
                     }
                 }
 
@@ -153,9 +157,17 @@ public class HideAndSeekState {
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
                         sendCustomMessage(p, "<gold>30</gold> Sekunden");
                     }
-                    if (timeLeft== 15) {
+                    if (timeLeft == 15) {
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
                         sendCustomMessage(p, "Noch <gold>15</gold> Sekunden");
+                    }
+                    if (timeLeft <= 5) {
+                        if (timeLeft == 0) {
+                            sendCustomMessage(p, "Spiel endet in: <gold>Jetzt!</gold>");
+                        } else {
+                            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1f, 1f);
+                            sendCustomMessage(p, "Spiel endet in: <gold>" + timeLeft + "</gold>");
+                        }
                     }
                 }
 
