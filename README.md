@@ -28,7 +28,7 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | `/minigames accept <player>`  | Accepts a game request.                                |
 | `/minigames decline <player>` | Declines a game request.                               |
 | `/minigames toggle`           | Toggles invites.                                       |
-| `/minigames quit`             | Lets you leave a game or a queue                       |
+| `/minigames quit`             | Let you leave a game or a queue                        |
 | `/minigames set <edit>`       | Allows you to edit the config                          |
 | `/minigames reload`           | Reloads the config                                     |
 | `/minigames clear`            | Clears all lists in case you want to reload the config |
