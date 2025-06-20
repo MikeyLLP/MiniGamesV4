@@ -27,6 +27,10 @@ normal-message:
 # Hier sind die Fehlernachrichten
 # Normalerweise sind die Texte Rot <red>...</red>
 warning-message:
+  queue-quit: "Du hast die Warteschlange verlassen!"
+  player-quit: "<gold>%player%</gold> hat aufgegeben!"
+  game-quit: "Du hast das Spiel abgebrochen!"
+  nothing-to-quit: "Du bist hast nichts zum Beenden."
   no-invite-yourself: "Du kannst dich nicht selbst einladen."
   player-not-found: "Der Spieler ist nicht online."
   already-in-game: "Du bist bereits in einem Spiel."
@@ -38,6 +42,11 @@ warning-message:
 
 # Hier sind spezielle Sachen wie z.B. Timer etc.
 special-message:
+  hider: "<color:#00E5E5>Verstecker:"
+  seeker: "<dark_red>Sucher:</dark_red>"
+  you-hider: "<color:#00E5E5>Du bist <gold>Verstecker</gold></color:#00E5E5>"
+  you-seeker: "<color:#00E5E5>Du bist <dark_red>Sucher</dark_red></color:#00E5E5>"
+  click-invite-disable: "<gold>Click Invite<gold> <red>Disabled</red>"
   timer:
   help:
     header: "<gold>========== [<gradient:#00FF00:#007F00>MiniGames Help</gradient>] ==========</gold>"

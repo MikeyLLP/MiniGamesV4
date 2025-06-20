@@ -9,12 +9,14 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,8 +95,12 @@ public class HideAndSeekGameGroups {
             targetSeekers = config.getInt("maxSeekersPerHASGroup.value");
         }
 
+        String lang = plugin.getConfig().getString("language");
+        File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
+        YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(file);
+
         MiniMessage mm = MiniMessage.miniMessage();
-        Component seekerMessage = mm.deserialize("<color:#00E5E5>Du bist <dark_red>Sucher</dark_red></color:#00E5E5>");
+        Component seekerMessage = mm.deserialize(langConfig.getString("special-message.you-seeker"));
         // Randomly select a seeker from the group
         while (i < targetSeekers) {
             int randomNumber = (int) (Math.random() * playerCopy.size());
@@ -111,14 +117,14 @@ public class HideAndSeekGameGroups {
         }
 
         // Send the hider a message that he is a Hider. And Sends all player the player list
-        Component hiderMessage = mm.deserialize("<color:#00E5E5>Du bist <gold>Verstecker</gold></color:#00E5E5>");
+        Component hiderMessage = mm.deserialize(langConfig.getString("special-message.you-hider"));
 
         // To set a item if is enabled
         ItemStack item = new ItemStack(Material.PUFFERFISH);
         int slot = config.getInt("small-modus.slot") - 1;
 
         for (Player p : listUntilX) {
-            p.sendRichMessage("<dark_red>Sucher:");
+            p.sendRichMessage(langConfig.getString("special-message.seeker"));
             for (Player p2 : seekerList) {
                 p.sendRichMessage("<gold>" + p2.getName());
                 if (config.getBoolean("small-modus.is-enabled")){
@@ -126,7 +132,7 @@ public class HideAndSeekGameGroups {
                 }
             }
             p.sendRichMessage("");
-            p.sendRichMessage("<color:#00E5E5>Verstecker:");
+            p.sendRichMessage(langConfig.getString("special-message.hider"));
             for (Player p3 : listUntilX) {
                 if (!seekerList.contains(p3)) {
                     Location posHider = p3.getLocation();

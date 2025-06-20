@@ -20,7 +20,7 @@ small-modus:
   is-enabled: false
 
   #The seeker will get a Item were he can get smaller and  bigger
-  slot: 1
+  slot: 1<<
 
 # Min players per Hide and Seek group
 minPlayersPerHASGroup: 2
