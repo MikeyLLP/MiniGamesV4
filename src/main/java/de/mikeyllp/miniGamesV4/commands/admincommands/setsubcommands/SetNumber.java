@@ -25,7 +25,8 @@ public class SetNumber extends CommandAPICommand {
                 "timeHASAutoStart",
                 "HASPlayTime",
                 "HASHideTime",
-                "HASHints")));
+                "HASHints",
+                "small-slot")));
 
         withArguments(new IntegerArgument("someInt"));
         executes(((sender, args) -> {
@@ -89,6 +90,12 @@ public class SetNumber extends CommandAPICommand {
                     sendCustomMessage(sender, langConfig.getString("normal-message.info.hints-HAS")
                             .replace("%number%", String.valueOf(someInt)));
                     config.set("HASHints", someInt);
+                    plugin.saveConfig();
+                    break;
+                case "small-slot":
+                    sendCustomMessage(sender, langConfig.getString("normal-message.info.small-slot")
+                            .replace("%number%", String.valueOf(someInt)));
+                    config.set("small-modus.slot", someInt);
                     plugin.saveConfig();
                     break;
                 default:

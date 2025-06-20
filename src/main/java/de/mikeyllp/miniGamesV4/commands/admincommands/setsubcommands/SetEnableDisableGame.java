@@ -17,7 +17,8 @@ public class SetEnableDisableGame extends CommandAPICommand {
         super(commandName);
 
 
-        withArguments(new StringArgument("miniGames").replaceSuggestions(ArgumentSuggestions.strings("HideAndSeek", "TicTacToe", "RockPaperScissors")));
+        withArguments(new StringArgument("miniGames").replaceSuggestions(ArgumentSuggestions.strings(
+                "HideAndSeek", "TicTacToe", "RockPaperScissors", "SmallModus")));
 
 
         executes(((sender, arg) -> {
@@ -82,6 +83,25 @@ public class SetEnableDisableGame extends CommandAPICommand {
                         plugin.saveConfig();
 
                         sendGameSwitch(sender, "TicTacToe", true);
+                        sendNeedReloadMessage(sender);
+                    }
+                    break;
+                case "smallmodus":
+                    if (config.getBoolean("small-modus")) {
+                        config.set("small-modus", false);
+
+                        // Save the config
+                        plugin.saveConfig();
+
+                        sendGameSwitch(sender, "small-modus", false);
+                        sendNeedReloadMessage(sender);
+                    } else {
+                        config.set("small-modus", true);
+
+                        // Save the config
+                        plugin.saveConfig();
+
+                        sendGameSwitch(sender, "small-modus", true);
                         sendNeedReloadMessage(sender);
                     }
                     break;

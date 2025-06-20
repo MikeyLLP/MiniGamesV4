@@ -21,6 +21,7 @@ normal-message:
     play-time-HAS: "Die Spielzeit für Hide and Seek wurde auf %number% gesetzt."
     hide-time-HAS: "Die Versteckzeit für Hide and Seek wurde auf <gold>%number%</gold> gesetzt."
     hints-HAS: "Die Anzahl an Hinweisen für die Sucher wurde auf <gold>%number%</gold> gesetzt."
+    small-slot: "Der Slot für den Groß-Klein-Modus wurde auf <gold>%number%</gold> gesetzt."
 
 
 # Hier sind die Fehlernachrichten
