@@ -28,7 +28,7 @@ This plugin is designed for lobbies, allowing players to play with others when t
 | `/minigames accept <player>`  | Accepts a game request.                                |
 | `/minigames decline <player>` | Declines a game request.                               |
 | `/minigames toggle`           | Toggles invites.                                       |
-| `/minigames quit`             | Lets you leave a game or a queue                       |
+| `/minigames quit`             | Let you leave a game or a queue                        |
 | `/minigames set <edit>`       | Allows you to edit the config                          |
 | `/minigames reload`           | Reloads the config                                     |
 | `/minigames clear`            | Clears all lists in case you want to reload the config |
@@ -99,7 +99,11 @@ This method avoids YAML files in the repo and ensures type-safe, automatic gener
 
 ## 🛠️ Installation
 
-✨Coming soon✨
+1. Download the latest `.jar` file from the [GitHub Releases page](https://github.com/MikeyLLP/MiniGamesV4/releases/tag/v0.3.0-beta).
+2. Place the `.jar` file into your server’s `plugins` folder.
+3. Start or restart your Minecraft Paper server.
+4. The plugin will generate its default config files automatically.
+5. Customize the config if needed, then reload the plugin with `/minigames reload`.
 
 ---
 
