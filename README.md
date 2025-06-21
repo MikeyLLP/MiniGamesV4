@@ -92,14 +92,15 @@ This method avoids YAML files in the repo and ensures type-safe, automatic gener
 
 ## ⚠️ Development Status Notes
 
-> This version (`v0.3.0-beta`) is a **Beta release**.  
+> This version (`v0.3.1-beta`) is a **Beta release**.  
 > Features are unstable and will likely change before the final release.
 
 ---
 
 ## 🛠️ Installation
 
-1. Download the latest `.jar` file from the [GitHub Releases page](https://github.com/MikeyLLP/MiniGamesV4/releases/tag/v0.3.0-beta).
+1. Download the latest `.jar` file from
+   the [GitHub Releases page](https://github.com/MikeyLLP/MiniGamesV4/releases/tag/v0.3.0-beta).
 2. Place the `.jar` file into your server’s `plugins` folder.
 3. Start or restart your Minecraft Paper server.
 4. The plugin will generate its default config files automatically.
@@ -115,7 +116,7 @@ Build the plugin as a Shadow FatJar with:
 ./gradlew shadowJar
 ```
 
-The resulting file will be located at `build/libs/MiniGamesV4-0.3.0-beta-all.jar`.
+The resulting file will be located at `build/libs/MiniGamesV4-0.3.1-beta-all.jar`.
 
 ---
 

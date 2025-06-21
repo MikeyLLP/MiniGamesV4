@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "de.mikeyllp"
-version = "0.3.0-beta" // Version of the plugin
+version = "0.3.1-beta" // Version of the plugin
 
 repositories {
     mavenCentral()
