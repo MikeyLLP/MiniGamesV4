@@ -1,46 +1,41 @@
 package de.mikeyllp.miniGamesV4.storage;
 
+import de.mikeyllp.miniGamesV4.MiniGamesV4;
+import de.mikeyllp.miniGamesV4.database.Database;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
 public class ToggleInvitesStorage implements Listener {
 
-    public static final Map<Player, String> isToggle = new HashMap<>();
+    private final Database db;
+
+    public ToggleInvitesStorage(Database db) {
+        this.db = db;
+    }
 
     //Adds or removes the player from the toggle list
-    public static void addToggle(Player player) {
-        if (isToggle.containsKey(player)) {
-            sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt wieder eingeladen werden!</color:#00E5E5>");
-            isToggle.remove(player);
-            return;
-        }
-        sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt nicht mehr eingeladen werden!</color:#00E5E5>");
-        isToggle.put(player, "placeHolder");
+    public void addToggle(Player player) {
 
-    }
+        UUID playerUuid = player.getUniqueId();
+        db.getToggleAsync(playerUuid).thenAccept(toggle -> {
+            int newToggle = (toggle == 1) ? 0 : 1;
 
-    //Checks if the player is in the toggle list and removes the Player if he Quits
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (isToggle.containsKey(player)) {
-            isToggle.remove(player);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if (player.hasPermission("minigamesv4.autotoggle")) {
-            addToggle(player);
-        }
+            db.setToggleAsync(playerUuid, newToggle).thenRun(() -> {
+                Bukkit.getScheduler().runTask(
+                        MiniGamesV4.getInstance(),
+                        () -> {
+                            if (newToggle == 1) {
+                                sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt nicht mehr eingeladen werden!</color:#00E5E5>");
+                            } else {
+                                sendCustomMessage(player, "<color:#00E5E5>Du kannst jetzt wieder eingeladen werden!</color:#00E5E5>");
+                            }
+                        });
+            });
+        });
     }
 }

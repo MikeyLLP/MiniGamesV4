@@ -1,11 +1,12 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
+import de.mikeyllp.miniGamesV4.database.Database;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.NoSeekerMove;
+import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.PlayerHoldItemListener;
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame;
 import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame;
-import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.PlayerHoldItemListener;
 import de.mikeyllp.miniGamesV4.listeners.PlayerJoinQuitListener;
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage;
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
@@ -26,6 +27,10 @@ public final class MiniGamesV4 extends JavaPlugin {
     private static MiniGamesV4 instance;
 
 
+    private Database db;
+    private ToggleInvitesStorage toggleInvitesStorage;
+
+
     @Override
     public void onEnable() {
 
@@ -40,6 +45,13 @@ public final class MiniGamesV4 extends JavaPlugin {
         int lineLength = 74;
         int padding = (lineLength - version.length()) / 2;
         String versionLine = " ".repeat(Math.max(0, padding)) + "v" + version;
+
+        // Database start
+        db = new Database(this);
+        db.connect();
+        db.createTable();
+
+        this.toggleInvitesStorage = new ToggleInvitesStorage(db);
 
         console.sendMessage(green + "    __  ___ _         _  ______                              _    __ __ __");
         console.sendMessage(green + "   /  |/  /(_)____   (_)/ ____/____ _ ____ ___   ___   _____| |  / // // /");
@@ -58,7 +70,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new PlayerJoinQuitListener(this), this);
         manager.registerEvents(new RPSGame(), this);
         manager.registerEvents(new TicTacToeGame(), this);
-        manager.registerEvents(new ToggleInvitesStorage(), this);
+        manager.registerEvents(new ToggleInvitesStorage(db), this);
         manager.registerEvents(new NoSeekerMove(), this);
         manager.registerEvents(new PlayerHoldItemListener(this), this);
 
@@ -79,7 +91,14 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Disable the Database
+        db.disconnect();
+
         getLogger().info("Bye <3");
+    }
+
+    public Database getDataStore() {
+        return db;
     }
 
     //This is for the Runnable
