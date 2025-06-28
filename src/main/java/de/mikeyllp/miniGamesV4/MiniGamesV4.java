@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
+import de.mikeyllp.miniGamesV4.commands.ToggleInvitesCommand;
 import de.mikeyllp.miniGamesV4.database.Database;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.NoSeekerMove;
@@ -29,6 +30,10 @@ public final class MiniGamesV4 extends JavaPlugin {
 
     private Database db;
     private ToggleInvitesStorage toggleInvitesStorage;
+
+    public ToggleInvitesStorage getToggleInvitesStorage() {
+        return toggleInvitesStorage;
+    }
 
 
     @Override
@@ -70,12 +75,11 @@ public final class MiniGamesV4 extends JavaPlugin {
         manager.registerEvents(new PlayerJoinQuitListener(this), this);
         manager.registerEvents(new RPSGame(), this);
         manager.registerEvents(new TicTacToeGame(), this);
-        manager.registerEvents(new ToggleInvitesStorage(db), this);
         manager.registerEvents(new NoSeekerMove(), this);
         manager.registerEvents(new PlayerHoldItemListener(this), this);
 
 
-        new MainCommand(this.getConfig().getString("command"), this).register();
+        new MainCommand(this.getConfig().getString("command"), this, db).register();
         // This need to be first so that everything else can use the config
         // Give access Config
         MessageUtils.init(this);

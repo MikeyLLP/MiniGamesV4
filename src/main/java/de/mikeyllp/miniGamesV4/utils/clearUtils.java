@@ -17,7 +17,6 @@ import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.playerGameState;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
 import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.whatGame;
 import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.*;
-import static de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage.isToggle;
 import static de.mikeyllp.miniGamesV4.utils.CheckConfigUtils.checkAndFixingConfig;
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
@@ -71,7 +70,6 @@ public class clearUtils {
         invitesManager.clear();
         invitesTasks.clear();
         gameInfo.clear();
-        isToggle.clear();
         confirmClear.clear();
         seekerList.clear();
         gameState.clear();

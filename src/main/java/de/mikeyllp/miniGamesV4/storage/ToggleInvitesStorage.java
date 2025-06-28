@@ -10,13 +10,15 @@ import java.util.UUID;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
 
-public class ToggleInvitesStorage implements Listener {
+public class ToggleInvitesStorage{
 
     private final Database db;
 
     public ToggleInvitesStorage(Database db) {
         this.db = db;
     }
+
+
 
     //Adds or removes the player from the toggle list
     public void addToggle(Player player) {

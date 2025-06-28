@@ -1,11 +1,15 @@
 package de.mikeyllp.miniGamesV4.commands;
 
+import de.mikeyllp.miniGamesV4.database.Database;
+import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import dev.jorel.commandapi.CommandAPICommand;
 
 import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
 
 public class ToggleInvitesCommand extends CommandAPICommand {
-    public ToggleInvitesCommand(String commandName) {
+
+
+    public ToggleInvitesCommand(String commandName, ToggleInvitesStorage storage) {
         super(commandName);
         //A Command witch toggle that he can get Invited
         executesPlayer(((sender, args) -> {
@@ -14,7 +18,7 @@ public class ToggleInvitesCommand extends CommandAPICommand {
                 sendNoPermissionMessage(sender);
                 return;
             }
-            toggleInvitesStorage.addToggle(player);
+            storage.addToggle(sender);
         }));
     }
 }

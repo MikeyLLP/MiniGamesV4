@@ -1,12 +1,15 @@
 package de.mikeyllp.miniGamesV4.commands;
 
+import de.mikeyllp.miniGamesV4.MiniGamesV4;
 import de.mikeyllp.miniGamesV4.commands.admincommands.ReloadConfigCommand;
 import de.mikeyllp.miniGamesV4.commands.admincommands.SetCommand;
 import de.mikeyllp.miniGamesV4.commands.admincommands.clearCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.AddHideAndSeekGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesRPSGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesTicTacToeGameCommand;
+import de.mikeyllp.miniGamesV4.database.Database;
 import de.mikeyllp.miniGamesV4.gui.MenuMain;
+import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,7 +18,7 @@ import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage
 
 public class MainCommand extends CommandAPICommand {
 
-    public MainCommand(String commandName, JavaPlugin plugin) {
+    public MainCommand(String commandName, JavaPlugin plugin, Database db) {
         super(commandName);
 
         // Here we add the SubCommands
@@ -30,7 +33,7 @@ public class MainCommand extends CommandAPICommand {
         withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe", plugin));
         withSubcommand(new AcceptCommand("accept"));
         withSubcommand(new DeclinedCommand("declined"));
-        withSubcommand(new ToggleInvitesCommand("toggle"));
+        withSubcommand(new ToggleInvitesCommand("toggle", ((MiniGamesV4) plugin).getToggleInvitesStorage()));
         withSubcommand(new QuitCommand("quit", plugin));
         withSubcommand(new HelpCommand("help", plugin));
         // If no subcommand is given, it opens the MiniGamesMenu
