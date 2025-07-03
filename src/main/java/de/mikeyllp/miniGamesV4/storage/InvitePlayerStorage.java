@@ -56,54 +56,60 @@ public class InvitePlayerStorage {
 
     }
 
-    //A method witch checks if the inviter can invite the invited player to play a game
-    public static void canInvitePlayer(Player inviter, Player invited, String game) {
+    // A method witch checks if the inviter can invite the invited player to play a game
+    public static void canInvitePlayer(Player inviter, Player invited, String game, ToggleInvitesStorage storage) {
 
-        //Check if the Player wants to Invite himself
-        if (inviter.getName().equals(invited.getName())) {
+        // Check if the Player wants to Invite himself
+        /*if (inviter.getName().equals(invited.getName())) {
             sendNoInviteYourselfMessage(inviter);
             return;
-        }
+        }*/
 
-        //Check if the Player wants to get Invited
-        if (ToggleInvitesStorage.isToggle.containsKey(invited)) {
+        // Check if the Player wants to get Invited
+
+        storage.checkToggle(invited, canBeInvited -> {
+            if (!canBeInvited) {
+                sendCustomMessage(inviter, "<red>Der Spieler hat Einladungen deaktiviert.</red>");
+                return;
+            }
+
+            // Check if the inviter is arlready in a Game
+            if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
+                sendAlreadyInGameMessage(inviter);
+                return;
+            }
+
+            // Check if the Player is already in a Game
+            if (gameInfo.containsKey(invited.getPlayer()) || gameInfo.containsValue(invited.getPlayer())) {
+                sendCustomMessage(inviter, "<red>Der Spieler befindet sich gerade in einem Spiel.</red>");
+                return;
+            }
+
+            sendCustomMessage(inviter, "<color:#00E5E5>Du hast<gold> " + invited.getName() + "</gold> eingeladen.</color:#00E5E5>");
+
+            //This is a message with a Command implemented it need to be made in this way beause RichMasse does not support click events
+            MiniMessage mm = MiniMessage.miniMessage();
+            Component askToPlayMessage = mm.deserialize(prefix() +
+                    "<color:#00E5E5>Möchtest du mit <gold>" + inviter.getName() + " </gold>" + game + " spielen?</color:#00E5E5> " +
+                    "<green><bold><click:run_command:'/minigames accept " + inviter.getName() + "'>[Ja]</click></bold></green> " +
+                    "<red><bold><click:run_command:'/minigames declined " + inviter.getName() + "'>[Nein]</click></bold></red>"
+            );
+
+            // Add the invite to the HashMap
+            addInvite(inviter, invited, game);
+            // Play a sound for the target player so he can Check if he got invited
+            Location targetPlayerPos = invited.getLocation();
+            invited.sendMessage(askToPlayMessage);
+            invited.playSound(targetPlayerPos, Sound.ENTITY_CHICKEN_EGG, 1F, 1F);
+        });
+        /*if (storage.checkToggle(invited)) {
             sendCustomMessage(inviter, "<red>Der Spieler hat Einladungen deaktiviert.</red>");
             return;
-        }
-
-        //Check if the inviter is arlready in a Game
-        if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
-            sendAlreadyInGameMessage(inviter);
-            return;
-        }
-
-        //Check if the Player is already in a Game
-        if (gameInfo.containsKey(invited.getPlayer()) || gameInfo.containsValue(invited.getPlayer())) {
-            sendCustomMessage(inviter, "<red>Der Spieler befindet sich gerade in einem Spiel.</red>");
-            return;
-        }
-
-        sendCustomMessage(inviter, "<color:#00E5E5>Du hast<gold> " + invited.getName() + "</gold> eingeladen.</color:#00E5E5>");
-
-        //This is a message with a Command implemented it need to be made in this way beause RichMasse does not support click events
-        MiniMessage mm = MiniMessage.miniMessage();
-        Component askToPlayMessage = mm.deserialize(prefix() +
-                "<color:#00E5E5>Möchtest du mit <gold>" + inviter.getName() + " </gold>" + game + " spielen?</color:#00E5E5> " +
-                "<green><bold><click:run_command:'/minigames accept " + inviter.getName() + "'>[Ja]</click></bold></green> " +
-                "<red><bold><click:run_command:'/minigames declined " + inviter.getName() + "'>[Nein]</click></bold></red>"
-        );
-
-        //Add the invite to the HashMap
-        addInvite(inviter, invited, game);
-        //Play a sound for the target player so he can Check if he got invited
-        Location targetPlayerPos = invited.getLocation();
-        invited.sendMessage(askToPlayMessage);
-        invited.playSound(targetPlayerPos, Sound.ENTITY_CHICKEN_EGG, 1F, 1F);
-
+        }*/
     }
 
 
-    //This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
+    // This method Checks if the invited player who accepts the invite  if the game of the inviter is already started or not
     public static void canGameStart(Player inviter, Player invited) {
 
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsValue(inviter.getPlayer())) {
@@ -111,15 +117,15 @@ public class InvitePlayerStorage {
             return;
         }
 
-        //Checks if the player who send the invite is already in a game
+        // Checks if the player who send the invite is already in a game
         if (gameInfo.containsKey(inviter.getPlayer()) || gameInfo.containsKey(invited.getPlayer())) {
             sendCustomMessage(invited, "<red>Der Spieler befindet sich gerade in einem Spiel.</red>");
             return;
         }
-        //Create a player key
+        // Create a player key
         PlayerKey key = new PlayerKey(String.valueOf(inviter.getPlayer()), String.valueOf(invited.getPlayer()));
         if (invitesManager.containsKey(key)) {
-            //I use switch for up comming games
+            // I use switch for up comming games
             switch (invitesManager.get(key)) {
                 case "TicTacToe":
                     TicTacToeGame.openTicTacToe(inviter, invited);
@@ -132,10 +138,10 @@ public class InvitePlayerStorage {
 
             Location inviterPos = inviter.getLocation();
             Location invitedPos = invited.getLocation();
-            //Plays a Start sound for both players
+            // Plays a Start sound for both players
             inviter.playSound(inviterPos, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             invited.playSound(invitedPos, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-            //All the Invites will be removed from the HashMap from both players
+            // All the Invites will be removed from the HashMap from both players
             removeAllInvites(inviter.getPlayer(), invited.getPlayer());
             return;
         }
@@ -143,13 +149,13 @@ public class InvitePlayerStorage {
     }
 
 
-    //This method removes the invite from the HashMap and cancels the task
+    // This method removes the invite from the HashMap and cancels the task
     public static void removeInvite(Player inviter, Player invited) {
         PlayerKey key = new PlayerKey(String.valueOf(inviter.getPlayer()), String.valueOf(invited.getPlayer()));
         if (invitesManager.containsKey(key)) {
             invitesManager.remove(key);
             BukkitTask task = invitesTasks.get(key);
-            //The Runnable will be cancelled if it is not arleady cancelled and the key will be removed
+            // The Runnable will be cancelled if it is not arleady cancelled and the key will be removed
             if (task != null) {
                 task.cancel();
                 invitesTasks.remove(key);
@@ -161,7 +167,7 @@ public class InvitePlayerStorage {
     }
 
 
-    //This method removes all the invites from the HashMap and cancels the task if the game is started
+    // This method removes all the invites from the HashMap and cancels the task if the game is started
     public static void removeAllInvites(Player inviter, Player invited) {
         gameInfo.put(inviter, invited);
         gameInfo.put(invited, inviter);
@@ -170,11 +176,11 @@ public class InvitePlayerStorage {
         while (iterator.hasNext()) {
             Map.Entry<PlayerKey, String> entry = iterator.next();
             PlayerKey key = entry.getKey();
-            //if somthing is found the key will be removed
+            // if somthing is found the key will be removed
             if (key.getInviter().equals(String.valueOf(inviter))) {
                 iterator.remove();
                 BukkitTask task = invitesTasks.get(key);
-                //The Runnable will be cancelled if it is not arleady cancelled and the key will be removed
+                // The Runnable will be cancelled if it is not arleady cancelled and the key will be removed
                 if (task != null) {
                     task.cancel();
                     invitesTasks.remove(key);
@@ -184,12 +190,12 @@ public class InvitePlayerStorage {
     }
 
 
-    //This method Create a player Key from both players
+    // This method Create a player Key from both players
     public static class PlayerKey {
         private final String inviter;
         private final String invited;
 
-        //Getter for invited
+        // Getter for invited
         public String getInviter() {
             return inviter;
         }

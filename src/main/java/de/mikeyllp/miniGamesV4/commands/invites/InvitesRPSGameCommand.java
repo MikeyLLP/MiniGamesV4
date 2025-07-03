@@ -1,5 +1,6 @@
 package de.mikeyllp.miniGamesV4.commands.invites;
 
+import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -16,7 +17,7 @@ import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
 
 
 public class InvitesRPSGameCommand extends CommandAPICommand {
-    public InvitesRPSGameCommand(String commandName, JavaPlugin plugin) {
+    public InvitesRPSGameCommand(String commandName, JavaPlugin plugin, ToggleInvitesStorage storage) {
         super(commandName);
 
         // This creates a list of online players for tab completion. The "@" symbol is not allowed.
@@ -64,7 +65,7 @@ public class InvitesRPSGameCommand extends CommandAPICommand {
             }
 
 
-            canInvitePlayer(sender, targetPlayer, "RPS");
+            canInvitePlayer(sender, targetPlayer, "RPS", storage);
 
         });
     }

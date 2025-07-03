@@ -59,9 +59,9 @@ This plugin is designed for lobbies, allowing players to play with others when t
 
 This plugin uses the following APIs:
 
-- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.11.0**
-- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.0.1**
-- [PaperMC](https://papermc.io/) - tested with **Paper 1.21.4**
+- [Inventory Framework](https://github.com/stefvanschie/IF) - tested with **v0.11.1**
+- [CommandAPI](https://github.com/CommandAPI/CommandAPI) - tested with **v10.1.0**
+- [PaperMC](https://papermc.io/) - tested with **Paper 1.21.7**
 - Java **21+** required.
 
 ---

@@ -9,7 +9,6 @@ import de.mikeyllp.miniGamesV4.commands.invites.InvitesRPSGameCommand;
 import de.mikeyllp.miniGamesV4.commands.invites.InvitesTicTacToeGameCommand;
 import de.mikeyllp.miniGamesV4.database.Database;
 import de.mikeyllp.miniGamesV4.gui.MenuMain;
-import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +20,8 @@ public class MainCommand extends CommandAPICommand {
     public MainCommand(String commandName, JavaPlugin plugin, Database db) {
         super(commandName);
 
+        var storage = ((MiniGamesV4) plugin).getToggleInvitesStorage();
+
         // Here we add the SubCommands
         // Admin Commands
         withSubcommand(new clearCommand("clear", plugin));
@@ -29,11 +30,11 @@ public class MainCommand extends CommandAPICommand {
 
         // Normal Commands
         withSubcommand(new AddHideAndSeekGameCommand("HideAndSeek", plugin));
-        withSubcommand(new InvitesRPSGameCommand("RPS", plugin));
-        withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe", plugin));
+        withSubcommand(new InvitesRPSGameCommand("RPS", plugin, storage));
+        withSubcommand(new InvitesTicTacToeGameCommand("TicTacToe", plugin, storage));
         withSubcommand(new AcceptCommand("accept"));
         withSubcommand(new DeclinedCommand("declined"));
-        withSubcommand(new ToggleInvitesCommand("toggle", ((MiniGamesV4) plugin).getToggleInvitesStorage()));
+        withSubcommand(new ToggleInvitesCommand("toggle", storage));
         withSubcommand(new QuitCommand("quit", plugin));
         withSubcommand(new HelpCommand("help", plugin));
         // If no subcommand is given, it opens the MiniGamesMenu

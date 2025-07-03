@@ -4,7 +4,7 @@ plugins {
     java
     id("de.eldoria.plugin-yml.paper") version "0.7.1"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("com.gradleup.shadow") version "9.0.0-beta12"
+    id("com.gradleup.shadow") version "9.0.0-beta17"
 }
 
 group = "de.mikeyllp"
@@ -32,9 +32,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("dev.jorel:commandapi-bukkit-core:10.0.1")
-    implementation("com.github.stefvanschie.inventoryframework:IF:0.11.0")
+    compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
+    compileOnly("dev.jorel:commandapi-bukkit-core:10.1.0")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.11.1")
     implementation("org.xerial:sqlite-jdbc:3.50.1.0")
 }
 
@@ -52,10 +52,10 @@ paper {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.7")
 
         downloadPlugins {
-            hangar("commandapi", "10.0.1")
+            hangar("commandapi", "10.1.0")
         }
     }
 
