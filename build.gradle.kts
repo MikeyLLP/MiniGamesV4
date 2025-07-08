@@ -33,7 +33,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
-    compileOnly("dev.jorel:commandapi-bukkit-core:10.1.0")
+    compileOnly("dev.jorel:commandapi-bukkit-core:10.1.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.11.1")
     implementation("org.xerial:sqlite-jdbc:3.50.1.0")
 }
@@ -41,6 +41,8 @@ dependencies {
 paper {
     main = "de.mikeyllp.miniGamesV4.MiniGamesV4"
     apiVersion = "1.21"
+    name = "MiniGamesV4"
+    author = "MikeyLLP"
 
     serverDependencies {
         register("CommandAPI") {
@@ -55,7 +57,7 @@ tasks {
         minecraftVersion("1.21.7")
 
         downloadPlugins {
-            hangar("commandapi", "10.1.0")
+            hangar("commandapi", "10.1.1")
         }
     }
 

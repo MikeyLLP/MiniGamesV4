@@ -45,6 +45,7 @@ public class PlayerJoinQuitListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        System.out.println(player.locale());
 
         if (!gameState.isEmpty()) {
             for (Map.Entry<String, List<Player>> entry : gameGroup.entrySet()) {

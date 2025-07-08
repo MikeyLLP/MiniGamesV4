@@ -1,7 +1,6 @@
 package de.mikeyllp.miniGamesV4;
 
 import de.mikeyllp.miniGamesV4.commands.MainCommand;
-import de.mikeyllp.miniGamesV4.commands.ToggleInvitesCommand;
 import de.mikeyllp.miniGamesV4.database.Database;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.HideAndSeekListeners;
 import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.NoSeekerMove;
@@ -42,7 +41,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         instance = this;
 
 
-        //Thanks to ChatGPT for the Logo XD
+        // Thanks to ChatGPT for the Logo XD
         String green = "§a";
         ConsoleCommandSender console = Bukkit.getConsoleSender();
         String version = getDescription().getVersion();
@@ -55,6 +54,7 @@ public final class MiniGamesV4 extends JavaPlugin {
         db = new Database(this);
         db.connect();
         db.createTable();
+
 
         this.toggleInvitesStorage = new ToggleInvitesStorage(db);
 
@@ -101,9 +101,9 @@ public final class MiniGamesV4 extends JavaPlugin {
         getLogger().info("Bye <3");
     }
 
-    public Database getDataStore() {
+   /* public Database getDataStore() {
         return db;
-    }
+    }*/
 
     //This is for the Runnable
     public static MiniGamesV4 getInstance() {

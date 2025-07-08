@@ -31,6 +31,17 @@ public class Database {
         }
     }
 
+    public void disconnect() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().warning("An unexpected error while shouting down the SQLite " + e.getMessage());
+        }
+        dbExecutor.shutdown();
+    }
+
     public void createTable() {
         String sql = "CREATE TABLE IF NOT EXISTS player_data (" +
                 "uuid TEXT PRIMARY KEY, " +
@@ -114,17 +125,6 @@ public class Database {
 
     public CompletableFuture<Integer> getToggleAsync(UUID uuid) {
         return CompletableFuture.supplyAsync(() -> getToggle(uuid), dbExecutor);
-    }
-
-    public void disconnect() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().warning("An unexpected error while shouting down the SQLite " + e.getMessage());
-        }
-        dbExecutor.shutdown();
     }
 
     public boolean isConnected() {
