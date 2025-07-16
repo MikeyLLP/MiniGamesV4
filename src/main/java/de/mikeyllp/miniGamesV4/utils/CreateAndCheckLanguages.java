@@ -26,7 +26,7 @@ public class CreateAndCheckLanguages {
         saveResourceIfNotExists("languages/en_us.yml");
     }
 
-    // The metod to create the language files
+    // The method to create the language files
     private static void saveResourceIfNotExists(String resourcePath) {
         File file = new File(plugin.getDataFolder(), resourcePath);
         if (!file.exists()) {
