@@ -1,27 +1,27 @@
-package de.mikeyllp.miniGamesV4.commands.admincommands;
+package de.mikeyllp.miniGamesV4.commands.admincommands
 
-import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetEnableDisableGame;
-import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetHASSpawn;
-import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetNumber;
-import dev.jorel.commandapi.CommandAPICommand;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetEnableDisableGame
+import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetHASSpawn
+import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetNumber
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.executors.CommandArguments
+import dev.jorel.commandapi.executors.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.plugin.java.JavaPlugin
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.needHelpMessage;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
+class SetCommand(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
+    init {
+        withSubcommand(SetNumber("setNum", plugin))
+        withSubcommand(SetHASSpawn("HASSpawn", plugin))
+        withSubcommand(SetEnableDisableGame("invert", plugin))
 
-public class SetCommand extends CommandAPICommand {
-    public SetCommand(String commandName, JavaPlugin plugin) {
-        super(commandName);
-        withSubcommand(new SetNumber("setNum", plugin));
-        withSubcommand(new SetHASSpawn("HASSpawn", plugin));
-        withSubcommand(new SetEnableDisableGame("invert", plugin));
-
-        executes(((sender, args) -> {
+        executes((CommandExecutor { sender: CommandSender, args: CommandArguments ->
             if (!sender.hasPermission("minigamesv4.admin")) {
-                sendNoPermissionMessage(sender);
-                return;
+                MessageUtils.sendNoPermissionMessage(sender)
+                return@CommandExecutor
             }
-            needHelpMessage(sender);
-        }));
+            MessageUtils.needHelpMessage(sender)
+        }))
     }
 }

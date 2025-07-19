@@ -10,18 +10,21 @@ import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand
 import org.bukkit.entity.Player
 
-fun CommandAPICommand.acceptCommand() = subcommand("accept") {
-    withPermission(MinigamesPermissionRegistry.COMMAND_ACCEPT)
-    playerArgument("toAccept")
+//adds all online players to the tab completer
+
+fun CommandAPICommand.declineCommand() = subcommand("decline") {
+    withPermission(MinigamesPermissionRegistry.COMMAND_DECLINE)
+    playerArgument("toDecline")
 
     playerExecutor { player, args ->
-        val toAccept: Player by args
+        val toDecline: Player by args
 
-        if (player == toAccept) {
+        if (player == toDecline) {
             MessageUtils.sendMessage(player, "warning-message.no-invite-yourself")
             return@playerExecutor
         }
 
-        InvitePlayerStorage.canGameStart(toAccept, player)
+        InvitePlayerStorage.removeInvite(toDecline, player)
     }
 }
+

@@ -33,7 +33,9 @@ warning-message:
   nothing-to-quit: "Du bist hast nichts zum Beenden."
   no-invite-yourself: "Du kannst dich nicht selbst einladen."
   player-not-found: "Der Spieler ist nicht online."
-  already-in-game: "Du bist bereits in einem Spiel."
+  already-in-game:
+    self: "Du bist bereits in einem Spiel."
+    other: "<gold><player></gold> ist bereits in einem Spiel."
   disabled-game: "Dieses Spiel ist derzeit deaktiviert."
   no-permission: "Du hast keine Berechtigung, diesen Befehl auszuführen!"
   false-game: "Ungültiges MiniGame: <gold>HideAndSeek, TicTacToe, RockPaperScissors."

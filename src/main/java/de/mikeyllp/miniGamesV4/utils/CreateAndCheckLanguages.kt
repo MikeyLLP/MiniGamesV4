@@ -1,36 +1,33 @@
-package de.mikeyllp.miniGamesV4.utils;
+package de.mikeyllp.miniGamesV4.utils
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
-import java.io.File;
-
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.reloadConfig;
-
-public class CreateAndCheckLanguages {
+object CreateAndCheckLanguages {
     // To get the Config
-    private static JavaPlugin plugin;
+    private var plugin: JavaPlugin? = null
 
-    public static void init(JavaPlugin pl) {
-        plugin = pl;
-        reloadConfig();
+    fun init(pl: JavaPlugin) {
+        plugin = pl
+        MessageUtils.reloadConfig()
     }
 
 
-    public static void saveDefaultLanguagesFiles() {
-        File languagesFolder = new File(plugin.getDataFolder(), "languages");
+    fun saveDefaultLanguagesFiles() {
+        val languagesFolder = File(plugin!!.getDataFolder(), "languages")
         if (!languagesFolder.exists()) {
-            languagesFolder.mkdirs();
+            languagesFolder.mkdirs()
         }
         // Creates the default locale files if they do not exist
-        saveResourceIfNotExists("languages/de_de.yml");
-        saveResourceIfNotExists("languages/en_us.yml");
+        saveResourceIfNotExists("languages/de_de.yml")
+        saveResourceIfNotExists("languages/en_us.yml")
     }
 
     // The method to create the language files
-    private static void saveResourceIfNotExists(String resourcePath) {
-        File file = new File(plugin.getDataFolder(), resourcePath);
+    private fun saveResourceIfNotExists(resourcePath: String) {
+        val file = File(plugin!!.getDataFolder(), resourcePath)
         if (!file.exists()) {
-            plugin.saveResource(resourcePath, false);
+            plugin!!.saveResource(resourcePath, false)
         }
     }
 }

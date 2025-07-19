@@ -1,97 +1,109 @@
-package de.mikeyllp.miniGamesV4.utils;
+package de.mikeyllp.miniGamesV4.utils
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.plugin
+import dev.slne.surf.surfapi.core.api.util.object2ObjectMapOf
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.Tag
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
+import org.gradle.internal.impldep.org.apache.commons.compress.harmony.pack200.PackingUtils.config
+import kotlin.io.path.div
 
-import java.io.File;
+object MessageUtils {
 
+    lateinit var prefix: Component
 
-public class MessageUtils {
+    var activeLanguage: String = "en_US"
+        private set
+    private val langConfigs = object2ObjectMapOf<String, YamlConfiguration>()
 
-    // To get the Config
-    private static JavaPlugin plugin;
+    fun getActiveLangConfig() = getLangConfig(activeLanguage)
 
-    private static FileConfiguration getLangConfig(String lang) {
-        File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
-        return YamlConfiguration.loadConfiguration(file);
+    fun initCustomTags() {
+        TagResolver.resolver("prefix") { queue, context ->
+            Tag.inserting(prefix)
+        }
     }
 
-    private static FileConfiguration config() {
-        return plugin.getConfig();
+    private fun getLangConfig(lang: String): YamlConfiguration {
+        if (langConfigs.containsKey(lang)) {
+            return langConfigs[lang]!!
+        }
+
+        val config = YamlConfiguration.loadConfiguration((plugin.dataPath / "langauges" / "$lang.yml").toFile())
+        langConfigs[lang] = config
+
+        return config
     }
 
-    private static String PREFIX;
+    fun reloadConfig() {
+        plugin.reloadConfig()
+        langConfigs.clear()
 
-    public static void init(JavaPlugin pl) {
-        plugin = pl;
-        reloadConfig();
+        activeLanguage = plugin.config.getString("language", "en_US") ?: "en_US"
+        prefix = MiniMessage.miniMessage().deserialize(plugin.config.getString("prefix", "ERROR")!!)
     }
-
-    public static void reloadConfig() {
-        plugin.reloadConfig();
-        PREFIX = plugin.getConfig().getString("prefix", "").replace("%message%", "");
-    }
-
-    public static String prefix() {
-        return PREFIX;
-    }
-
 
     // You can use this very easily because you only set the message and the prefix are automatically added.
-    public static void sendCustomMessage(CommandSender sender, String message) {
-        sender.sendRichMessage(prefix() + message);
-    }
+    fun sendMessage(sender: CommandSender, languageKey: String) {
+        val langKeyValue = getLangConfig(activeLanguage).getString(languageKey)
+            ?: error("Language key '$languageKey' not found in '$activeLanguage' language file.")
 
-    // The method for the standard warning messages.
-    public static void sendCustomWarnMessage(CommandSender sender, String message) {
-        sender.sendRichMessage(prefix() + "<red>" + message + "</red>");
+        sender.sendMessage(MiniMessage.miniMessage().deserialize(langKeyValue))
     }
 
     // You can use this to send a help message with the command and description.
-    public static void sendHelpMessage(CommandSender sender, String command, String description) {
-        sender.sendRichMessage("<white>" + command + "</white> <gray>" + description);
+    fun sendHelpMessage(sender: CommandSender, command: String, description: String) {
+        sender.sendRichMessage("<white>$command </white> <gray>$description")
     }
+
 
     // Normal messages
-
-
     // Info
-    public static void sendNeedReloadMessage(CommandSender sender) {
-        sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.reload"));
+    fun sendNeedReloadMessage(sender: CommandSender) {
+        sendMessage(
+            sender,
+            getLangConfig(config()?.getString("language")).getString("normal-message.info.reload")
+        )
     }
 
-    public static void sendGameSwitch(CommandSender sender, String game, boolean state) {
+    fun sendGameSwitch(sender: CommandSender, game: String, state: Boolean) {
         if (state) {
-            sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.enabled-game").replace("%game%", game));
-            return;
+            sendMessage(
+                sender, getLangConfig(config()?.getString("language"))
+                    .getString("normal-message.info.enabled-game")!!.replace("%game%", game)
+            )
+            return
         }
-        sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.disabled-game").replace("%game%", game));
+        sendMessage(
+            sender, getLangConfig(config()?.getString("language"))
+                .getString("normal-message.info.disabled-game")!!.replace("%game%", game)
+        )
     }
 
-    public static void needHelpMessage(CommandSender sender) {
-        sendCustomMessage(sender, getLangConfig(config().getString("language")).getString("normal-message.info.need-help").replace("%command%", config().getString("command")));
+    fun needHelpMessage(sender: CommandSender) {
+        sendMessage(
+            sender,
+            getLangConfig(config()?.getString("language")).getString("normal-message.info.need-help")!!
+                .replace("%command%", config()?.getString("command")!!)
+        )
     }
 
     // Error Messages
-    public static void sendNoPermissionMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.no-permission"));
+    fun sendNoPermissionMessage(sender: CommandSender) {
+        sendCustomWarnMessage(
+            sender,
+            getLangConfig(config()?.getString("language")).getString("warning-message.no-permission")
+        )
     }
 
-    public static void miniGamesDisabledMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.disabled-game"));
+    fun miniGamesDisabledMessage(sender: CommandSender) {
+        sendCustomWarnMessage(
+            sender,
+            getLangConfig(config()?.getString("language")).getString("warning-message.disabled-game")
+        )
     }
 
-    public static void sendAlreadyInGameMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.already-in-game"));
-    }
-
-    public static void sendNoOnlinePlayerMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.player-not-found"));
-    }
-
-    public static void sendNoInviteYourselfMessage(CommandSender sender) {
-        sendCustomWarnMessage(sender, getLangConfig(config().getString("language")).getString("warning-message.no-invite-yourself"));
-    }
 }

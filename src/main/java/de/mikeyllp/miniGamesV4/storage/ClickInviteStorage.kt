@@ -1,77 +1,70 @@
-package de.mikeyllp.miniGamesV4.storage;
+package de.mikeyllp.miniGamesV4.storage
 
-import de.mikeyllp.miniGamesV4.MiniGamesV4;
-import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+import de.mikeyllp.miniGamesV4.MiniGamesV4
+import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import io.papermc.paper.event.player.PrePlayerAttackEntityEvent
+import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitTask
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.playerGotClicked;
-import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.removePlayer;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendCustomMessage;
-
-public class ClickInviteStorage implements Listener {
-
-    public static final Map<Player, BukkitTask> enableListener = new HashMap<>();
-    public static final Map<Player, String> whatGame = new HashMap<>();
-
-    // Adds the Player to the enable Listener Map and starts a 60 second timer after the timer ends the Player will be removed from the Map
-    public static void addEnableListener(Player player, String miniGame) {
-        // removes the Old listener if the player is already in the Map
-        if (enableListener.containsKey(player)) {
-            removePlayer(player);
-            enableListener.put(player, new BukkitRunnable() {
-                @Override
-                public void run() {
-                    removePlayer(player);
-                    sendCustomMessage(player, "<red>Du kannst keine Spieler mehr einladen.</red>");
-                }
-            }.runTaskLater(MiniGamesV4.getInstance(), 1200L));
-            whatGame.put(player, miniGame);
-            return;
-        }
-        enableListener.put(player, new BukkitRunnable() {
-            @Override
-            public void run() {
-                removePlayer(player);
-                sendCustomMessage(player, "<red>Du kannst keine Spieler mehr einladen.</red>");
-            }
-        }.runTaskLater(MiniGamesV4.getInstance(), 1200L));
-        whatGame.put(player, miniGame);
-    }
-
-
+class ClickInviteStorage : Listener {
     // Checks if the Player is in the enable Listener Map and if he is it will remove him from the Map and perform the command
     @EventHandler
-    public void onPlayerRightClick(PlayerInteractEntityEvent event) {
+    fun onPlayerRightClick(event: PlayerInteractEntityEvent) {
         if (enableListener.containsKey(event.getPlayer())) {
-            if (event.getRightClicked() instanceof Player) {
-                playerGotClicked(event.getPlayer(), (Player) event.getRightClicked());
+            if (event.getRightClicked() is Player) {
+                ClickInviteUtils.playerGotClicked(event.getPlayer(), event.getRightClicked() as Player)
             }
         }
     }
 
     @EventHandler
-    public void onPlayerLeftClick(PrePlayerAttackEntityEvent event) {
+    fun onPlayerLeftClick(event: PrePlayerAttackEntityEvent) {
         if (enableListener.containsKey(event.getPlayer())) {
-            if (event.getAttacked() instanceof Player) {
-                playerGotClicked(event.getPlayer(), (Player) event.getAttacked());
+            if (event.getAttacked() is Player) {
+                ClickInviteUtils.playerGotClicked(event.getPlayer(), event.getAttacked() as Player)
             }
         }
     }
 
     // Removes the Player from the enable Listener Map when he quits
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    fun onPlayerQuit(event: PlayerQuitEvent) {
         if (enableListener.containsKey(event.getPlayer())) {
-            removePlayer(event.getPlayer());
+            ClickInviteUtils.removePlayer(event.getPlayer())
+        }
+    }
+
+    companion object {
+        val enableListener: MutableMap<Player?, BukkitTask?> = HashMap<Player?, BukkitTask?>()
+        val whatGame: MutableMap<Player?, String?> = HashMap<Player?, String?>()
+
+        // Adds the Player to the enable Listener Map and starts a 60 second timer after the timer ends the Player will be removed from the Map
+        fun addEnableListener(player: Player, miniGame: String?) {
+            // removes the Old listener if the player is already in the Map
+            if (enableListener.containsKey(player)) {
+                ClickInviteUtils.removePlayer(player)
+                enableListener.put(player, object : BukkitRunnable() {
+                    override fun run() {
+                        ClickInviteUtils.removePlayer(player)
+                        MessageUtils.sendMessage(player, "<red>Du kannst keine Spieler mehr einladen.</red>")
+                    }
+                }.runTaskLater(MiniGamesV4.Companion.getInstance(), 1200L))
+                whatGame.put(player, miniGame)
+                return
+            }
+            enableListener.put(player, object : BukkitRunnable() {
+                override fun run() {
+                    ClickInviteUtils.removePlayer(player)
+                    MessageUtils.sendMessage(player, "<red>Du kannst keine Spieler mehr einladen.</red>")
+                }
+            }.runTaskLater(MiniGamesV4.Companion.getInstance(), 1200L))
+            whatGame.put(player, miniGame)
         }
     }
 }

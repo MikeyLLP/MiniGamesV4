@@ -1,82 +1,75 @@
-package de.mikeyllp.miniGamesV4.commands;
+package de.mikeyllp.miniGamesV4.commands
 
-import dev.jorel.commandapi.CommandAPICommand;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.title.Title;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
+import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
+import de.mikeyllp.miniGamesV4.games.rps.RPSGame
+import de.mikeyllp.miniGamesV4.plugin
+import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
+import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
+import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import de.mikeyllp.miniGamesV4.utils.MinigamesPermissionRegistry
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.kotlindsl.playerExecutor
+import dev.jorel.commandapi.kotlindsl.subcommand
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.title.Title
+import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import java.time.Duration
+import java.util.*
 
-import java.io.File;
-import java.time.Duration;
+fun CommandAPICommand.quitCommand() = subcommand("quit") {
+    withPermission(MinigamesPermissionRegistry.COMMAND_QUIT)
 
-import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.listUntilX;
-import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
-import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.playerGameState;
-import static de.mikeyllp.miniGamesV4.games.rps.RPSGame.removePlayersFromList;
-import static de.mikeyllp.miniGamesV4.storage.ClickInviteStorage.enableListener;
-import static de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.gameInfo;
-import static de.mikeyllp.miniGamesV4.utils.ClickInviteUtils.removePlayer;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
+    playerExecutor { player, args ->
+        val langConfig = MessageUtils.getActiveLangConfig()
 
-public class QuitCommand extends CommandAPICommand {
-
-
-    public QuitCommand(String commandName, JavaPlugin plugin) {
-        super(commandName);
-        executesPlayer(((sender, args) -> {
-            // Checks if the player has permission to use this command
-            if (!sender.hasPermission("minigamesv4.minigames")) {
-                sendNoPermissionMessage(sender);
-                return;
-            }
-
-            String lang = plugin.getConfig().getString("language");
-            File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
-            YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(file);
-
-            if (enableListener.containsKey(sender)) {
-                MiniMessage mm = MiniMessage.miniMessage();
-                Component miniGameComponent = mm.deserialize(langConfig.getString("special-message.click-invite-disable"));
-                Component message = mm.deserialize("");
-                sender.showTitle(Title.title(miniGameComponent,
-                        message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
-                removePlayer(sender);
-                return;
-            }
-
-            // Check if a game is existing
-            if (gameInfo.isEmpty()) {
-                sendCustomWarnMessage(sender, langConfig.getString("warning-message.nothing-to-quit"));
-                return;
-            }
-
-            // Checks if the player is in a game
-            if (playerGameState.containsKey(sender)) {
-                Player opponent = gameInfo.get(sender);
-                sendCustomWarnMessage(sender, langConfig.getString("warning-message.game-quit"));
-                sendCustomWarnMessage(opponent, langConfig.getString("warning-message.player-quit").replace("%player%", sender.getName()));
-
-                //removes the inviter and invited from the maps
-                removePlayersFromList(sender, opponent);
-                return;
-            }
+        if (ClickInviteStorage.Companion.enableListener.containsKey(player)) {
+            val mm = MiniMessage.miniMessage()
+            val miniGameComponent =
+                mm.deserialize(langConfig.getString("special-message.click-invite-disable").toString())
+            val message = mm.deserialize("")
+            player.showTitle(
+                Title.title(
+                    miniGameComponent,
+                    message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))
+                )
+            )
+            ClickInviteUtils.removePlayer(player)
+            return@playerExecutor
+        }
 
 
-            if (playerRemove(sender, "quit", plugin)) {
-                gameInfo.remove(sender);
-                // Remove the player from the queue
-            } else {
-                if (!listUntilX.contains(sender)) {
-                    sendCustomWarnMessage(sender, langConfig.getString("warning-message.nothing-to-quit"));
-                    return;
-                }
-                gameInfo.remove(sender);
-                listUntilX.removeIf(value -> value.equals(sender));
-                sendCustomWarnMessage(sender, langConfig.getString("warning-message.queue-quit"));
-            }
-        }));
+        // Checks if the player is in a game
+        if (InvitePlayerStorage.runningGames.containsKey(player.uniqueId)) {
+            val opponentUuid: UUID = InvitePlayerStorage.runningGames[player.uniqueId]!!
+            val opponent: Player = Bukkit.getPlayer(opponentUuid)!!
+            MessageUtils.sendMessage(player, "warning-message.game-quit")
+            MessageUtils.sendMessage(opponent, "warning-message.player-quit")
+
+            //removes the inviter and invited from the maps
+            RPSGame.Companion.removePlayersFromList(player, opponent)
+            return@playerExecutor
+        }
+
+
+
+        if (removePlayersHideAndSeek.playerRemove(player, "quit", plugin)) {
+            InvitePlayerStorage.runningGames.remove(player.uniqueId)
+            return@playerExecutor
+        }
+
+
+        if (!HideAndSeekGameGroups.Companion.listUntilX.contains(player)) {
+            MessageUtils.sendMessage(player, "warning-message.nothing-to-quit")
+            return@playerExecutor
+        }
+        InvitePlayerStorage.runningGames.remove(player.uniqueId)
+        HideAndSeekGameGroups.Companion.listUntilX.removeIf { value: Player? -> value == player }
+        MessageUtils.sendMessage(player, "warning-message.queue-quit")
+
+
     }
+
 }

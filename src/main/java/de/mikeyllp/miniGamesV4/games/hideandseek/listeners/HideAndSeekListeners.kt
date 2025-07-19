@@ -1,54 +1,41 @@
-package de.mikeyllp.miniGamesV4.games.hideandseek.listeners;
+package de.mikeyllp.miniGamesV4.games.hideandseek.listeners
 
-import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
+import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
+import io.papermc.paper.event.player.PrePlayerAttackEntityEvent
+import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.FoodLevelChangeEvent
+import org.bukkit.plugin.java.JavaPlugin
 
-import java.util.List;
-import java.util.Map;
-
-import static de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups.*;
-import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek.playerRemove;
-
-public class HideAndSeekListeners implements Listener {
-
-    private final JavaPlugin plugin;
-
-    public HideAndSeekListeners(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
-
+class HideAndSeekListeners(private val plugin: JavaPlugin?) : Listener {
     // For the Hide and Seek game to
     @EventHandler
-    public void onClickEvent(PrePlayerAttackEntityEvent event) {
-
-
-        if (event.getAttacked() instanceof Player) {
-            Player player = event.getPlayer();
-            event.setCancelled(true);
+    fun onClickEvent(event: PrePlayerAttackEntityEvent) {
+        if (event.getAttacked() is Player) {
+            val player = event.getPlayer()
+            event.setCancelled(true)
             // So that the seekers cannot direktly click on the players to remove them
-            for (Map.Entry<String, List<Player>> entry : noMoveGroup.entrySet()) {
-                List<Player> seekerList = entry.getValue();
+            for (entry in HideAndSeekGameGroups.Companion.noMoveGroup.entries) {
+                val seekerList: MutableList<Player?> = entry.value
                 if (seekerList.contains(player)) {
-                    return;
+                    return
                 }
             }
 
             // We chack all the seeker groups if the player is a seeker
-            for (Map.Entry<String, List<Player>> entry : seekerGroup.entrySet()) {
-                String groupName = entry.getKey();
-                List<Player> seekerList = entry.getValue();
+            for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
+                val groupName: String? = entry.key
+                val seekerList: MutableList<Player?> = entry.value
                 // Check if the player is a seeker
                 if (seekerList.contains(player)) {
-                    List<Player> playerList = gameGroup.get(groupName);
+                    val playerList: MutableList<Player?>? = HideAndSeekGameGroups.Companion.gameGroup.get(groupName)
                     // Get the player who was clicked
-                    Player clickedPlayer = (Player) event.getAttacked();
+                    val clickedPlayer = event.getAttacked() as Player
                     if (playerList != null && playerList.contains(clickedPlayer)) {
-                        playerRemove(clickedPlayer, "gotFound", plugin);
+                        removePlayersHideAndSeek.playerRemove(clickedPlayer, "gotFound", plugin)
                     }
                 }
             }
@@ -57,24 +44,24 @@ public class HideAndSeekListeners implements Listener {
 
     // That the players cannot take damage
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        for (List<Player> group : gameGroup.values()) {
+    fun onEntityDamage(event: EntityDamageEvent) {
+        if (event.getEntity() !is Player) return
+        for (group in HideAndSeekGameGroups.Companion.gameGroup.values) {
             if (group.contains(player)) {
-                event.setCancelled(true);
-                return;
+                event.setCancelled(true)
+                return
             }
         }
     }
 
     // That the players cannot lose hunger
     @EventHandler
-    public void onHunger(FoodLevelChangeEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        for (List<Player> group : gameGroup.values()) {
+    fun onHunger(event: FoodLevelChangeEvent) {
+        if (event.getEntity() !is Player) return
+        for (group in HideAndSeekGameGroups.Companion.gameGroup.values) {
             if (group.contains(player)) {
-                event.setCancelled(true);
-                return;
+                event.setCancelled(true)
+                return
             }
         }
     }

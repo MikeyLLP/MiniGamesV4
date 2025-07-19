@@ -1,137 +1,145 @@
-package de.mikeyllp.miniGamesV4.database;
+package de.mikeyllp.miniGamesV4.database
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
+import java.util.*
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.function.Supplier
 
-import java.io.File;
-import java.sql.*;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+class Database(private val plugin: JavaPlugin) {
+    private var connection: Connection? = null
 
-public class Database {
-
-    private final JavaPlugin plugin;
-    private Connection connection;
     // Holds the main Tread Clear
-    private final ExecutorService dbExecutor = Executors.newSingleThreadExecutor();
+    private val dbExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
-    public Database(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    public void connect() {
+    fun connect() {
         try {
-            File dbFile = new File(plugin.getDataFolder(), "data.db");
-            if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
-            String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
-            connection = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            plugin.getLogger().severe("No Connection to SQLite: " + e.getMessage());
+            val dbFile = File(plugin.getDataFolder(), "data.db")
+            if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs()
+            val url = "jdbc:sqlite:" + dbFile.getAbsolutePath()
+            connection = DriverManager.getConnection(url)
+        } catch (e: SQLException) {
+            plugin.getLogger().severe("No Connection to SQLite: " + e.message)
         }
     }
 
-    public void disconnect() {
+    fun disconnect() {
         try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
+            if (connection != null && !connection!!.isClosed()) {
+                connection!!.close()
             }
-        } catch (SQLException e) {
-            plugin.getLogger().warning("An unexpected error while shouting down the SQLite " + e.getMessage());
+        } catch (e: SQLException) {
+            plugin.getLogger().warning("An unexpected error while shouting down the SQLite " + e.message)
         }
-        dbExecutor.shutdown();
+        dbExecutor.shutdown()
     }
 
-    public void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS player_data (" +
+    fun createTable() {
+        val sql = "CREATE TABLE IF NOT EXISTS player_data (" +
                 "uuid TEXT PRIMARY KEY, " +
                 "language TEXT, " +
-                "invites_toggle INTEGER DEFAULT 0)";
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            plugin.getLogger().severe("An unexpected error while creating a Table: " + e.getMessage());
+                "invites_toggle INTEGER DEFAULT 0)"
+        try {
+            connection!!.createStatement().use { stmt ->
+                stmt.execute(sql)
+            }
+        } catch (e: SQLException) {
+            plugin.getLogger().severe("An unexpected error while creating a Table: " + e.message)
         }
     }
 
     // A method to set the Lang
-    public void setLanguage(UUID uuid, String language) {
-        String sql = "INSERT INTO player_data(uuid, language) VALUES(?, ?) " +
-                "ON CONFLICT(uuid) DO UPDATE SET language = excluded.language";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, uuid.toString());
-            stmt.setString(2, language);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            plugin.getLogger().warning("Error while saving Data in Language: " + e.getMessage());
+    fun setLanguage(uuid: UUID, language: String?) {
+        val sql = "INSERT INTO player_data(uuid, language) VALUES(?, ?) " +
+                "ON CONFLICT(uuid) DO UPDATE SET language = excluded.language"
+        try {
+            connection!!.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, uuid.toString())
+                stmt.setString(2, language)
+                stmt.executeUpdate()
+            }
+        } catch (e: SQLException) {
+            plugin.getLogger().warning("Error while saving Data in Language: " + e.message)
         }
     }
 
     // Get the Lang Async that reduce lags
-    public CompletableFuture<Void> setLanguageAsync(UUID uuid, String language) {
-        return CompletableFuture.runAsync(() -> setLanguage(uuid, language), dbExecutor);
+    fun setLanguageAsync(uuid: UUID, language: String?): CompletableFuture<Void?> {
+        return CompletableFuture.runAsync(Runnable { setLanguage(uuid, language) }, dbExecutor)
     }
 
     // A method to get the Lang
-    public String getLanguage(UUID uuid) {
-        String sql = "SELECT language FROM player_data WHERE uuid = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, uuid.toString());
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("language");
-                }
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().warning("Error while loading from Data in Language: " + e.getMessage());
-        }
-        return null;
-    }
-
-    public CompletableFuture<String> getLanguageAsync(UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> getLanguage(uuid), dbExecutor);
-    }
-
-    public void setToggle(UUID uuid, int toggle) {
-        String sql = "INSERT INTO player_data(uuid, invites_toggle) VALUES(?, ?) " +
-                "ON CONFLICT(uuid) DO UPDATE SET invites_toggle = excluded.invites_toggle";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, uuid.toString());
-            stmt.setInt(2, toggle);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            plugin.getLogger().warning("Error while saving Data in toggle: " + e.getMessage());
-        }
-    }
-
-    public CompletableFuture<Void> setToggleAsync(UUID uuid, int toggle) {
-        return CompletableFuture.runAsync(() -> setToggle(uuid, toggle), dbExecutor);
-    }
-
-    public int getToggle(UUID uuid) {
-        String sql = "SELECT invites_toggle FROM player_data WHERE uuid = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, uuid.toString());
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("invites_toggle");
-                }
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().warning("Error while loading from Data in toggle: " + e.getMessage());
-        }
-        return 0;
-    }
-
-    public CompletableFuture<Integer> getToggleAsync(UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> getToggle(uuid), dbExecutor);
-    }
-
-    public boolean isConnected() {
+    fun getLanguage(uuid: UUID): String? {
+        val sql = "SELECT language FROM player_data WHERE uuid = ?"
         try {
-            return connection != null && !connection.isClosed();
-        } catch (SQLException e) {
-            return false;
+            connection!!.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, uuid.toString())
+                stmt.executeQuery().use { rs ->
+                    if (rs.next()) {
+                        return rs.getString("language")
+                    }
+                }
+            }
+        } catch (e: SQLException) {
+            plugin.getLogger().warning("Error while loading from Data in Language: " + e.message)
+        }
+        return null
+    }
+
+    fun getLanguageAsync(uuid: UUID): CompletableFuture<String?> {
+        return CompletableFuture.supplyAsync<String?>(Supplier { getLanguage(uuid) }, dbExecutor)
+    }
+
+    fun setToggle(uuid: UUID, toggle: Int) {
+        val sql = "INSERT INTO player_data(uuid, invites_toggle) VALUES(?, ?) " +
+                "ON CONFLICT(uuid) DO UPDATE SET invites_toggle = excluded.invites_toggle"
+        try {
+            connection!!.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, uuid.toString())
+                stmt.setInt(2, toggle)
+                stmt.executeUpdate()
+            }
+        } catch (e: SQLException) {
+            plugin.getLogger().warning("Error while saving Data in toggle: " + e.message)
         }
     }
+
+    fun setToggleAsync(uuid: UUID, toggle: Int): CompletableFuture<Void?> {
+        return CompletableFuture.runAsync(Runnable { setToggle(uuid, toggle) }, dbExecutor)
+    }
+
+    fun getToggle(uuid: UUID): Int {
+        val sql = "SELECT invites_toggle FROM player_data WHERE uuid = ?"
+        try {
+            connection!!.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, uuid.toString())
+                stmt.executeQuery().use { rs ->
+                    if (rs.next()) {
+                        return rs.getInt("invites_toggle")
+                    }
+                }
+            }
+        } catch (e: SQLException) {
+            plugin.getLogger().warning("Error while loading from Data in toggle: " + e.message)
+        }
+        return 0
+    }
+
+    fun getToggleAsync(uuid: UUID): CompletableFuture<Int?> {
+        return CompletableFuture.supplyAsync<Int?>(Supplier { getToggle(uuid) }, dbExecutor)
+    }
+
+    val isConnected: Boolean
+        get() {
+            try {
+                return connection != null && !connection!!.isClosed()
+            } catch (e: SQLException) {
+                return false
+            }
+        }
 }

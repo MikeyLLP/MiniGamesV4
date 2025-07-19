@@ -1,50 +1,47 @@
-package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands;
+package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands
 
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.LocationArgument;
-import dev.jorel.commandapi.arguments.WorldArgument;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.arguments.LocationArgument
+import dev.jorel.commandapi.arguments.WorldArgument
+import dev.jorel.commandapi.executors.CommandArguments
+import dev.jorel.commandapi.executors.CommandExecutor
+import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.command.CommandSender
+import org.bukkit.plugin.java.JavaPlugin
 
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNeedReloadMessage;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.sendNoPermissionMessage;
-
-public class SetHASSpawn extends CommandAPICommand {
-    public SetHASSpawn(String commandName, JavaPlugin plugin) {
-        super(commandName);
-
-        withArguments(new LocationArgument("location"));
-        withArguments(new WorldArgument("world"));
-        executes((sender, args) -> {
+class SetHASSpawn(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
+    init {
+        withArguments(LocationArgument("location"))
+        withArguments(WorldArgument("world"))
+        executes(CommandExecutor { sender: CommandSender, args: CommandArguments ->
             // Checks if the player has permission to use this command
             if (!sender.hasPermission("minigamesv4.admin")) {
-                sendNoPermissionMessage(sender);
-                return;
+                MessageUtils.sendNoPermissionMessage(sender)
+                return@CommandExecutor
             }
             // Get the Config
-            FileConfiguration config = plugin.getConfig();
+            val config = plugin.getConfig()
 
-            World worldArg = (World) args.get("world");
-            Location locationArg = (Location) args.get("location");
+            val worldArg = args.get("world") as World?
+            val locationArg = args.get("location") as Location?
 
 
-            double locX = locationArg.getX();
-            double locY = locationArg.getY();
-            double locZ = locationArg.getZ();
+            val locX = locationArg!!.x
+            val locY = locationArg.y
+            val locZ = locationArg.z
 
             // Set the spawn location in the config
-            config.set("spawn-location.world", worldArg.getName());
-            config.set("spawn-location.x", locX);
-            config.set("spawn-location.y", locY);
-            config.set("spawn-location.z", locZ);
+            config.set("spawn-location.world", worldArg?.name)
+            config.set("spawn-location.x", locX)
+            config.set("spawn-location.y", locY)
+            config.set("spawn-location.z", locZ)
 
             // Save the config
-            plugin.saveConfig();
-
-            sendNeedReloadMessage(sender);
-        });
+            plugin.saveConfig()
+            MessageUtils.sendNeedReloadMessage(sender)
+        })
     }
 }
 

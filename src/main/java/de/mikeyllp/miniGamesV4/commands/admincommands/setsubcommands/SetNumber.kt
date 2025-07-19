@@ -1,113 +1,144 @@
-package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands;
+package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands
 
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.IntegerArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.arguments.ArgumentSuggestions
+import dev.jorel.commandapi.arguments.IntegerArgument
+import dev.jorel.commandapi.arguments.StringArgument
+import dev.jorel.commandapi.executors.CommandArguments
+import dev.jorel.commandapi.executors.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
+import java.util.*
 
-import java.io.File;
-
-import static de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils.formatTimerWithText;
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
-
-public class SetNumber extends CommandAPICommand {
-    public SetNumber(String commandName, JavaPlugin plugin) {
-        super(commandName);
-
+class SetNumber(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
+    init {
         // Subcommands with ints
-        withArguments(new StringArgument("settings").replaceSuggestions(ArgumentSuggestions.strings(
-                "minHASPlayers",
-                "maxHASPlayers",
-                "maxHASSeekers",
-                "timeHASAutoStart",
-                "HASPlayTime",
-                "HASHideTime",
-                "HASHints",
-                "small-slot")));
+        withArguments(
+            StringArgument("settings").replaceSuggestions(
+                ArgumentSuggestions.strings<CommandSender>(
+                    "minHASPlayers",
+                    "maxHASPlayers",
+                    "maxHASSeekers",
+                    "timeHASAutoStart",
+                    "HASPlayTime",
+                    "HASHideTime",
+                    "HASHints",
+                    "small-slot"
+                )
+            )
+        )
 
-        withArguments(new IntegerArgument("someInt"));
-        executes(((sender, args) -> {
+        withArguments(IntegerArgument("someInt"))
+        executes((CommandExecutor { sender: CommandSender, args: CommandArguments ->
             // Check if the sender has permission to use this command
             if (!sender.hasPermission("minigamesv4.admin")) {
-                sendNoPermissionMessage(sender);
-                return;
+                MessageUtils.sendNoPermissionMessage(sender)
+                return@CommandExecutor
             }
 
 
-            FileConfiguration config = plugin.getConfig();
-            String settingsArgs = (String) args.get("settings");
-            String msg = settingsArgs.trim().toLowerCase();
+            val config = plugin.getConfig()
+            val settingsArgs = args.get("settings") as String?
+            val msg = settingsArgs?.trim { it <= ' ' }?.lowercase(Locale.getDefault())
 
-            int someInt = (int) args.get("someInt");
+            val someInt = args.get("someInt") as Int
 
-            String lang = plugin.getConfig().getString("language");
-            File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
-            YamlConfiguration langConfig = YamlConfiguration.loadConfiguration(file);
+            val lang = plugin.getConfig().getString("language")
+            val file = File(plugin.dataFolder, "languages/$lang.yml")
+            val langConfig = YamlConfiguration.loadConfiguration(file)
 
 
             // all settings for who has an int value
-            switch (msg) {
-                case "minhasplayers":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.min-players-HAS")
-                            .replace("%number%", String.valueOf(someInt)));
-                    config.set("minPlayersPerHASGroup", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "maxhasplayers":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.max-players-HAS")
-                            .replace("%number%", String.valueOf(someInt)));
-                    config.set("maxPlayersPerHASGroup", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "maxhasseekers":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.max-seekers")
-                            .replace("%number%", String.valueOf(someInt)));
-                    config.set("maxSeekersPerHASGroup", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "timehasautostart":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.time-autostart-HAS")
-                            .replace("%number%", formatTimerWithText(someInt)));
-                    config.set("timeAutoStartHASGroup", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "hasplaytime":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.play-time-HAS")
-                            .replace("%number%", formatTimerWithText(someInt)));
-                    config.set("playTimeHAS", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "hashidetime":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.hide-time-HAS")
-                            .replace("%number%", formatTimerWithText(someInt)));
-                    config.set("hideTimeHAS", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "hashints":
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.hints-HAS")
-                            .replace("%number%", String.valueOf(someInt)));
-                    config.set("HASHints", someInt);
-                    plugin.saveConfig();
-                    break;
-                case "small-slot":
-                    if (!(someInt >= 1 && someInt <= 9)) {
-                        sendCustomWarnMessage(sender, langConfig.getString("warning-message.invalid-number"));
-                        return;
-                    }
-                    sendCustomMessage(sender, langConfig.getString("normal-message.info.small-slot")
-                            .replace("%number%", String.valueOf(someInt)));
-                    config.set("small-modus.slot", someInt);
-                    plugin.saveConfig();
-                    break;
-                default:
-                    sendCustomWarnMessage(sender, langConfig.getString("warning-message.invalid-config-use"));
-                    break;
-            }
-            sendNeedReloadMessage(sender);
-        }));
+            when (msg) {
+                "minhasplayers" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.min-players-HAS")
+                            ?.replace("%number%", someInt.toString())
+                    )
+                    config.set("minPlayersPerHASGroup", someInt)
+                    plugin.saveConfig()
+                }
 
+                "maxhasplayers" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.max-players-HAS")
+                            ?.replace("%number%", someInt.toString())
+                    )
+                    config.set("maxPlayersPerHASGroup", someInt)
+                    plugin.saveConfig()
+                }
+
+                "maxhasseekers" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.max-seekers")
+                            ?.replace("%number%", someInt.toString())
+                    )
+                    config.set("maxSeekersPerHASGroup", someInt)
+                    plugin.saveConfig()
+                }
+
+                "timehasautostart" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.time-autostart-HAS")
+                            ?.replace("%number%", formatTimeUtils.formatTimerWithText(someInt))
+                    )
+                    config.set("timeAutoStartHASGroup", someInt)
+                    plugin.saveConfig()
+                }
+
+                "hasplaytime" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.play-time-HAS")
+                            ?.replace("%number%", formatTimeUtils.formatTimerWithText(someInt))
+                    )
+                    config.set("playTimeHAS", someInt)
+                    plugin.saveConfig()
+                }
+
+                "hashidetime" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.hide-time-HAS")
+                            ?.replace("%number%", formatTimeUtils.formatTimerWithText(someInt))
+                    )
+                    config.set("hideTimeHAS", someInt)
+                    plugin.saveConfig()
+                }
+
+                "hashints" -> {
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.hints-HAS")
+                            ?.replace("%number%", someInt.toString())
+                    )
+                    config.set("HASHints", someInt)
+                    plugin.saveConfig()
+                }
+
+                "small-slot" -> {
+                    if (!(someInt >= 1 && someInt <= 9)) {
+                        MessageUtils.sendCustomWarnMessage(
+                            sender,
+                            langConfig.getString("warning-message.invalid-number")
+                        )
+                        return@CommandExecutor
+                    }
+                    MessageUtils.sendMessage(
+                        sender, langConfig.getString("normal-message.info.small-slot")
+                            ?.replace("%number%", someInt.toString())
+                    )
+                    config.set("small-modus.slot", someInt)
+                    plugin.saveConfig()
+                }
+
+                else -> MessageUtils.sendCustomWarnMessage(
+                    sender,
+                    langConfig.getString("warning-message.invalid-config-use")
+                )
+            }
+            MessageUtils.sendNeedReloadMessage(sender)
+        }))
     }
 }

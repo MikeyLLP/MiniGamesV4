@@ -1,115 +1,116 @@
-package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands;
+package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands
 
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.StringArgument;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.arguments.ArgumentSuggestions
+import dev.jorel.commandapi.arguments.StringArgument
+import dev.jorel.commandapi.executors.CommandArguments
+import dev.jorel.commandapi.executors.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
+import java.util.*
 
-import java.io.File;
-
-import static de.mikeyllp.miniGamesV4.utils.MessageUtils.*;
-
-public class SetEnableDisableGame extends CommandAPICommand {
-    public SetEnableDisableGame(String commandName, JavaPlugin plugin) {
-
-        super(commandName);
-
-
-        withArguments(new StringArgument("miniGames").replaceSuggestions(ArgumentSuggestions.strings(
-                "HideAndSeek", "TicTacToe", "RockPaperScissors", "SmallModus")));
+class SetEnableDisableGame(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
+    init {
+        withArguments(
+            StringArgument("miniGames").replaceSuggestions(
+                ArgumentSuggestions.strings<CommandSender?>(
+                    "HideAndSeek", "TicTacToe", "RockPaperScissors", "SmallModus"
+                )
+            )
+        )
 
 
-        executes(((sender, arg) -> {
-            String miniGameArg = (String) arg.get("miniGames");
-            String msg = miniGameArg.trim().toLowerCase();
+        executes((CommandExecutor { sender: CommandSender, arg: CommandArguments ->
+            val miniGameArg = arg.get("miniGames") as String
+            val msg: String? = miniGameArg.trim { it <= ' ' }.lowercase(Locale.getDefault())
 
             // Get the Config
-            FileConfiguration config = plugin.getConfig();
+            val config = plugin.getConfig()
+            when (msg) {
+                "hideandseek" -> if (config.getBoolean("HideAndSeek")) {
+                    config.set("HideAndSeek", false)
 
-            switch (msg) {
-                case "hideandseek":
-                    if (config.getBoolean("HideAndSeek")) {
-                        config.set("HideAndSeek", false);
+                    // Save the config
+                    plugin.saveConfig()
 
-                        // Save the config
-                        plugin.saveConfig();
+                    MessageUtils.sendGameSwitch(sender, "HideAndSeek", false)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                } else {
+                    config.set("HideAndSeek", true)
 
-                        sendGameSwitch(sender, "HideAndSeek", false);
-                        sendNeedReloadMessage(sender);
-                    } else {
-                        config.set("HideAndSeek", true);
+                    // Save the config
+                    plugin.saveConfig()
 
-                        // Save the config
-                        plugin.saveConfig();
+                    MessageUtils.sendGameSwitch(sender, "HideAndSeek", true)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                }
 
-                        sendGameSwitch(sender, "HideAndSeek", true);
-                        sendNeedReloadMessage(sender);
-                    }
-                    break;
-                case "rockpaperscissors":
-                    if (config.getBoolean("RockPaperScissors")) {
-                        config.set("RockPaperScissors", false);
+                "rockpaperscissors" -> if (config.getBoolean("RockPaperScissors")) {
+                    config.set("RockPaperScissors", false)
 
-                        // Save the config
-                        plugin.saveConfig();
+                    // Save the config
+                    plugin.saveConfig()
 
-                        sendGameSwitch(sender, "RockPaperScissors", false);
-                        sendNeedReloadMessage(sender);
-                    } else {
-                        config.set("RockPaperScissors", true);
+                    MessageUtils.sendGameSwitch(sender, "RockPaperScissors", false)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                } else {
+                    config.set("RockPaperScissors", true)
 
-                        // Save the config
-                        plugin.saveConfig();
+                    // Save the config
+                    plugin.saveConfig()
 
-                        sendGameSwitch(sender, "RockPaperScissors", true);
-                        sendNeedReloadMessage(sender);
-                    }
-                    break;
-                case "tictactoe":
-                    if (config.getBoolean("TicTacToe")) {
-                        config.set("TicTacToe", false);
+                    MessageUtils.sendGameSwitch(sender, "RockPaperScissors", true)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                }
 
-                        // Save the config
-                        plugin.saveConfig();
+                "tictactoe" -> if (config.getBoolean("TicTacToe")) {
+                    config.set("TicTacToe", false)
 
-                        sendGameSwitch(sender, "TicTacToe", false);
-                        sendNeedReloadMessage(sender);
-                    } else {
-                        config.set("TicTacToe", true);
+                    // Save the config
+                    plugin.saveConfig()
 
-                        // Save the config
-                        plugin.saveConfig();
+                    MessageUtils.sendGameSwitch(sender, "TicTacToe", false)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                } else {
+                    config.set("TicTacToe", true)
 
-                        sendGameSwitch(sender, "TicTacToe", true);
-                        sendNeedReloadMessage(sender);
-                    }
-                    break;
-                case "smallmodus":
-                    if (config.getBoolean("small-modus")) {
-                        config.set("small-modus", false);
+                    // Save the config
+                    plugin.saveConfig()
 
-                        // Save the config
-                        plugin.saveConfig();
+                    MessageUtils.sendGameSwitch(sender, "TicTacToe", true)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                }
 
-                        sendGameSwitch(sender, "small-modus", false);
-                        sendNeedReloadMessage(sender);
-                    } else {
-                        config.set("small-modus", true);
+                "smallmodus" -> if (config.getBoolean("small-modus")) {
+                    config.set("small-modus", false)
 
-                        // Save the config
-                        plugin.saveConfig();
+                    // Save the config
+                    plugin.saveConfig()
 
-                        sendGameSwitch(sender, "small-modus", true);
-                        sendNeedReloadMessage(sender);
-                    }
-                    break;
-                default:
-                    String lang = plugin.getConfig().getString("lang");
-                    File file = new File(plugin.getDataFolder(), "languages/" + lang + ".yml");
-                    sendCustomMessage(sender, YamlConfiguration.loadConfiguration(file).getString("warning-message.false-game"));
+                    MessageUtils.sendGameSwitch(sender, "small-modus", false)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                } else {
+                    config.set("small-modus", true)
+
+                    // Save the config
+                    plugin.saveConfig()
+
+                    MessageUtils.sendGameSwitch(sender, "small-modus", true)
+                    MessageUtils.sendNeedReloadMessage(sender)
+                }
+
+                else -> {
+                    val lang = plugin.getConfig().getString("lang")
+                    val file = File(plugin.getDataFolder(), "languages/" + lang + ".yml")
+                    MessageUtils.sendMessage(
+                        sender,
+                        YamlConfiguration.loadConfiguration(file).getString("warning-message.false-game")
+                    )
+                }
             }
-        }));
+        }))
     }
 }

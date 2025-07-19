@@ -4,7 +4,7 @@
 language: en_us
 
 # The prefix works with MiniMessage, so you can use colors and formatting.
-prefix: <color:dark_gray>>> </color><gradient:#00FF00:#007F00>MiniGames </gradient><color:dark_gray>| </color><color:#00E5E5>%message%
+prefix: <color:dark_gray>>> </color><gradient:#00FF00:#007F00>MiniGames </gradient><color:dark_gray>| </color><color:#00E5E5>
 
 # here you can set the Command.
 # WARNING: If you change the command, you need to restart the server.
