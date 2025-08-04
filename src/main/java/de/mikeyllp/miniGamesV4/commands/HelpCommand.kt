@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.commands
 
+import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.plugin
 import de.mikeyllp.miniGamesV4.utils.MessageUtils
-import de.mikeyllp.miniGamesV4.utils.MinigamesPermissionRegistry
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand

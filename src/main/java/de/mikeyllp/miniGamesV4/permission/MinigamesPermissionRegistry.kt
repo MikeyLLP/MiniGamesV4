@@ -1,4 +1,4 @@
-package de.mikeyllp.miniGamesV4.utils
+package de.mikeyllp.miniGamesV4.permission
 
 import dev.slne.surf.surfapi.bukkit.api.permission.PermissionRegistry
 
@@ -15,5 +15,6 @@ object MinigamesPermissionRegistry : PermissionRegistry() {
     val COMMAND_ADMIN_HELP = create("$COMMAND_PREFIX.admin-help")
     val COMMAND_MINIGAMES_MENU = create("$COMMAND_PREFIX.minigames-menu")
     val COMMAND_QUIT = create("$COMMAND_PREFIX.quit")
-
+    val COMMAND_TOGGLE = create("$COMMAND_PREFIX.toggle")
+    val COMMAND_SET = create("$COMMAND_PREFIX.set")
 }

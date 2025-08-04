@@ -14,27 +14,27 @@ import java.util.function.Supplier
 class Database(private val plugin: JavaPlugin) {
     private var connection: Connection? = null
 
-    // Holds the main Tread Clear
+
     private val dbExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
     fun connect() {
         try {
-            val dbFile = File(plugin.getDataFolder(), "data.db")
-            if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs()
-            val url = "jdbc:sqlite:" + dbFile.getAbsolutePath()
+            val dbFile = File(plugin.dataFolder, "data.db")
+            if (!plugin.dataFolder.exists()) plugin.dataFolder.mkdirs()
+            val url = "jdbc:sqlite:" + dbFile.absolutePath
             connection = DriverManager.getConnection(url)
         } catch (e: SQLException) {
-            plugin.getLogger().severe("No Connection to SQLite: " + e.message)
+            plugin.logger.severe("No Connection to SQLite: " + e.message)
         }
     }
 
     fun disconnect() {
         try {
-            if (connection != null && !connection!!.isClosed()) {
+            if (connection != null && !connection!!.isClosed) {
                 connection!!.close()
             }
         } catch (e: SQLException) {
-            plugin.getLogger().warning("An unexpected error while shouting down the SQLite " + e.message)
+            plugin.logger.warning("An unexpected error while shouting down the SQLite " + e.message)
         }
         dbExecutor.shutdown()
     }
@@ -49,7 +49,7 @@ class Database(private val plugin: JavaPlugin) {
                 stmt.execute(sql)
             }
         } catch (e: SQLException) {
-            plugin.getLogger().severe("An unexpected error while creating a Table: " + e.message)
+            plugin.logger.severe("An unexpected error while creating a Table: " + e.message)
         }
     }
 
@@ -64,7 +64,7 @@ class Database(private val plugin: JavaPlugin) {
                 stmt.executeUpdate()
             }
         } catch (e: SQLException) {
-            plugin.getLogger().warning("Error while saving Data in Language: " + e.message)
+            plugin.logger.warning("Error while saving Data in Language: " + e.message)
         }
     }
 
@@ -105,7 +105,7 @@ class Database(private val plugin: JavaPlugin) {
                 stmt.executeUpdate()
             }
         } catch (e: SQLException) {
-            plugin.getLogger().warning("Error while saving Data in toggle: " + e.message)
+            plugin.logger.warning("Error while saving Data in toggle: " + e.message)
         }
     }
 
@@ -125,7 +125,7 @@ class Database(private val plugin: JavaPlugin) {
                 }
             }
         } catch (e: SQLException) {
-            plugin.getLogger().warning("Error while loading from Data in toggle: " + e.message)
+            plugin.logger.warning("Error while loading from Data in toggle: " + e.message)
         }
         return 0
     }

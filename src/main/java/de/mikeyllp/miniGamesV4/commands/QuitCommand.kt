@@ -3,12 +3,12 @@ package de.mikeyllp.miniGamesV4.commands
 import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
 import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
+import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.plugin
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
 import de.mikeyllp.miniGamesV4.utils.MessageUtils
-import de.mikeyllp.miniGamesV4.utils.MinigamesPermissionRegistry
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand
@@ -43,8 +43,10 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
 
         // Checks if the player is in a game
         if (InvitePlayerStorage.runningGames.containsKey(player.uniqueId)) {
+
             val opponentUuid: UUID = InvitePlayerStorage.runningGames[player.uniqueId]!!
             val opponent: Player = Bukkit.getPlayer(opponentUuid)!!
+            
             MessageUtils.sendMessage(player, "warning-message.game-quit")
             MessageUtils.sendMessage(opponent, "warning-message.player-quit")
 
@@ -58,16 +60,17 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
         if (removePlayersHideAndSeek.playerRemove(player, "quit", plugin)) {
             InvitePlayerStorage.runningGames.remove(player.uniqueId)
             return@playerExecutor
-        }
+        } else {
 
+            if (!HideAndSeekGameGroups.Companion.listUntilX.contains(player)) {
+                MessageUtils.sendMessage(player, "warning-message.nothing-to-quit")
+                return@playerExecutor
+            }
 
-        if (!HideAndSeekGameGroups.Companion.listUntilX.contains(player)) {
-            MessageUtils.sendMessage(player, "warning-message.nothing-to-quit")
-            return@playerExecutor
+            InvitePlayerStorage.runningGames.remove(player.uniqueId)
+            HideAndSeekGameGroups.Companion.listUntilX.removeIf { value: Player? -> value == player }
+            MessageUtils.sendMessage(player, "warning-message.queue-quit")
         }
-        InvitePlayerStorage.runningGames.remove(player.uniqueId)
-        HideAndSeekGameGroups.Companion.listUntilX.removeIf { value: Player? -> value == player }
-        MessageUtils.sendMessage(player, "warning-message.queue-quit")
 
 
     }

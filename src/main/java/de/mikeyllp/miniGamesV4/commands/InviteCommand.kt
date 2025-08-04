@@ -2,9 +2,9 @@ package de.mikeyllp.miniGamesV4.commands
 
 import de.mikeyllp.miniGamesV4.games.GameType
 import de.mikeyllp.miniGamesV4.games.hideandseek.HideAndSeekGame
+import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.MessageUtils
-import de.mikeyllp.miniGamesV4.utils.MinigamesPermissionRegistry
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.entity.Player

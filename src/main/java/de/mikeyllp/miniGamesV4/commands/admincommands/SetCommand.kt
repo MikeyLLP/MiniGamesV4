@@ -2,26 +2,20 @@ package de.mikeyllp.miniGamesV4.commands.admincommands
 
 import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetEnableDisableGame
 import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetHASSpawn
-import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.SetNumber
+import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.setNumberCommand
+import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import dev.jorel.commandapi.CommandAPICommand
-import dev.jorel.commandapi.executors.CommandArguments
-import dev.jorel.commandapi.executors.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.plugin.java.JavaPlugin
+import dev.jorel.commandapi.kotlindsl.anyExecutor
+import dev.jorel.commandapi.kotlindsl.subcommand
 
-class SetCommand(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
-    init {
-        withSubcommand(SetNumber("setNum", plugin))
-        withSubcommand(SetHASSpawn("HASSpawn", plugin))
-        withSubcommand(SetEnableDisableGame("invert", plugin))
+fun CommandAPICommand.setCommand() = subcommand("set") {
+    withPermission(MinigamesPermissionRegistry.COMMAND_SET)
+    setNumberCommand()
+    withSubcommand(SetHASSpawn("HASSpawn"))
+    withSubcommand(SetEnableDisableGame("invert"))
 
-        executes((CommandExecutor { sender: CommandSender, args: CommandArguments ->
-            if (!sender.hasPermission("minigamesv4.admin")) {
-                MessageUtils.sendNoPermissionMessage(sender)
-                return@CommandExecutor
-            }
-            MessageUtils.needHelpMessage(sender)
-        }))
+    anyExecutor { sender, args ->
+        MessageUtils.needHelpMessage(sender)
     }
 }

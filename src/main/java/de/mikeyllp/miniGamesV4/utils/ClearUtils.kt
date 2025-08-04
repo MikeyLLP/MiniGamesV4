@@ -11,7 +11,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object clearUtils {
+object ClearUtils {
     val confirmClear: MutableMap<CommandSender?, Long?> = HashMap<CommandSender?, Long?>()
 
     // This is an easy way to clear all the existing lists. I will use this when something is changed in the config or in case of a crash.
@@ -25,7 +25,7 @@ object clearUtils {
             )
             return
         }
-        plugin.logger.warning("Clearing all game lists as per request from " + sender.getName())
+        plugin.logger.warning("Clearing all game lists as per request from " + sender.name)
 
         for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
             val seekers: MutableList<Player> = entry.value
@@ -71,7 +71,7 @@ object clearUtils {
 
         // Check to Reload the config
         try {
-            MessageUtils.reloadConfig()
+            LanguageUtils.reloadConfig()
             plugin.reloadConfig()
             WaitingForPlayersUtils.timerList.clear()
 

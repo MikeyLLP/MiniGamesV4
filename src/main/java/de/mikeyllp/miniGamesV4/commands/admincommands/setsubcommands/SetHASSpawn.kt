@@ -6,10 +6,15 @@ import dev.jorel.commandapi.arguments.LocationArgument
 import dev.jorel.commandapi.arguments.WorldArgument
 import dev.jorel.commandapi.executors.CommandArguments
 import dev.jorel.commandapi.executors.CommandExecutor
+import dev.jorel.commandapi.kotlindsl.subcommand
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
+
+fun CommandAPICommand.setHASSpawnCommand() = subcommand("HASSpawn") {
+    
+}
 
 class SetHASSpawn(commandName: String, plugin: JavaPlugin) : CommandAPICommand(commandName) {
     init {

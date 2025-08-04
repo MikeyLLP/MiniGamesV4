@@ -1,19 +1,14 @@
 package de.mikeyllp.miniGamesV4.commands.admincommands
 
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
-import de.mikeyllp.miniGamesV4.utils.MinigamesPermissionRegistry
-import de.mikeyllp.miniGamesV4.utils.clearUtils
+import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
+import de.mikeyllp.miniGamesV4.utils.ClearUtils
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand
 
 fun CommandAPICommand.clearCommand() = subcommand("clear") {
+    withPermission(MinigamesPermissionRegistry.COMMAND_CLEAR)
     anyExecutor { sender, args ->
-        if (!sender.hasPermission(MinigamesPermissionRegistry.COMMAND_CLEAR)) {
-            MessageUtils.sendNoPermissionMessage(sender)
-            return@anyExecutor
-        }
-
-        clearUtils.clearAllLists(sender)
+        ClearUtils.clearAllLists(sender)
     }
 }
