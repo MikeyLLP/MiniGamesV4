@@ -5,10 +5,7 @@ import de.mikeyllp.miniGamesV4.games.GameInvite
 import de.mikeyllp.miniGamesV4.games.GameType
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
 import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame
-import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.invites
-import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.invitesTasks
-import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage.runningGames
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import dev.slne.surf.surfapi.core.api.util.object2ObjectMapOf
 import dev.slne.surf.surfapi.core.api.util.objectListOf
 import net.kyori.adventure.text.minimessage.MiniMessage

@@ -3,7 +3,7 @@ package de.mikeyllp.miniGamesV4.listeners
 import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
 import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

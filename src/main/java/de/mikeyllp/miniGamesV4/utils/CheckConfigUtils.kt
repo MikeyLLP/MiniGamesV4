@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.utils
 
+import de.mikeyllp.miniGamesV4.plugin
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object CheckConfigUtils {
-    fun checkAndFixingConfig(plugin: JavaPlugin): Boolean {
+    fun checkAndFixingConfig(): Boolean {
         // Get the Config
         val configFile = File(plugin.getDataFolder(), "config.yml")
         val config: FileConfiguration = YamlConfiguration.loadConfiguration(configFile)

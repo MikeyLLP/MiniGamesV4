@@ -3,12 +3,13 @@ package de.mikeyllp.miniGamesV4.commands
 import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
 import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.Translator
 import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.plugin
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand
@@ -23,16 +24,15 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
     withPermission(MinigamesPermissionRegistry.COMMAND_QUIT)
 
     playerExecutor { player, args ->
-        val langConfig = MessageUtils.getActiveLangConfig()
 
         if (ClickInviteStorage.Companion.enableListener.containsKey(player)) {
+
             val mm = MiniMessage.miniMessage()
-            val miniGameComponent =
-                mm.deserialize(langConfig.getString("special-message.click-invite-disable").toString())
             val message = mm.deserialize("")
+
             player.showTitle(
                 Title.title(
-                    miniGameComponent,
+                    Translator.translatable("special-message.click-invite-disable"),
                     message, Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))
                 )
             )
@@ -46,9 +46,9 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
 
             val opponentUuid: UUID = InvitePlayerStorage.runningGames[player.uniqueId]!!
             val opponent: Player = Bukkit.getPlayer(opponentUuid)!!
-            
-            MessageUtils.sendMessage(player, "warning-message.game-quit")
-            MessageUtils.sendMessage(opponent, "warning-message.player-quit")
+
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.game-quit"))
+            MessageUtils.sendMessage(opponent, Translator.translatable("warning-message.player-quit"))
 
             //removes the inviter and invited from the maps
             RPSGame.Companion.removePlayersFromList(player, opponent)
@@ -63,13 +63,13 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
         } else {
 
             if (!HideAndSeekGameGroups.Companion.listUntilX.contains(player)) {
-                MessageUtils.sendMessage(player, "warning-message.nothing-to-quit")
+                MessageUtils.sendMessage(player, Translator.translatable("warning-message.nothing-to-quit"))
                 return@playerExecutor
             }
 
             InvitePlayerStorage.runningGames.remove(player.uniqueId)
             HideAndSeekGameGroups.Companion.listUntilX.removeIf { value: Player? -> value == player }
-            MessageUtils.sendMessage(player, "warning-message.queue-quit")
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.queue-quit"))
         }
 
 

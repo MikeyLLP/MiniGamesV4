@@ -4,9 +4,9 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem
 import com.github.stefvanschie.inventoryframework.gui.type.DispenserGui
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane
 import de.mikeyllp.miniGamesV4.MiniGamesV4
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.GameUtils
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

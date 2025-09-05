@@ -1,12 +1,10 @@
-package de.mikeyllp.miniGamesV4.utils
+package de.mikeyllp.miniGamesV4.messages
 
 import de.mikeyllp.miniGamesV4.config
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.command.CommandSender
-
 
 object MessageUtils {
 
@@ -20,15 +18,14 @@ object MessageUtils {
     }
 
 
-    fun sendMessage(sender: CommandSender, message: String) {
-
-        sender.sendMessage(MiniMessage.miniMessage().deserialize(message))
+    fun sendMessage(sender: CommandSender, message: Component) {
+        sender.sendMessage(message)
     }
 
     fun sendNeedReloadMessage(sender: CommandSender) {
         sendMessage(
             sender,
-            translatable("normal-message.info.reload")
+            Translator.translatable("normal-message.info.reload")
         )
     }
 
@@ -36,7 +33,7 @@ object MessageUtils {
         val key = if (state) "enabled-game" else "disabled-game"
 
         sendMessage(
-            sender, translatable("normal-message.info.$key", game)
+            sender, Translator.translatable("normal-message.info.$key", game)
         )
     }
 
@@ -44,7 +41,7 @@ object MessageUtils {
         val command = config.getString("command") ?: "minigames"
         sendMessage(
             sender,
-            translatable("normal-message.info.need-help", command)
+            Translator.translatable("normal-message.info.need-help", command)
         )
     }
 
@@ -52,14 +49,14 @@ object MessageUtils {
     fun sendNoPermissionMessage(sender: CommandSender) {
         sendMessage(
             sender,
-            translatable("warning-message.no-permission")
+            Translator.translatable("warning-message.no-permission")
         )
     }
 
     fun miniGamesDisabledMessage(sender: CommandSender) {
         sendMessage(
             sender,
-            translatable("warning-message.disabled-game")
+            Translator.translatable("warning-message.disabled-game")
         )
     }
 

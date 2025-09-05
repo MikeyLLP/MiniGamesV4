@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.storage
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

@@ -1,5 +1,6 @@
 package de.mikeyllp.miniGamesV4.utils
 
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 

@@ -5,11 +5,11 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane
 import com.github.stefvanschie.inventoryframework.pane.Pane
 import de.mikeyllp.miniGamesV4.games.hideandseek.HideAndSeekGame
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.plugin
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material

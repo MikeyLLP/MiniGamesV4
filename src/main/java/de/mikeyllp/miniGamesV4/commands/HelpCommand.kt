@@ -1,59 +1,35 @@
 package de.mikeyllp.miniGamesV4.commands
 
+import de.mikeyllp.miniGamesV4.messages.Translator
 import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.plugin
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.subcommand
 
 fun CommandAPICommand.helpCommand() = subcommand("help") {
     withPermission(MinigamesPermissionRegistry.COMMAND_HELP)
+
+    val command = plugin.config.getString("command") ?: "minigames"
+
     anyExecutor { sender, args ->
-
-        val langConfig = MessageUtils.getActiveLangConfig()
-
-        val cmdReplace = plugin.config.getString("command") ?: "ERROR"
-        //default commands
-        sender.sendRichMessage("<gold>========== [<gradient:#00FF00:#007F00>MiniGames Help</gradient>] ==========</gold>")
-        sender.sendRichMessage("<color:#00E5E5><> = Pflicht | [] = Optional</color>")
-        sender.sendMessage("")
-        sender.sendRichMessage("<color:#00FFD5>Allgemeine Befehle:")
-        // General Commands
-        val generalCommands = langConfig.getConfigurationSection("special-message.help.sections.general.commands")
-        if (generalCommands != null) {
-            for (key in generalCommands.getKeys(false)) {
-                val cmd = generalCommands.getStringList(key)
-                val command = cmd[0]?.replace("%command%", cmdReplace)
-                MessageUtils.sendHelpMessage(sender, command!!, cmd[1])
-            }
-        }
-        sender.sendMessage("")
-        sender.sendRichMessage("<color:#00FFD5>Spiele:")
-        sender.sendMessage("")
-
-        val games = langConfig.getStringList("special-message.help.sections.games.list")
-
-        for (rawGame in games) {
-            val game = rawGame.replace("%command%", cmdReplace)
-            sender.sendRichMessage(game)
-        }
-
-        // Here are the Admin Commands
+        sender.sendMessage(Translator.translatable("help.header"))
+        sender.sendMessage(Translator.translatable("help.info"))
+        sender.sendMessage(Translator.translatable("help.sections.general.title"))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.help", command))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.play", command))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.accept", command))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.decline", command))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.quit", command))
+        sender.sendMessage(Translator.translatable("help.sections.general.commands.toggle", command))
+        sender.sendMessage(Translator.translatable("help.sections.games.title"))
+        sender.sendMessage(Translator.translatable("help.sections.games.list"))
         if (sender.hasPermission(MinigamesPermissionRegistry.COMMAND_ADMIN_HELP)) {
-            sender.sendMessage("")
-            sender.sendRichMessage("<color:#00FFD5>Admin Befehle:")
-
-            val adminCommands = langConfig.getConfigurationSection("special-message.help.sections.admin.commands")
-            if (adminCommands != null) {
-                for (key in adminCommands.getKeys(false)) {
-                    val cmd = adminCommands.getStringList(key)
-                    val command = cmd[0]!!.replace("%command%", cmdReplace)
-                    MessageUtils.sendHelpMessage(sender, command, cmd[1])
-                }
-            }
+            sender.sendMessage(Translator.translatable("help.sections.admin.title"))
+            sender.sendMessage(Translator.translatable("help.sections.admin.commands.reload", command))
+            sender.sendMessage(Translator.translatable("help.sections.admin.commands.clear", command))
+            sender.sendMessage(Translator.translatable("help.sections.admin.commands.set", command))
         }
-        sender.sendRichMessage("<gold>====================================</gold>")
-
+        sender.sendRichMessage("help.footer")
     }
 }

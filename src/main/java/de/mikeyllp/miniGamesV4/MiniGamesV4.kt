@@ -8,11 +8,11 @@ import de.mikeyllp.miniGamesV4.games.hideandseek.listeners.PlayerHoldItemListene
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
 import de.mikeyllp.miniGamesV4.games.tictactoe.TicTacToeGame
 import de.mikeyllp.miniGamesV4.listeners.PlayerJoinQuitListener
+import de.mikeyllp.miniGamesV4.messages.CreateAndCheckLanguages
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
 import de.mikeyllp.miniGamesV4.storage.ToggleInvitesStorage
 import de.mikeyllp.miniGamesV4.utils.CheckConfigUtils
-import de.mikeyllp.miniGamesV4.utils.CreateAndCheckLanguages
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger.logger
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -36,15 +36,14 @@ class MiniGamesV4 : JavaPlugin() {
         logger().info("MiniGamesV4 is starting...")
 
         saveDefaultConfig()
-        CheckConfigUtils.checkAndFixingConfig(this)
+        CheckConfigUtils.checkAndFixingConfig()
 
         CreateAndCheckLanguages.saveDefaultLanguagesFiles()
-        CreateAndCheckLanguages.init(this)
 
         MessageUtils.initCustomTags()
 
 
-        db = Database(this)
+        db = Database()
         db.connect()
         db.createTable()
 
@@ -81,7 +80,7 @@ class MiniGamesV4 : JavaPlugin() {
 
     override fun onDisable() {
 
-        db!!.disconnect()
+        db.disconnect()
 
         logger().info("Bye <3")
     }

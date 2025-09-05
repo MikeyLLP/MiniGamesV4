@@ -1,17 +1,9 @@
-package de.mikeyllp.miniGamesV4.utils
+package de.mikeyllp.miniGamesV4.messages
 
-import org.bukkit.plugin.java.JavaPlugin
+import de.mikeyllp.miniGamesV4.plugin
 import java.io.File
 
 object CreateAndCheckLanguages {
-    // To get the Config
-    private var plugin: JavaPlugin? = null
-
-    fun init(pl: JavaPlugin) {
-        plugin = pl
-        MessageUtils.reloadConfig()
-    }
-
 
     fun saveDefaultLanguagesFiles() {
         val languagesFolder = File(plugin!!.getDataFolder(), "languages")
@@ -19,7 +11,7 @@ object CreateAndCheckLanguages {
             languagesFolder.mkdirs()
         }
         // Creates the default locale files if they do not exist
-        saveResourceIfNotExists("languages/de_de.yml")
+        saveResourceIfNotExists("languages/de_de.properties")
         saveResourceIfNotExists("languages/en_us.yml")
     }
 

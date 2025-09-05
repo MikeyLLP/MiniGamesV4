@@ -2,7 +2,7 @@ package de.mikeyllp.miniGamesV4.storage
 
 import de.mikeyllp.miniGamesV4.MiniGamesV4
 import de.mikeyllp.miniGamesV4.database.Database
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.function.Consumer

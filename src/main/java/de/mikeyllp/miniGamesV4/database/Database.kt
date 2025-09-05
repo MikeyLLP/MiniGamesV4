@@ -1,6 +1,6 @@
 package de.mikeyllp.miniGamesV4.database
 
-import org.bukkit.plugin.java.JavaPlugin
+import de.mikeyllp.miniGamesV4.plugin
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.function.Supplier
 
-class Database(private val plugin: JavaPlugin) {
+class Database() {
     private var connection: Connection? = null
 
 

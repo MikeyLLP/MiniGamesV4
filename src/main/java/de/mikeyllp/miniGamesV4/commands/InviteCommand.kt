@@ -2,9 +2,10 @@ package de.mikeyllp.miniGamesV4.commands
 
 import de.mikeyllp.miniGamesV4.games.GameType
 import de.mikeyllp.miniGamesV4.games.hideandseek.HideAndSeekGame
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.Translator
 import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.entity.Player
@@ -21,22 +22,22 @@ fun CommandAPICommand.inviteCommand() = subcommand("invite") {
         val toInvite: Player by args
 
         if (InvitePlayerStorage.isIngame(player)) {
-            MessageUtils.sendMessage(player, "warning-message.already-in-game.self")
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.already-in-game.self"))
             return@playerExecutor
         }
 
         if (InvitePlayerStorage.isIngame(toInvite)) {
-            MessageUtils.sendMessage(player, "warning-message.already-in-game.other")
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.already-in-game.other"))
             return@playerExecutor
         }
 
         if (player == toInvite) {
-            MessageUtils.sendMessage(player, "warning-message.no-invite-yourself")
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.no-invite-yourself"))
             return@playerExecutor
         }
 
         if (gameType.isEnabled()) {
-            MessageUtils.sendMessage(player, "warning-message.disabled-game")
+            MessageUtils.sendMessage(player, Translator.translatable("warning-message.disabled-game"))
             return@playerExecutor
         }
 

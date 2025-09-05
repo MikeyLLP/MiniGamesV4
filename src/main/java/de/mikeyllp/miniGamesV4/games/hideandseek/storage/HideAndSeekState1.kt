@@ -2,7 +2,7 @@ package de.mikeyllp.miniGamesV4.games.hideandseek.storage
 
 import de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils
 import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Sound
 import org.bukkit.entity.Player

@@ -1,8 +1,8 @@
 package de.mikeyllp.miniGamesV4.games.rps
 
+import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.GameUtils
-import de.mikeyllp.miniGamesV4.utils.MessageUtils
 import io.papermc.paper.event.player.AsyncChatEvent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage

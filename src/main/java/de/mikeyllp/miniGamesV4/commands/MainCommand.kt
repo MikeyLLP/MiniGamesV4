@@ -12,11 +12,10 @@ import dev.jorel.commandapi.kotlindsl.playerExecutor
 fun mainCommand() = commandAPICommand(plugin.config.getString("command").toString()) {
     withPermission(MinigamesPermissionRegistry.COMMAND_MINIGAMES_MENU)
 
-
     reloadConfigCommand()
     setCommand()
 
-
+    inviteCommand()
     acceptCommand()
     clearCommand()
     declineCommand()
