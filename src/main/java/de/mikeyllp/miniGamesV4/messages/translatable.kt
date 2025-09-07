@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import kotlin.io.path.div
 
-
 object Translator {
 
     var activeLanguage: String = "en_US"

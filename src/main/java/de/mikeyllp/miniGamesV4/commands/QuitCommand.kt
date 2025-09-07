@@ -1,12 +1,11 @@
 package de.mikeyllp.miniGamesV4.commands
 
 import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
-import de.mikeyllp.miniGamesV4.games.hideandseek.utils.removePlayersHideAndSeek
+import de.mikeyllp.miniGamesV4.games.hideandseek.utils.RemovePlayersHideAndSeek
 import de.mikeyllp.miniGamesV4.games.rps.RPSGame
 import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.messages.Translator
 import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
-import de.mikeyllp.miniGamesV4.plugin
 import de.mikeyllp.miniGamesV4.storage.ClickInviteStorage
 import de.mikeyllp.miniGamesV4.storage.InvitePlayerStorage
 import de.mikeyllp.miniGamesV4.utils.ClickInviteUtils
@@ -40,8 +39,6 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
             return@playerExecutor
         }
 
-
-        // Checks if the player is in a game
         if (InvitePlayerStorage.runningGames.containsKey(player.uniqueId)) {
 
             val opponentUuid: UUID = InvitePlayerStorage.runningGames[player.uniqueId]!!
@@ -50,14 +47,13 @@ fun CommandAPICommand.quitCommand() = subcommand("quit") {
             MessageUtils.sendMessage(player, Translator.translatable("warning-message.game-quit"))
             MessageUtils.sendMessage(opponent, Translator.translatable("warning-message.player-quit"))
 
-            //removes the inviter and invited from the maps
             RPSGame.Companion.removePlayersFromList(player, opponent)
             return@playerExecutor
         }
 
 
 
-        if (removePlayersHideAndSeek.playerRemove(player, "quit", plugin)) {
+        if (RemovePlayersHideAndSeek.playerRemove(player, "quit")) {
             InvitePlayerStorage.runningGames.remove(player.uniqueId)
             return@playerExecutor
         } else {

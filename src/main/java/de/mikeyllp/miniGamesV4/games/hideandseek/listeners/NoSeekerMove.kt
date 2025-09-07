@@ -7,13 +7,12 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 
 class NoSeekerMove : Listener {
-    // That the player cannot move if he is a seeker
     @EventHandler
     fun onSeekerMove(event: PlayerMoveEvent) {
-        for (entry in HideAndSeekGameGroups.Companion.noMoveGroup.entries) {
-            val seekerList: MutableList<Player?> = entry.value
-            if (seekerList.contains(event.getPlayer())) {
-                event.setCancelled(true)
+        for (entry in HideAndSeekGameGroups.noMoveGroup.entries) {
+            val seekerList: MutableList<Player> = entry.value
+            if (seekerList.contains(event.player)) {
+                event.isCancelled = true
             }
         }
     }

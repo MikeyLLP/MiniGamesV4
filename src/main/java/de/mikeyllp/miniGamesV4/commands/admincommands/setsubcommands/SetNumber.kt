@@ -2,7 +2,7 @@ package de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands
 
 import de.mikeyllp.miniGamesV4.commands.admincommands.setsubcommands.utils.NumbersToSet
 import de.mikeyllp.miniGamesV4.config
-import de.mikeyllp.miniGamesV4.games.hideandseek.utils.formatTimeUtils
+import de.mikeyllp.miniGamesV4.games.hideandseek.utils.FormatTimeUtils
 import de.mikeyllp.miniGamesV4.messages.MessageUtils
 import de.mikeyllp.miniGamesV4.messages.Translator
 import de.mikeyllp.miniGamesV4.permission.MinigamesPermissionRegistry
@@ -59,7 +59,7 @@ fun CommandAPICommand.setNumberCommand() = subcommand("number") {
                     sender,
                     Translator.translatable(
                         ("normal-message.info.time-autostart-HAS"),
-                        formatTimeUtils.formatTimerWithText(someInt)
+                        FormatTimeUtils.formatTimerWithText(someInt)
                     )
                 )
 
@@ -71,7 +71,7 @@ fun CommandAPICommand.setNumberCommand() = subcommand("number") {
                     sender,
                     Translator.translatable(
                         ("normal-message.info.play-time-HAS"),
-                        formatTimeUtils.formatTimerWithText(someInt)
+                        FormatTimeUtils.formatTimerWithText(someInt)
                     )
                 )
 
@@ -83,7 +83,7 @@ fun CommandAPICommand.setNumberCommand() = subcommand("number") {
                     sender,
                     Translator.translatable(
                         ("normal-message.info.hide-time-HAS"),
-                        formatTimeUtils.formatTimerWithText(someInt)
+                        FormatTimeUtils.formatTimerWithText(someInt)
                     )
                 )
 

@@ -1,6 +1,7 @@
 package de.mikeyllp.miniGamesV4.games.hideandseek.listeners
 
 import de.mikeyllp.miniGamesV4.games.hideandseek.storage.HideAndSeekGameGroups
+import de.mikeyllp.miniGamesV4.plugin
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -12,98 +13,91 @@ import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
-import org.bukkit.plugin.java.JavaPlugin
 
-class PlayerHoldItemListener(private val plugin: JavaPlugin) : Listener {
+class PlayerHoldItemListener() : Listener {
+
     @EventHandler
     fun onPlayerHoldItem(event: PlayerItemHeldEvent) {
-        val config = plugin.getConfig()
-        if (!config.getBoolean("small-modus.is-enabled")) return
-        if (HideAndSeekGameGroups.Companion.seekerGroup.isEmpty()) return
+        val config = plugin.config
 
-        // Checks if the player is a Seeker
-        val player = event.getPlayer()
-        for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
-            val seekers: MutableList<Player?> = entry.value
+        if (!config.getBoolean("small-modus.is-enabled")) return
+        if (HideAndSeekGameGroups.seekerGroup.isEmpty()) return
+
+        val player = event.player
+        for (entry in HideAndSeekGameGroups.seekerGroup.entries) {
+            val seekers: MutableList<Player> = entry.value
             if (!seekers.contains(player)) return
         }
 
-        // If the player hold a puffer fish he will get smaller
-        val hand = player.getInventory().getItem(event.getNewSlot())
-        if (hand != null && hand.getType() == Material.PUFFERFISH) {
-            player.getAttribute(Attribute.SCALE)!!.setBaseValue(0.001)
+        val hand = player.inventory.getItem(event.newSlot)
+        if (hand != null && hand.type == Material.PUFFERFISH) {
+            player.getAttribute(Attribute.SCALE)?.baseValue = 0.001
         } else {
-            player.getAttribute(Attribute.SCALE)!!.setBaseValue(1.0)
+            player.getAttribute(Attribute.SCALE)?.baseValue = 1.0
         }
     }
 
-    // That the seeker cannot swap the item
     @EventHandler
     fun onTrySwitchItem(event: PlayerSwapHandItemsEvent) {
         val config = plugin.getConfig()
         if (!config.getBoolean("small-modus.is-enabled")) return
-        if (HideAndSeekGameGroups.Companion.seekerGroup.isEmpty()) return
+        if (HideAndSeekGameGroups.seekerGroup.isEmpty()) return
 
-        // Checks if the player is a Seeker
         val player = event.getPlayer()
-        for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
-            val seekers: MutableList<Player?> = entry.value
+        for (entry in HideAndSeekGameGroups.seekerGroup.entries) {
+            val seekers: MutableList<Player> = entry.value
             if (!seekers.contains(player)) return
         }
 
-        if (event.getOffHandItem().getType() == Material.PUFFERFISH) {
-            event.setCancelled(true)
+        if (event.offHandItem.type == Material.PUFFERFISH) {
+            event.isCancelled = true
         }
     }
 
-    // That the player cannot move his item and duplicate it
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
         val config = plugin.getConfig()
         if (!config.getBoolean("small-modus.is-enabled")) return
-        if (HideAndSeekGameGroups.Companion.seekerGroup.isEmpty()) return
+        if (HideAndSeekGameGroups.seekerGroup.isEmpty()) return
 
-        // Checks if the player is a Seeker
-        val player = event.getWhoClicked() as Player
-        for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
-            val seekers: MutableList<Player?> = entry.value
+        val player = event.whoClicked as Player
+        for (entry in HideAndSeekGameGroups.seekerGroup.entries) {
+            val seekers: MutableList<Player> = entry.value
             if (!seekers.contains(player)) return
         }
 
-        if (event.getClick() == ClickType.NUMBER_KEY && (event.getCurrentItem()!!.getType() != Material.PUFFERFISH)) {
-            event.setCancelled(true)
+        if (event.click == ClickType.NUMBER_KEY && (event.currentItem?.type != Material.PUFFERFISH)) {
+            event.isCancelled = true
             return
         }
 
         val item = event.getCurrentItem()
-        if (item != null && item.getType() == Material.PUFFERFISH) {
-            event.setCancelled(true)
+        if (item != null && item.type == Material.PUFFERFISH) {
+            event.isCancelled = true
         }
     }
 
-    // That the seeker cannot drop his item
     @EventHandler
     fun onItemDrop(event: PlayerDropItemEvent) {
-        for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
-            val seekers: MutableList<Player?> = entry.value
-            if (!seekers.contains(event.getPlayer())) return
+        for (entry in HideAndSeekGameGroups.seekerGroup.entries) {
+            val seekers: MutableList<Player> = entry.value
+            if (!seekers.contains(event.player)) return
         }
 
-        if (event.getItemDrop().getItemStack().getType() == Material.PUFFERFISH) {
-            event.setCancelled(true)
+        if (event.itemDrop.itemStack.type == Material.PUFFERFISH) {
+            event.isCancelled = true
         }
     }
 
-    // That the seeker cannot eat his item
     @EventHandler
     fun onItemEat(event: PlayerItemConsumeEvent) {
-        for (entry in HideAndSeekGameGroups.Companion.seekerGroup.entries) {
-            val seekers: MutableList<Player?> = entry.value
-            if (!seekers.contains(event.getPlayer())) return
+        for (entry in HideAndSeekGameGroups.seekerGroup.entries) {
+            val seekers: MutableList<Player> = entry.value
+            if (!seekers.contains(event.player)) return
         }
 
-        if (event.getItem().getType() == Material.PUFFERFISH) {
-            event.setCancelled(true)
+        if (event.item.type == Material.PUFFERFISH) {
+            event.isCancelled = true
         }
     }
 }
